@@ -1,0 +1,9 @@
+﻿Name: Users
+AntiForgery: enabled
+Description: The users module enables user management.
+Category: Core
+Features:
+	Orchard.Users:
+		Description: Standard users.
+		Category: Core
+		Dependencies: Settings

@@ -1,0 +1,5 @@
+﻿Name: jQuery
+Path: Orchard.jQuery
+Description: The jQuery module contains the jQuery and related script libraries.
+FeatureDescription: A common location for jQuery and related script libraries.
+Category: Core

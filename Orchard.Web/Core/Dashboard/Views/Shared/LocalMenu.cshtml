@@ -1,0 +1,67 @@
+﻿@using System.Web.Routing;
+@using Orchard.Utility.Extensions;
+@using Orchard.UI.Navigation;
+@using Orchard.UI;
+@{
+    const string menuName = "admin";
+    var _navigationManager = WorkContext.Resolve<INavigationManager>();
+    IEnumerable<MenuItem> menuItems = _navigationManager.BuildMenu(menuName);
+
+    // adding query string parameters
+    var routeData = new RouteValueDictionary(ViewContext.RouteData.Values);
+    var queryString = WorkContext.HttpContext.Request.QueryString;
+    if (queryString != null)
+    {
+        foreach (var key in from string key in queryString.Keys where key != null && !routeData.ContainsKey(key) let value = queryString[key] select key)
+        {
+            routeData[key] = queryString[key];
+        }
+    }
+
+    Stack<MenuItem> selectedPath = NavigationHelper.SetSelectedPath(menuItems, WorkContext.HttpContext.Request, routeData);
+    IEnumerable<string> menuImageSets = _navigationManager.BuildImageSets(menuName);
+}
+
+@if (selectedPath != null && selectedPath.Count > 0)
+{
+    <div id="local-navigation">
+        <ul class="localmenu localmenu-local-admin">
+            @foreach (var menuItem in selectedPath.SelectMany(x => x.Items))
+            {
+                if (menuItem.LocalNav)
+                {
+                    string sectionHeaderText = menuItem.Text;
+
+                    var sectionHeaderMarkup = menuItem.RouteValues != null || HasText(menuItem.Url)
+                        ? Html.Link(sectionHeaderText, (string)menuItem.Href)
+                        : new HtmlString(string.Format("<span>{0}</span>", Html.Encode(sectionHeaderText)));
+
+                    if (menuItem == menuItems.First())
+                    {
+                        menuItem.Classes.Add("first");
+                    }
+
+                    if (menuItem != menuItems.First())
+                    {
+                        menuItem.Classes.Add("middle");
+                    }
+
+                    if (menuItem == menuItems.Last())
+                    {
+                        menuItem.Classes.Add("last");
+                    }
+
+                    if (menuItem.Selected)
+                    {
+                        menuItem.Classes.Add("selected");
+                    }
+
+                    menuItem.Classes.Add("local-section-" + sectionHeaderText.HtmlClassify());
+                    <li class="@string.Join(" ", menuItem.Classes)">
+                        <a href="@menuItem.Href">@menuItem.Text</a>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+}

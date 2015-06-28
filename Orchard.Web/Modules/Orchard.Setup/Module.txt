@@ -1,0 +1,5 @@
+﻿Name: Setup
+Path: Orchard.Setup
+Description: The setup module is creating the application's setup experience.
+FeatureDescription: Standard site setup. This feature is disabled automatically once setup is over.
+Category: Core

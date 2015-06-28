@@ -1,0 +1,51 @@
+@{
+    ViewBag.Title = "Roles";
+}
+
+@model RolesIndexViewModel
+@using Orchard.Roles.ViewModels;
+@using Orchard.Utility.Extensions;
+
+@using (Html.BeginFormAntiForgeryPost())
+{
+    @Html.ValidationSummary();
+    <fieldset class="bulk-actions">
+        <label for="publishActions">Actions</label>
+        <select id="Select1" name="roleActions">
+            <option value="1">Delete</option>
+        </select>
+        <button type="submit">Apply</button>
+    </fieldset>
+    <div class="manage">@Html.ActionLink("Add a role", "Create", new { }, new { @class = "button primaryAction" })</div>
+    <fieldset>
+        <table class="items" summary="This is a table of the roles currently available for use in your application.">
+            <colgroup>
+                <col id="Col1" />
+                <col id="Col2" />
+                <col id="Col3" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th scope="col"><input type="checkbox" class="check-all" /></th>
+                    <th scope="col">Name</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            @foreach (var row in Model.Rows)
+            {
+                <tr>
+                    <td><input type="checkbox" value="true" name="@("Checkbox." + row.Id)" /></td>
+                    <td>@Html.ActionLink(row.Name, "Edit", new { row.Id })</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { row.Id })
+                        @if (row.Name != "Administrator")
+                        {
+                            @Html.Raw(" | ") 
+                            <a href="@Url.Action("Delete", new {row.Id, returnUrl = ViewContext.RequestContext.HttpContext.Request.ToUrlString()})" itemprop="RemoveUrl UnsafeUrl">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </fieldset>
+}

@@ -1,0 +1,488 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3CD19DAF-EFB6-43BF-8BD1-F637DB3A582F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Orchard</RootNamespace>
+    <AssemblyName>Orchard.Framework</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Configuration">
+      <HintPath>..\packages\Autofac.Configuration.3.3.0\lib\net40\Autofac.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\packages\FluentNHibernate.2.0.1.0\lib\net40\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation">
+      <HintPath>..\packages\FluentValidation.5.6.2.0\lib\Net45\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation.Mvc">
+      <HintPath>..\packages\FluentValidation.MVC5.5.6.2.0\lib\Net45\FluentValidation.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Caching\AcquireContext.cs" />
+    <Compile Include="Caching\Cache.cs" />
+    <Compile Include="Caching\CacheModule.cs" />
+    <Compile Include="Caching\DefaultAsyncTokenProvider.cs" />
+    <Compile Include="Caching\DefaultCacheContextAccessor.cs" />
+    <Compile Include="Caching\DefaultCacheHolder.cs" />
+    <Compile Include="Caching\DefaultCacheManager.cs" />
+    <Compile Include="Caching\DefaultParallelCacheContext.cs" />
+    <Compile Include="Caching\IAsyncTokenProvider.cs" />
+    <Compile Include="Caching\ICache.cs" />
+    <Compile Include="Caching\ICacheContextAccessor.cs" />
+    <Compile Include="Caching\ICacheHolder.cs" />
+    <Compile Include="Caching\ICacheManager.cs" />
+    <Compile Include="Caching\IParallelCacheContext.cs" />
+    <Compile Include="Caching\IVolatileProvider.cs" />
+    <Compile Include="Caching\IVolatileToken.cs" />
+    <Compile Include="Caching\Signals.cs" />
+    <Compile Include="Caching\Weak.cs" />
+    <Compile Include="ContentManagement\ContentExtensions.cs" />
+    <Compile Include="ContentManagement\Handlers\ContentContextBase.cs" />
+    <Compile Include="ContentManagement\Handlers\IContentFilter.cs" />
+    <Compile Include="ContentManagement\Handlers\IContentStorageFilter.cs" />
+    <Compile Include="ContentManagement\Handlers\StorageFilterBase.cs" />
+    <Compile Include="ContentManagement\Records\ContentItem.cs" />
+    <Compile Include="ContentManagement\Handlers\ContentHandler.cs" />
+    <Compile Include="ContentManagement\Handlers\CreateContentContext.cs" />
+    <Compile Include="ContentManagement\Handlers\IContentHandler.cs" />
+    <Compile Include="ContentManagement\Handlers\RemoveContentContext.cs" />
+    <Compile Include="ContentManagement\Handlers\UpdateContentContext.cs" />
+    <Compile Include="ContentManagement\Records\IContent.cs" />
+    <Compile Include="Data\Conventions\CacheConventions.cs" />
+    <Compile Include="Data\Conventions\CascadeAllDeleteOrphanAttribute.cs" />
+    <Compile Include="Data\Conventions\RecordTableNameConvention.cs" />
+    <Compile Include="Data\Migration\DataMigrationCoordinator.cs" />
+    <Compile Include="Data\Providers\AbstractDataServicesProvider.cs" />
+    <Compile Include="Data\Providers\DataServicesProviderFactory.cs" />
+    <Compile Include="Data\Providers\ISqlStatementProvider.cs" />
+    <Compile Include="Data\Providers\SqlServerDataServicesProvider.cs" />
+    <Compile Include="Data\Providers\SqlServerStatementProvider.cs" />
+    <Compile Include="Data\SessionConfigurationCache.cs" />
+    <Compile Include="Environment\AutofacUtil\ConfigurationSettingsReaderConstants.cs" />
+    <Compile Include="Environment\AutofacUtil\DynamicProxy2\ConstructorFinderWrapper.cs" />
+    <Compile Include="Environment\AutofacUtil\DynamicProxy2\DynamicProxyContext.cs" />
+    <Compile Include="Environment\AutofacUtil\DynamicProxy2\DynamicProxyExtensions.cs" />
+    <Compile Include="Environment\CollectionOrderModule.cs" />
+    <Compile Include="Environment\Configuration\IShellSettingsManager.cs" />
+    <Compile Include="Environment\Configuration\IShellSettingsManagerEventHandler.cs" />
+    <Compile Include="Environment\Configuration\ShellSettings.cs" />
+    <Compile Include="Environment\Configuration\ShellSettingsManager.cs" />
+    <Compile Include="Environment\Configuration\ShellSettingsSerializer.cs" />
+    <Compile Include="Environment\DefaultOrchardHost.cs" />
+    <Compile Include="Environment\DefaultOrchardHostContainer.cs" />
+    <Compile Include="Environment\DefaultOrchardShell.cs" />
+    <Compile Include="Environment\Extensions\ExtensionLoaderCoordinator.cs" />
+    <Compile Include="Environment\Extensions\ExtensionMonitoringCoordinator.cs" />
+    <Compile Include="Environment\Extensions\IExtensionLoaderCoordinator.cs" />
+    <Compile Include="Environment\Extensions\IExtensionMonitoringCoordinator.cs" />
+    <Compile Include="Environment\Extensions\OrchardSuppressDependencyAttribute.cs" />
+    <Compile Include="Environment\Features\FeatureManager.cs" />
+    <Compile Include="Environment\Features\IFeatureManager.cs" />
+    <Compile Include="Environment\HostComponentsConfigModule.cs" />
+    <Compile Include="Environment\IFeatureEventHandler.cs" />
+    <Compile Include="Environment\IHostLocalRestart.cs" />
+    <Compile Include="Environment\IOrchardHost.cs" />
+    <Compile Include="Environment\IOrchardShell.cs" />
+    <Compile Include="Environment\IOrchardShellEvents.cs" />
+    <Compile Include="Environment\IShellContainerRegistrations.cs" />
+    <Compile Include="Environment\IViewsBackgroundCompilation.cs" />
+    <Compile Include="Environment\IWorkContextAccessor.cs" />
+    <Compile Include="Environment\IWorkContextEvents.cs" />
+    <Compile Include="Environment\OrchardServices.cs" />
+    <Compile Include="Environment\OrchardStarter.cs" />
+    <Compile Include="Environment\ShellBuilders\CompositionStrategy.cs" />
+    <Compile Include="Environment\ShellBuilders\ShellContextFactory.cs" />
+    <Compile Include="Environment\ShellBuilders\Models\ShellBlueprint.cs" />
+    <Compile Include="Environment\Descriptor\IShellDescriptorManager.cs" />
+    <Compile Include="Environment\Descriptor\Models\ShellDescriptor.cs" />
+    <Compile Include="Environment\Descriptor\ShellDescriptorCache.cs" />
+    <Compile Include="Environment\Extensions\Compilers\CompileExtensionContext.cs" />
+    <Compile Include="Environment\Extensions\Compilers\CSharpExtensionBuildProviderShim.cs" />
+    <Compile Include="Environment\Extensions\Compilers\DefaultExtensionCompiler.cs" />
+    <Compile Include="Environment\Extensions\Compilers\DefaultProjectFileParser.cs" />
+    <Compile Include="Environment\Extensions\Compilers\IExtensionCompiler.cs" />
+    <Compile Include="Environment\Extensions\Compilers\IProjectFileParser.cs" />
+    <Compile Include="Environment\Extensions\Compilers\ProjectFileDescriptor.cs" />
+    <Compile Include="Environment\Extensions\DefaultCriticalErrorProvider.cs" />
+    <Compile Include="Environment\Extensions\ExtensionEntry.cs" />
+    <Compile Include="Environment\Extensions\ExtensionLoadingContext.cs" />
+    <Compile Include="Environment\Extensions\ExtensionManager.cs" />
+    <Compile Include="Environment\Extensions\Folders\CoreModuleFolders.cs" />
+    <Compile Include="Environment\Extensions\Folders\ExtensionHarvester.cs" />
+    <Compile Include="Environment\Extensions\Folders\IExtensionFolders.cs" />
+    <Compile Include="Environment\Extensions\Folders\IExtensionHarvester.cs" />
+    <Compile Include="Environment\Extensions\Folders\ModuleFolders.cs" />
+    <Compile Include="Environment\Extensions\ICriticalErrorProvider.cs" />
+    <Compile Include="Environment\Extensions\IExtensionManager.cs" />
+    <Compile Include="Environment\Extensions\Loaders\CoreExtensionLoader.cs" />
+    <Compile Include="Environment\Extensions\Loaders\DynamicExtensionLoader.cs" />
+    <Compile Include="Environment\Extensions\Loaders\ExtensionLoaderBase.cs" />
+    <Compile Include="Environment\Extensions\Loaders\IExtensionLoader.cs" />
+    <Compile Include="Environment\Extensions\Loaders\PrecompiledExtensionLoader.cs" />
+    <Compile Include="Environment\Extensions\Loaders\ReferencedExtensionLoader.cs" />
+    <Compile Include="Environment\Extensions\Models\DefaultExtensionTypes.cs" />
+    <Compile Include="Environment\Extensions\Models\ExtensionDescriptor.cs" />
+    <Compile Include="Environment\Extensions\Models\Feature.cs" />
+    <Compile Include="Environment\Extensions\Models\FeatureDescriptor.cs" />
+    <Compile Include="Environment\Extensions\OrchardFeatureAttribute.cs" />
+    <Compile Include="Environment\IAssemblyBuilder.cs" />
+    <Compile Include="Environment\IAssemblyLoader.cs" />
+    <Compile Include="Environment\IAssemblyNameResolver.cs" />
+    <Compile Include="Environment\IBuildManager.cs" />
+    <Compile Include="Environment\IOrchardHostContainer.cs" />
+    <Compile Include="Environment\IShim.cs" />
+    <Compile Include="Environment\OrchardHostContainerRegistry.cs" />
+    <Compile Include="Environment\ShellBuilders\ShellContainerFactory.cs" />
+    <Compile Include="Environment\ShellContext.cs" />
+    <Compile Include="Environment\State\ContextState.cs" />
+    <Compile Include="Environment\State\DefaultProcessingEngine.cs" />
+    <Compile Include="Environment\State\IProcessingEngine.cs" />
+    <Compile Include="Environment\State\IShellStateManager.cs" />
+    <Compile Include="Environment\State\IShellStateManagerEventHandler.cs" />
+    <Compile Include="Environment\State\Models\ShellState.cs" />
+    <Compile Include="Environment\State\ShellStateCoordinator.cs" />
+    <Compile Include="Environment\WorkContextAccessor.cs" />
+    <Compile Include="Environment\WorkContextExtensions.cs" />
+    <Compile Include="Environment\WorkContextImplementation.cs" />
+    <Compile Include="Environment\WorkContextModule.cs" />
+    <Compile Include="Environment\WorkContextProperty.cs" />
+    <Compile Include="Exceptions\DefaultExceptionPolicy.cs" />
+    <Compile Include="Exceptions\ExceptionExtensions.cs" />
+    <Compile Include="Exceptions\Filters\UnhandledExceptionFilter.cs" />
+    <Compile Include="FileSystems\AppData\AppDataFolder.cs" />
+    <Compile Include="FileSystems\AppData\IAppDataFolder.cs" />
+    <Compile Include="FileSystems\AppData\IAppDataFolderRoot.cs" />
+    <Compile Include="FileSystems\Dependencies\DefaultAssemblyProbingFolder.cs" />
+    <Compile Include="FileSystems\Dependencies\DefaultDependenciesFolder.cs" />
+    <Compile Include="FileSystems\Dependencies\DefaultExtensionDependenciesManager.cs" />
+    <Compile Include="FileSystems\Dependencies\DynamicModuleVirtualPathProvider.cs" />
+    <Compile Include="FileSystems\Dependencies\IAssemblyProbingFolder.cs" />
+    <Compile Include="FileSystems\Dependencies\IDependenciesFolder.cs" />
+    <Compile Include="FileSystems\Dependencies\IExtensionDependenciesManager.cs" />
+    <Compile Include="FileSystems\LockFile\DefaultLockFileManager.cs" />
+    <Compile Include="FileSystems\LockFile\ILockFile.cs" />
+    <Compile Include="FileSystems\LockFile\ILockFileManager.cs" />
+    <Compile Include="FileSystems\LockFile\LockFile.cs" />
+    <Compile Include="FileSystems\VirtualPath\DefaultVirtualPathMonitor.cs" />
+    <Compile Include="FileSystems\VirtualPath\DefaultVirtualPathProvider.cs" />
+    <Compile Include="FileSystems\VirtualPath\ICustomVirtualPathProvider.cs" />
+    <Compile Include="FileSystems\VirtualPath\IVirtualPathMonitor.cs" />
+    <Compile Include="FileSystems\VirtualPath\IVirtualPathProvider.cs" />
+    <Compile Include="FileSystems\WebSite\IWebSiteFolder.cs" />
+    <Compile Include="FileSystems\WebSite\WebSiteFolder.cs" />
+    <Compile Include="InvokeExtensions.cs" />
+    <Compile Include="IOrchardServices.cs" />
+    <Compile Include="Mvc\DataAnnotations\OrchardValidatorFactory.cs" />
+    <Compile Include="Mvc\Extensions\ControllerExtensions.cs" />
+    <Compile Include="Mvc\Extensions\RouteExtension.cs" />
+    <Compile Include="Mvc\Filters\FilterProvider.cs" />
+    <Compile Include="Mvc\Filters\OrchardFilterProvider.cs" />
+    <Compile Include="Mvc\FormValueRequiredAttribute.cs" />
+    <Compile Include="Mvc\Html\FileRegistrationContext.cs" />
+    <Compile Include="Mvc\Html\FileRegistrationContextExtensions.cs" />
+    <Compile Include="Mvc\Html\HtmlHelperExtensions.cs" />
+    <Compile Include="Mvc\Html\MvcFormAntiForgeryPost.cs" />
+    <Compile Include="Mvc\HttpContextWorkContext.cs" />
+    <Compile Include="Mvc\IHasRequestContext.cs" />
+    <Compile Include="Mvc\IHttpContextAccessor.cs" />
+    <Compile Include="Mvc\ModelBinders\IModelBinderProvider.cs" />
+    <Compile Include="Mvc\ModelBinders\IModelBinderPublisher.cs" />
+    <Compile Include="Mvc\ModelBinders\ModelBinderDescriptor.cs" />
+    <Compile Include="Mvc\ModelBinders\ModelBinderPublisher.cs" />
+    <Compile Include="Mvc\MvcModule.cs" />
+    <Compile Include="Mvc\OrchardControllerFactory.cs" />
+    <Compile Include="Mvc\Routes\DefaultRouteProvider.cs" />
+    <Compile Include="Mvc\Routes\HubRoute.cs" />
+    <Compile Include="Mvc\Routes\IRouteProvider.cs" />
+    <Compile Include="Mvc\Routes\IRoutePublisher.cs" />
+    <Compile Include="Mvc\Routes\RouteDescriptor.cs" />
+    <Compile Include="Mvc\Routes\RoutePublisher.cs" />
+    <Compile Include="Mvc\Routes\ShellRoute.cs" />
+    <Compile Include="Mvc\IOrchardViewPage.cs" />
+    <Compile Include="Mvc\Routes\StandardExtensionRouteProvider.cs" />
+    <Compile Include="Mvc\Spooling\HtmlStringWriter.cs" />
+    <Compile Include="Mvc\ViewEngines\Razor\IRazorCompilationEvents.cs" />
+    <Compile Include="Mvc\ViewEngines\IViewEngineProvider.cs" />
+    <Compile Include="Mvc\ViewEngines\Razor\RazorCompilationEventsShim.cs" />
+    <Compile Include="Mvc\ViewEngines\Razor\RazorViewEngineProvider.cs" />
+    <Compile Include="Mvc\ViewEngines\Razor\WebViewPage.cs" />
+    <Compile Include="Mvc\ViewEngines\ThemeAwareness\ConfiguredEnginesCache.cs" />
+    <Compile Include="Mvc\ViewEngines\ThemeAwareness\ThemeAwareViewEngine.cs" />
+    <Compile Include="Mvc\ViewEngines\ThemeAwareness\ThemeAwareViewEngineShim.cs" />
+    <Compile Include="Mvc\ViewEngines\ThemeAwareness\ViewEngineCollectionWrapper.cs" />
+    <Compile Include="Security\AlwaysAccessibleAttribute.cs" />
+    <Compile Include="Security\CurrentUserWorkContext.cs" />
+    <Compile Include="Security\IAuthorizationServiceEventHandler.cs" />
+    <Compile Include="Security\IAuthorizer.cs" />
+    <Compile Include="Security\IEncryptionService.cs" />
+    <Compile Include="Security\MembershipSettings.cs" />
+    <Compile Include="Security\OrchardSecurityException.cs" />
+    <Compile Include="Security\Providers\DefaultEncryptionService.cs" />
+    <Compile Include="Security\Providers\FormsAuthenticationService.cs" />
+    <Compile Include="Security\Providers\OrchardRoleProvider.cs" />
+    <Compile Include="Security\SecurityFilter.cs" />
+    <Compile Include="Security\StandardPermissions.cs" />
+    <Compile Include="Services\Clock.cs" />
+    <Compile Include="Services\IClock.cs" />
+    <Compile Include="Settings\CurrentSiteWorkContext.cs" />
+    <Compile Include="Settings\ISettingService.cs" />
+    <Compile Include="Settings\ISite.cs" />
+    <Compile Include="Settings\ISiteService.cs" />
+    <Compile Include="Settings\ResourceDebugMode.cs" />
+    <Compile Include="Tasks\IBackgroundService.cs" />
+    <Compile Include="Tasks\IBackgroundTask.cs" />
+    <Compile Include="Tasks\ISweepGenerator.cs" />
+    <Compile Include="Tasks\Scheduling\IScheduledTask.cs" />
+    <Compile Include="Tasks\Scheduling\IScheduledTaskHandler.cs" />
+    <Compile Include="Tasks\Scheduling\IScheduledTaskManager.cs" />
+    <Compile Include="Tasks\Scheduling\ScheduledTaskContext.cs" />
+    <Compile Include="UI\Admin\AdminAttribute.cs" />
+    <Compile Include="UI\Admin\AdminFilter.cs" />
+    <Compile Include="UI\Admin\Notification\INotificationManager.cs" />
+    <Compile Include="UI\Admin\Notification\INotificationProvider.cs" />
+    <Compile Include="UI\Admin\Notification\NotificationManager.cs" />
+    <Compile Include="UI\DisplayHelper.cs" />
+    <Compile Include="UI\FlatPositionComparer.cs" />
+    <Compile Include="UI\ITagBuilderFactory.cs" />
+    <Compile Include="UI\Navigation\MenuItemComparer.cs" />
+    <Compile Include="UI\Navigation\NavigationHelper.cs" />
+    <Compile Include="UI\Navigation\Pager.cs" />
+    <Compile Include="UI\Navigation\PagerParameters.cs" />
+    <Compile Include="UI\Notify\NotifyFilter.cs" />
+    <Compile Include="UI\Resources\IResourceManager.cs" />
+    <Compile Include="UI\Resources\IResourceManifest.cs" />
+    <Compile Include="UI\Resources\IResourceManifestProvider.cs" />
+    <Compile Include="UI\Resources\LinkEntry.cs" />
+    <Compile Include="UI\Resources\MetaEntry.cs" />
+    <Compile Include="UI\Resources\RequireSettings.cs" />
+    <Compile Include="UI\Resources\ResourceDefinition.cs" />
+    <Compile Include="UI\Resources\ResourceFilter.cs" />
+    <Compile Include="UI\Resources\ResourceLocation.cs" />
+    <Compile Include="UI\Resources\ResourceManager.cs" />
+    <Compile Include="UI\Resources\ResourceManifest.cs" />
+    <Compile Include="UI\Resources\ResourceManifestBuilder.cs" />
+    <Compile Include="UI\Resources\ResourceRegister.cs" />
+    <Compile Include="UI\Resources\ResourceRequiredContext.cs" />
+    <Compile Include="Utility\CommonHelper.cs" />
+    <Compile Include="ComponentModel\GenericListTypeConverter.cs" />
+    <Compile Include="ComponentModel\WriteLockDisposable.cs" />
+    <Compile Include="Data\AbstractSessionInterceptor.cs" />
+    <Compile Include="Data\DataModule.cs" />
+    <Compile Include="Data\DefaultDatabaseCacheConfiguration.cs" />
+    <Compile Include="Data\IDatabaseCacheConfiguration.cs" />
+    <Compile Include="Data\ISessionConfigurationCache.cs" />
+    <Compile Include="Data\ISessionConfigurationEvents.cs" />
+    <Compile Include="Data\ISessionInterceptor.cs" />
+    <Compile Include="Data\ISessionLocator.cs" />
+    <Compile Include="Data\ITransactionManager.cs" />
+    <Compile Include="Data\Migration\AutomaticDataMigrations.cs" />
+    <Compile Include="Data\Migration\DataMigrationManager.cs" />
+    <Compile Include="Data\Migration\Interpreters\AbstractDataMigrationInterpreter.cs" />
+    <Compile Include="Data\Migration\Interpreters\DefaultDataMigrationInterpreter.cs" />
+    <Compile Include="Data\Migration\Interpreters\ICommandInterpreter.cs" />
+    <Compile Include="Data\Migration\Interpreters\IDataMigrationInterpreter.cs" />
+    <Compile Include="Data\Migration\Interpreters\StringCommandInterpreter.cs" />
+    <Compile Include="Data\Migration\Records\DataMigrationRecord.cs" />
+    <Compile Include="Data\Migration\IDataMigrationManager.cs" />
+    <Compile Include="Data\Migration\Schema\AddColumnCommand.cs" />
+    <Compile Include="Data\Migration\Schema\AddIndexCommand.cs" />
+    <Compile Include="Data\Migration\Schema\AlterColumnCommand.cs" />
+    <Compile Include="Data\Migration\Schema\AlterTableCommand.cs" />
+    <Compile Include="Data\Migration\Schema\ColumnCommand.cs" />
+    <Compile Include="Data\Migration\Schema\CreateColumnCommand.cs" />
+    <Compile Include="Data\Migration\Schema\CreateForeignKeyCommand.cs" />
+    <Compile Include="Data\Migration\Schema\CreateTableCommand.cs" />
+    <Compile Include="Data\Migration\Schema\DropColumnCommand.cs" />
+    <Compile Include="Data\Migration\Schema\DropForeignKeyCommand.cs" />
+    <Compile Include="Data\Migration\Schema\DropIndexCommand.cs" />
+    <Compile Include="Data\Migration\Schema\DropTableCommand.cs" />
+    <Compile Include="Data\Migration\Schema\ISchemaBuilderCommand.cs" />
+    <Compile Include="Data\Migration\Schema\SchemaCommand.cs" />
+    <Compile Include="Data\Migration\Schema\SchemaUtils.cs" />
+    <Compile Include="Data\Migration\Schema\SqlStatementCommand.cs" />
+    <Compile Include="Data\Migration\Schema\TableCommand.cs" />
+    <Compile Include="Data\Orderable.cs" />
+    <Compile Include="Data\Providers\DataServiceParameters.cs" />
+    <Compile Include="Data\Providers\IDataServicesProvider.cs" />
+    <Compile Include="Data\Providers\IDataServicesProviderFactory.cs" />
+    <Compile Include="Data\Providers\SessionFactoryParameters.cs" />
+    <Compile Include="Data\Repository.cs" />
+    <Compile Include="Data\SessionFactoryHolder.cs" />
+    <Compile Include="Data\SessionLocator.cs" />
+    <Compile Include="Utility\Extensions\DataReaderExtensions.cs" />
+    <Compile Include="Data\Providers\IDataProvider.cs" />
+    <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Data\Migration\DataMigrationImpl.cs" />
+    <Compile Include="Data\Migration\IDataMigration.cs" />
+    <Compile Include="Data\Migration\Schema\SchemaBuilder.cs" />
+    <Compile Include="Environment\DefaultHostEnvironment.cs" />
+    <Compile Include="Environment\HostEnvironment.cs" />
+    <Compile Include="Environment\IHostEnvironment.cs" />
+    <Compile Include="Events\DefaultEventBus.cs" />
+    <Compile Include="Events\DelegateHelper.cs" />
+    <Compile Include="Events\EventsInterceptor.cs" />
+    <Compile Include="Events\EventsModule.cs" />
+    <Compile Include="Events\EventsRegistrationSource.cs" />
+    <Compile Include="Events\IEventBus.cs" />
+    <Compile Include="Events\IEventHandler.cs" />
+    <Compile Include="Exceptions\IExceptionPolicy.cs" />
+    <Compile Include="Fakes\Extensions.cs" />
+    <Compile Include="Fakes\FakeHttpContext.cs" />
+    <Compile Include="Fakes\FakeHttpRequest.cs" />
+    <Compile Include="Fakes\FakeHttpResponse.cs" />
+    <Compile Include="Fakes\FakeHttpSessionState.cs" />
+    <Compile Include="Fakes\FakeIdentity.cs" />
+    <Compile Include="Fakes\FakePrincipal.cs" />
+    <Compile Include="IDependency.cs" />
+    <Compile Include="Infrastructure\AppDomainTypeFinder.cs" />
+    <Compile Include="Infrastructure\IStartupTask.cs" />
+    <Compile Include="Infrastructure\ITypeFinder.cs" />
+    <Compile Include="Infrastructure\Singleton.cs" />
+    <Compile Include="Infrastructure\WebAppTypeFinder.cs" />
+    <Compile Include="Logging\CastleLogger.cs" />
+    <Compile Include="Logging\CastleLoggerFactory.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\ILoggerFactory.cs" />
+    <Compile Include="Logging\LoggingExtensions.cs" />
+    <Compile Include="Logging\LoggingModule.cs" />
+    <Compile Include="Logging\NullLogger.cs" />
+    <Compile Include="Logging\NullLoggerFactory.cs" />
+    <Compile Include="Logging\OrchardFileAppender.cs" />
+    <Compile Include="Logging\OrchardLog4netFactory.cs" />
+    <Compile Include="Logging\OrchardLog4netLogger.cs" />
+    <Compile Include="IWebHelper.cs" />
+    <Compile Include="Security\CreateUserParams.cs" />
+    <Compile Include="Security\IAuthenticationService.cs" />
+    <Compile Include="Security\IAuthorizationService.cs" />
+    <Compile Include="Security\IMembershipService.cs" />
+    <Compile Include="Security\IUser.cs" />
+    <Compile Include="Security\Permissions\IPermissionProvider.cs" />
+    <Compile Include="Security\Permissions\Permission.cs" />
+    <Compile Include="Utility\DependencyOrdering.cs" />
+    <Compile Include="Utility\Extensions\StringExtensions.cs" />
+    <Compile Include="Utility\Extensions\VirtualPathProviderExtensions.cs" />
+    <Compile Include="Utility\Hash.cs" />
+    <Compile Include="Utility\Reflect.cs" />
+    <Compile Include="Utility\StringHelper.cs" />
+    <Compile Include="UI\Navigation\INavigationManager.cs" />
+    <Compile Include="UI\Navigation\INavigationProvider.cs" />
+    <Compile Include="UI\Navigation\MenuItem.cs" />
+    <Compile Include="UI\Navigation\NavigationBuilder.cs" />
+    <Compile Include="UI\Navigation\NavigationItemBuilder.cs" />
+    <Compile Include="UI\Notify\Notifier.cs" />
+    <Compile Include="UI\Notify\NotifierExtensions.cs" />
+    <Compile Include="UI\Notify\NotifyEntry.cs" />
+    <Compile Include="Utility\Extensions\HttpRequestExtensions.cs" />
+    <Compile Include="Utility\Extensions\ReadOnlyCollectionExtensions.cs" />
+    <Compile Include="Validation\Argument.cs" />
+    <Compile Include="Validation\PathValidation.cs" />
+    <Compile Include="CoreException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebHelper.cs" />
+    <Compile Include="WorkContext.cs" />
+    <Compile Include="WorkContextExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Validation\JetBrains.Annotations.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

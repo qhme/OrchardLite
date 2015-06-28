@@ -1,0 +1,7 @@
+﻿@if (WorkContext.CurrentUser != null)
+{
+    <div id="login">
+        User: @WorkContext.CurrentUser.UserName  | @Html.ActionLink("Logout", "LogOff", new { Area = "Orchard.Users", Controller = "Account", ReturnUrl = Href("~/") })
+    </div>
+}
+

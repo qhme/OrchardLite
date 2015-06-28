@@ -1,0 +1,33 @@
+﻿@using Orchard.Security;
+@using Orchard.UI.Resources;
+@using Orchard;
+
+@{
+    SetMeta("X-UA-Compatible", "IE=edge,chrome=1");
+    var writer = ViewContext.Writer;
+    Style.Include("site.css");
+    Script.Require("jQueryValidateUnobtrusive").AtFoot();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    @{
+        DisplayHelper.Metas(writer);
+        DisplayHelper.HeadScripts(writer);
+        DisplayHelper.StylesheetLinks(writer);
+    }
+</head>
+<body>
+    <div id="layout-content">
+        <div id="layout-main">
+            @RenderBody()
+        </div>
+    </div>
+    <div id="footer" role="contentinfo">
+        @{
+            DisplayHelper.FootScripts(writer);
+        }
+    </div>
+</body>
+</html>

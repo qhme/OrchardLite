@@ -1,0 +1,21 @@
+@model Orchard.Users.ViewModels.UserEditViewModel
+
+@{
+    ViewBag.Title = "Edit User";
+}
+
+@using (Html.BeginFormAntiForgeryPost())
+{
+    @Html.ValidationSummary()
+    <fieldset>
+        @Html.LabelFor(m => m.UserName)
+        @Html.TextBoxFor(m => m.UserName, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.UserName)
+    </fieldset>
+    <fieldset>
+        @Html.LabelFor(m => m.Email)
+        @Html.TextBoxFor(m => m.Email, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.Email)
+    </fieldset>
+    <input type="submit" value="Submit" class="button primaryAction" />
+}

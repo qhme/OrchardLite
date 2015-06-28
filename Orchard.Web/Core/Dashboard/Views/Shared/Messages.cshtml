@@ -1,0 +1,17 @@
+﻿@using Orchard.UI.Notify
+
+@{
+    var messageEntries = ViewContext.HttpContext.Items[NotifyFilter.TempDataMessages] as IList<NotifyEntry> ?? new List<NotifyEntry>();
+}
+
+@if (messageEntries.Count > 0)
+{
+    <div id="messages">
+        <div class="zone zone-messages">
+            @foreach (var item in messageEntries)
+            {
+                <div class="message message-@item.Type.ToString()">@item.Message</div>
+            }
+        </div>
+    </div>
+}

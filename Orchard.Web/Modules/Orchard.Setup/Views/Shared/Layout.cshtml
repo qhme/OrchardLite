@@ -1,0 +1,36 @@
+﻿@using Orchard.UI.Resources;
+@{
+    Style.Include("site.css");
+    RegisterLink(new LinkEntry { Condition = "lte IE 6", Rel = "stylesheet", Type = "text/css", Href = Href("../Styles/ie6.css") }.AddAttribute("media", "screen, projection"));
+    var writer = ViewContext.Writer;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>安装</title>
+    @{
+        DisplayHelper.Metas(writer);
+        DisplayHelper.HeadScripts(writer);
+        DisplayHelper.StylesheetLinks(writer);
+    }
+    <script>
+        (function (d) { d.className = "dyn" + d.className.substring(6, d.className.length); })(document.documentElement);</script>
+</head>
+<body>
+
+    <div id="header">
+        <div id="branding">
+            <h1>Welcome to Orchard</h1>
+        </div>
+    </div>
+    <div id="main">
+        @RenderBody()
+    </div>
+
+    @{
+        DisplayHelper.FootScripts(writer);
+    }
+
+</body>
+</html>

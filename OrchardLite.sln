@@ -1,0 +1,112 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0869253D-4349-4ADD-8E70-6AEE16E03BF1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{05D12875-0866-4066-A132-9E704AFE48D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Core.Tests", "Tests\Orchard.Core.Tests\Orchard.Core.Tests.csproj", "{7FDAB8EB-0437-4D0B-969B-BBBCBBD9B023}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Services.Tests", "Tests\Orchard.Services.Tests\Orchard.Services.Tests.csproj", "{C2958FD4-4538-4DB1-85ED-292F05C8E367}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Tests", "Tests\Orchard.Tests\Orchard.Tests.csproj", "{CCDC9315-489D-43D8-84CB-5499073B8F3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.WarmupStarter", "Orchard.WarmupStarter\Orchard.WarmupStarter.csproj", "{A60EF9E3-8F16-4AF8-A21B-A4EF66068240}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Web", "Orchard.Web\Orchard.Web.csproj", "{548295B3-0AA4-49E8-8688-DE79802F5DC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Framework", "Orchard\Orchard.Framework.csproj", "{3CD19DAF-EFB6-43BF-8BD1-F637DB3A582F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Core", "Orchard.Web\Core\Orchard.Core.csproj", "{6879A80C-80A7-496D-AF16-EB84BC0E5A76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Indexing", "Orchard.Web\Modules\Orchard.Indexing\Orchard.Indexing.csproj", "{545CA89A-8A2C-41E9-AC7E-474B83C3DA99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.jQuery", "Orchard.Web\Modules\Orchard.jQuery\Orchard.jQuery.csproj", "{8F116B06-1C0E-4E4C-9A0A-D2FAB851E768}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Modules", "Orchard.Web\Modules\Orchard.Modules\Orchard.Modules.csproj", "{17F86780-9A1F-4AA1-86F1-875EEC2730C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Roles", "Orchard.Web\Modules\Orchard.Roles\Orchard.Roles.csproj", "{D10AD48F-407D-4DB5-A328-173EC7CB010F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Setup", "Orchard.Web\Modules\Orchard.Setup\Orchard.Setup.csproj", "{D777099A-F7B1-48BE-A6D6-C6390488571A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Users", "Orchard.Web\Modules\Orchard.Users\Orchard.Users.csproj", "{79AED36E-ABD0-4747-93D3-8722B042454B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FDAB8EB-0437-4D0B-969B-BBBCBBD9B023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FDAB8EB-0437-4D0B-969B-BBBCBBD9B023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FDAB8EB-0437-4D0B-969B-BBBCBBD9B023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FDAB8EB-0437-4D0B-969B-BBBCBBD9B023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2958FD4-4538-4DB1-85ED-292F05C8E367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2958FD4-4538-4DB1-85ED-292F05C8E367}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2958FD4-4538-4DB1-85ED-292F05C8E367}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2958FD4-4538-4DB1-85ED-292F05C8E367}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCDC9315-489D-43D8-84CB-5499073B8F3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCDC9315-489D-43D8-84CB-5499073B8F3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCDC9315-489D-43D8-84CB-5499073B8F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCDC9315-489D-43D8-84CB-5499073B8F3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A60EF9E3-8F16-4AF8-A21B-A4EF66068240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A60EF9E3-8F16-4AF8-A21B-A4EF66068240}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A60EF9E3-8F16-4AF8-A21B-A4EF66068240}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A60EF9E3-8F16-4AF8-A21B-A4EF66068240}.Release|Any CPU.Build.0 = Release|Any CPU
+		{548295B3-0AA4-49E8-8688-DE79802F5DC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{548295B3-0AA4-49E8-8688-DE79802F5DC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{548295B3-0AA4-49E8-8688-DE79802F5DC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{548295B3-0AA4-49E8-8688-DE79802F5DC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CD19DAF-EFB6-43BF-8BD1-F637DB3A582F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CD19DAF-EFB6-43BF-8BD1-F637DB3A582F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CD19DAF-EFB6-43BF-8BD1-F637DB3A582F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CD19DAF-EFB6-43BF-8BD1-F637DB3A582F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6879A80C-80A7-496D-AF16-EB84BC0E5A76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6879A80C-80A7-496D-AF16-EB84BC0E5A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6879A80C-80A7-496D-AF16-EB84BC0E5A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6879A80C-80A7-496D-AF16-EB84BC0E5A76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{545CA89A-8A2C-41E9-AC7E-474B83C3DA99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{545CA89A-8A2C-41E9-AC7E-474B83C3DA99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{545CA89A-8A2C-41E9-AC7E-474B83C3DA99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{545CA89A-8A2C-41E9-AC7E-474B83C3DA99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F116B06-1C0E-4E4C-9A0A-D2FAB851E768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F116B06-1C0E-4E4C-9A0A-D2FAB851E768}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F116B06-1C0E-4E4C-9A0A-D2FAB851E768}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F116B06-1C0E-4E4C-9A0A-D2FAB851E768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17F86780-9A1F-4AA1-86F1-875EEC2730C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17F86780-9A1F-4AA1-86F1-875EEC2730C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17F86780-9A1F-4AA1-86F1-875EEC2730C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17F86780-9A1F-4AA1-86F1-875EEC2730C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D10AD48F-407D-4DB5-A328-173EC7CB010F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D10AD48F-407D-4DB5-A328-173EC7CB010F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D10AD48F-407D-4DB5-A328-173EC7CB010F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D10AD48F-407D-4DB5-A328-173EC7CB010F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D777099A-F7B1-48BE-A6D6-C6390488571A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D777099A-F7B1-48BE-A6D6-C6390488571A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D777099A-F7B1-48BE-A6D6-C6390488571A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D777099A-F7B1-48BE-A6D6-C6390488571A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79AED36E-ABD0-4747-93D3-8722B042454B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79AED36E-ABD0-4747-93D3-8722B042454B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79AED36E-ABD0-4747-93D3-8722B042454B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79AED36E-ABD0-4747-93D3-8722B042454B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7FDAB8EB-0437-4D0B-969B-BBBCBBD9B023} = {0869253D-4349-4ADD-8E70-6AEE16E03BF1}
+		{C2958FD4-4538-4DB1-85ED-292F05C8E367} = {0869253D-4349-4ADD-8E70-6AEE16E03BF1}
+		{CCDC9315-489D-43D8-84CB-5499073B8F3F} = {0869253D-4349-4ADD-8E70-6AEE16E03BF1}
+		{545CA89A-8A2C-41E9-AC7E-474B83C3DA99} = {05D12875-0866-4066-A132-9E704AFE48D6}
+		{8F116B06-1C0E-4E4C-9A0A-D2FAB851E768} = {05D12875-0866-4066-A132-9E704AFE48D6}
+		{17F86780-9A1F-4AA1-86F1-875EEC2730C7} = {05D12875-0866-4066-A132-9E704AFE48D6}
+		{D10AD48F-407D-4DB5-A328-173EC7CB010F} = {05D12875-0866-4066-A132-9E704AFE48D6}
+		{D777099A-F7B1-48BE-A6D6-C6390488571A} = {05D12875-0866-4066-A132-9E704AFE48D6}
+		{79AED36E-ABD0-4747-93D3-8722B042454B} = {05D12875-0866-4066-A132-9E704AFE48D6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal

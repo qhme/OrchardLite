@@ -1,0 +1,4 @@
+﻿Name: Scheduling
+Description: The scheduling module enables background task scheduling. 
+FeatureDescription: Scheduled background tasks.
+Category: Core

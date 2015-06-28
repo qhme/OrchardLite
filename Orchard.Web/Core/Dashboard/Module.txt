@@ -1,0 +1,6 @@
+﻿Name: Dashboard
+Description: The dashboard module is providing the dashboard screen of the admininstration UI of the application.
+FeatureDescription: Standard admin dashboard.
+Category: Core
+Dependencies: Orchard.jQuery
+ 

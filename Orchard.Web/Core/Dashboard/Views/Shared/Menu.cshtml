@@ -1,0 +1,138 @@
+﻿@using Orchard.Utility.Extensions;
+@using Orchard.UI.Navigation;
+
+@{
+    const string menuName = "admin";
+    var _navigationManager = WorkContext.Resolve<INavigationManager>();
+    IEnumerable<MenuItem> menuItems = _navigationManager.BuildMenu(menuName);
+    IEnumerable<string> menuImageSets = _navigationManager.BuildImageSets(menuName);
+}
+
+
+<ul class="menu menu-admin">
+    @foreach (var firstLevelMenuItem in menuItems)
+    {
+        var secondLevelMenuItems = firstLevelMenuItem;
+        string sectionHeaderText = firstLevelMenuItem.Text;
+        var firstOfTheSecond = secondLevelMenuItems.Items.FirstOrDefault();
+        var firstLevelMenuItemUrl = firstLevelMenuItem.Href;
+
+        var itemClassName = HasText(sectionHeaderText)
+            ? "navicon-" + sectionHeaderText.HtmlClassify()
+            : "navicon";
+        var itemId = HasText(firstLevelMenuItem.IdHint)
+            ? "navicon-" + firstLevelMenuItem.IdHint
+            : null;
+
+        IHtmlString sectionHeaderMarkup;
+        if (firstOfTheSecond != null
+            && firstLevelMenuItem.LinkToFirstChild
+            && (
+                firstOfTheSecond.RouteValues != null
+                || HasText(firstOfTheSecond.Url)))
+        {
+            firstLevelMenuItemUrl = firstOfTheSecond.Href;
+            sectionHeaderMarkup = HasText(itemId)
+                ? Html.Link(sectionHeaderText, (string)firstOfTheSecond.Href, new { @class = itemClassName, id = itemId })
+                : Html.Link(sectionHeaderText, (string)firstOfTheSecond.Href, new { @class = itemClassName });
+        }
+        else if (firstLevelMenuItem.RouteValues != null || HasText(firstLevelMenuItem.Url))
+        {
+            sectionHeaderMarkup = HasText(itemId)
+                ? Html.Link(sectionHeaderText, (string)firstLevelMenuItem.Href, new { @class = itemClassName, id = itemId })
+                : Html.Link(sectionHeaderText, (string)firstLevelMenuItem.Href, new { @class = itemClassName });
+        }
+        else
+        {
+            // if the header isn't linked and there are no children there's no reason for this item in the menu other than to look pretty
+            if (!secondLevelMenuItems.Items.Any())
+            {
+                continue;
+            }
+
+            sectionHeaderMarkup = HasText(itemId)
+                ? new HtmlString(string.Format(@"<span class=""{1}"" id=""{2}"">{0}</span>", Html.Encode(sectionHeaderText), Html.Encode(itemClassName), Html.Encode(itemId)))
+                : new HtmlString(string.Format(@"<span class=""{1}"">{0}</span>", Html.Encode(sectionHeaderText), Html.Encode(itemClassName)));
+        }
+
+        if (firstLevelMenuItem == menuItems.First())
+        {
+            firstLevelMenuItem.Classes.Add("first");
+        }
+        if (firstLevelMenuItem == menuItems.Last())
+        {
+            firstLevelMenuItem.Classes.Add("last");
+        }
+        if (firstLevelMenuItem.Selected)
+        {
+            firstLevelMenuItem.Classes.Add("selected");
+        }
+
+        if (HasText(sectionHeaderText))
+        {
+            firstLevelMenuItem.Classes.Add("section-" + sectionHeaderText.HtmlClassify());
+        }
+
+        <li>
+            <h3>@sectionHeaderMarkup</h3>
+            @if (secondLevelMenuItems.Items.Count(menuItem => !menuItem.LocalNav) > 1 || !firstLevelMenuItem.LinkToFirstChild)
+            {
+                <ul class="menuItems">
+                    @{ var first = true;}
+                    @foreach (var secondLevelMenuItem in secondLevelMenuItems.Items.Where(menuItem => !menuItem.LocalNav))
+                    {
+                        if (first && firstLevelMenuItem.LinkToFirstChild && String.Equals(firstLevelMenuItemUrl, secondLevelMenuItem.Href))
+                        {
+                            first = false;
+                            continue;
+                        }
+
+                        string secondLevelTextHint = secondLevelMenuItem.Text;
+                        var firstOfTheThird = ((IEnumerable<dynamic>)secondLevelMenuItem.Items).FirstOrDefault();
+
+                        var secondLevelItemClassName = HasText(secondLevelTextHint)
+                            ? "subnavicon-" + secondLevelTextHint.HtmlClassify()
+                            : "subnavicon";
+                        var secondLevelItemId = HasText(secondLevelMenuItem.IdHint)
+                            ? "subnavicon-" + secondLevelMenuItem.IdHint
+                            : null;
+
+                        if (secondLevelMenuItem.Selected)
+                        {
+                            secondLevelMenuItem.Classes.Add("selected");
+                        }
+
+                        var secondLevelUrl = secondLevelMenuItem.Href;
+                        if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url)))
+                        {
+                            secondLevelUrl = firstOfTheThird.Href;
+                        }
+                        <li>
+
+                            @if (HasText(secondLevelItemId))
+                            {
+                                <a href="@secondLevelUrl" class="@secondLevelItemClassName" id="@secondLevelItemId">@secondLevelMenuItem.Text</a>
+                            }
+                            else
+                            {
+                                <a href="@secondLevelUrl" class="@secondLevelItemClassName">@secondLevelMenuItem.Text</a>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+</ul>
+
+@using (Script.Foot())
+{
+    <script type="text/javascript">
+        //<![CDATA[
+        (function ($) {
+            var i = 2;
+            @*$("@string.Format(".{0} h3", string.Join(".", Model.Classes))").expandoControl(function (controller) { return controller.next(); }, { key: "N42", path: "@Url.Content("~/")" });*@
+        })(jQuery);
+        //]]>
+    </script>
+}

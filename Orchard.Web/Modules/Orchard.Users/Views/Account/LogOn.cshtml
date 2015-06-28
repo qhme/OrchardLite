@@ -1,0 +1,32 @@
+﻿@model LogonViewModel
+@using Orchard.Users.ViewModels
+@{
+    var request = ViewContext.HttpContext.Request;
+    ViewBag.Title = "Logon";
+    //Layout = VirtualPathUtility.GetDirectory(PageContext.Page.VirtualPath) + "Shared/Layout2.cshtml";
+}
+<h1 class="page-title">登录</h1>
+
+@using (Html.BeginFormAntiForgeryPost(Url.Action("LogOn", new { ReturnUrl = request.QueryString["ReturnUrl"] })))
+{
+    <fieldset class="login-form group">
+        <legend>Account Information</legend>
+        <ol>
+            <li>
+                <label for="username-email">Username</label>
+                @Html.TextBoxFor(x => x.UserNameOrEmail, new { autofocus = "autofocus" })
+                @Html.ValidationMessageFor(x => x.UserNameOrEmail)
+            </li>
+            <li>
+                <label for="password">Password</label>
+                @Html.PasswordFor(x => x.Password)
+                @Html.ValidationMessageFor(x => x.Password)
+            </li>
+            <li>
+                @Html.CheckBox("rememberMe", new { id = "remember-me" })<label class="forcheckbox" for="remember-me">Remember Me</label>
+            </li>
+        </ol>
+        @Html.EditorFor(x => x.Remark)
+        <button class="primaryAction" type="submit">Sign In</button>
+    </fieldset>
+}
