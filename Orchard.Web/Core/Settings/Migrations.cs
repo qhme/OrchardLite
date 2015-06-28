@@ -56,5 +56,15 @@ namespace Orchard.Core.Settings
 
             return 2;
         }
+
+        public int UpdateFrom2()
+        {
+            return 3;
+        }
+
+        public int UpdateFrom3()
+        {
+            return 4;
+        }
     }
 }
