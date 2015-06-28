@@ -26,7 +26,7 @@ namespace Orchard.Mvc.Routes
                                                          new RouteValueDictionary {
                                                                                       {"controller", new HomeOrAccount()}
                                                                                   },
-                                                         new MvcRouteHandler())
+                                                        new MvcRouteHandler())
                                                  }
                          };
         }

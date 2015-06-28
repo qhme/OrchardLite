@@ -20,21 +20,25 @@ namespace Orchard.Core.Dashboard
         public IEnumerable<RouteDescriptor> GetRoutes()
         {
             return new[] {
-                    new RouteDescriptor {
-                                    Priority = -5,
-                                    Route = new Route(
-                                        "Admin",
-                                        new RouteValueDictionary {
+                    new RouteDescriptor { Priority = -5, Route = new Route("Admin",new RouteValueDictionary {
                                                                     {"area", "Dashboard"},
                                                                     {"controller", "admin"},
                                                                     {"action", "index"}
                                                                 },
                                         new RouteValueDictionary(),
-                                        new RouteValueDictionary {
-                                                                    {"area", "Dashboard"}
-                                                                },
+                                        new RouteValueDictionary {  {"area", "Dashboard"}},
                                         new MvcRouteHandler())
-                                        }
+                                        },
+
+                    new RouteDescriptor { Priority = -15, Route = new Route("{action}/{id}",new RouteValueDictionary {
+                                                                        {"controller", "home"},
+                                                                        {"action", "index"},
+                                                                        {"id", ""}
+                                                                      },
+                                        new RouteValueDictionary(),
+                                        new RouteValueDictionary {{"area", "Dashboard"} },
+                                        new MvcRouteHandler())
+                                    }
                          };
         }
     }

@@ -112,6 +112,7 @@
     <Content Include="Settings\Views\EditorTemplates\Parts.Settings.SiteSettingsPart.cshtml" />
     <Content Include="Dashboard\Views\Shared\EditorTemplates\HtmlText.cshtml" />
     <Content Include="Dashboard\Views\Shared\Messages.cshtml" />
+    <Content Include="Dashboard\Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -155,6 +156,7 @@
   <ItemGroup>
     <Compile Include="Dashboard\AdminMenu.cs" />
     <Compile Include="Dashboard\Controllers\AdminController.cs" />
+    <Compile Include="Dashboard\Controllers\HomeController.cs" />
     <Compile Include="Dashboard\Routes.cs" />
     <Compile Include="Dashboard\Services\CompilationErrorBanner.cs" />
     <Compile Include="Dashboard\Services\NavigationManager.cs" />
@@ -206,9 +208,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Settings\ViewModels\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Orchard\Orchard.Framework.csproj">
