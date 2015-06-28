@@ -8,6 +8,9 @@ using Orchard.Environment.ShellBuilders;
 using Orchard.Environment.State;
 using Orchard.Logging;
 using System.Linq;
+using Orchard.Utility.Extensions;
+using System.Threading.Tasks;
+using System;
 
 namespace Orchard.Environment
 {
@@ -15,6 +18,7 @@ namespace Orchard.Environment
     {
         private readonly IHostLocalRestart _hostLocalRestart;
         private readonly IShellContextFactory _shellContextFactory;
+        private readonly IRunningShellTable _runningShellTable;
         private readonly IProcessingEngine _processingEngine;
         private readonly IShellSettingsManager _shellSettingsManager;
         private readonly IExtensionLoaderCoordinator _extensionLoaderCoordinator;
@@ -29,10 +33,11 @@ namespace Orchard.Environment
 
         public DefaultOrchardHost(
             IShellContextFactory shellContextFactory,
+           IRunningShellTable runningShellTable,
             IProcessingEngine processingEngine,
             IExtensionLoaderCoordinator extensionLoaderCoordinator,
            IExtensionMonitoringCoordinator extensionMonitoringCoordinator,
-           ICacheManager cacheManager,
+            ICacheManager cacheManager,
             IShellSettingsManager shellSettingsManager,
            IHostLocalRestart hostLocalRestart)
         {
@@ -40,6 +45,7 @@ namespace Orchard.Environment
             _extensionLoaderCoordinator = extensionLoaderCoordinator;
             _extensionMonitoringCoordinator = extensionMonitoringCoordinator;
             _cacheManager = cacheManager;
+            _runningShellTable = runningShellTable;
             _hostLocalRestart = hostLocalRestart;
             _processingEngine = processingEngine;
             _shellSettingsManager = shellSettingsManager;
@@ -50,9 +56,15 @@ namespace Orchard.Environment
 
         public ILogger Logger { get; set; }
 
-        public ShellContext GetShellContext(ShellSettings settings)
+        public IList<ShellContext> Current
         {
-            return BuildCurrent().FirstOrDefault();
+            get { return BuildCurrent().ToReadOnlyCollection(); }
+        }
+
+
+        public ShellContext GetShellContext(ShellSettings shellSettings)
+        {
+            return BuildCurrent().SingleOrDefault(shellContext => shellContext.Settings.Name.Equals(shellSettings.Name));
         }
 
         void IOrchardHost.Initialize()
@@ -110,18 +122,46 @@ namespace Orchard.Environment
             return _shellContexts;
         }
 
+        void StartUpdatedShells()
+        {
+            while (_tenantsToRestart.GetState().Any())
+            {
+                var settings = _tenantsToRestart.GetState().First();
+                _tenantsToRestart.GetState().Remove(settings);
+                Logger.Debug("Updating site");
+                lock (_syncLock)
+                {
+                    ActivateShell(settings);
+                }
+            }
+        }
+
+
         void CreateAndActivateShells()
         {
             Logger.Information("Start creation of shells");
 
             // is there any tenant right now ?
-            var settings = _shellSettingsManager.LoadSettings();
+            var allSettings = _shellSettingsManager.LoadSettings()
+                .Where(settings => settings.State == TenantState.Running || settings.State == TenantState.Uninitialized)
+                .ToArray();
 
-            //activate shell
-            if (settings != null && !string.IsNullOrEmpty(settings.DataConnectionString))
+
+            // load all tenants, and activate their shell
+            if (allSettings.Any())
             {
-                var context = CreateShellContext(settings);
-                ActivateShell(context);
+                Parallel.ForEach(allSettings, settings =>
+                {
+                    try
+                    {
+                        var context = CreateShellContext(settings);
+                        ActivateShell(context);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error(e, "A tenant could not be started: " + settings.Name);
+                    }
+                });
             }
             // no settings, run the Setup
             else
@@ -145,10 +185,23 @@ namespace Orchard.Environment
             lock (_shellContextsWriteLock)
             {
                 _shellContexts = (_shellContexts ?? Enumerable.Empty<ShellContext>())
-                                 .Concat(new[] { context })
+                                .Where(c => c.Settings.Name != context.Settings.Name)
+                                .Concat(new[] { context })
                                 .ToArray();
             }
 
+            _runningShellTable.Add(context.Settings);
+        }
+
+
+
+        /// <summary>
+        /// Creates a transient shell for the default tenant's setup
+        /// </summary>
+        private ShellContext CreateSetupContext()
+        {
+            Logger.Debug("Creating shell context for root setup");
+            return _shellContextFactory.CreateSetupContext(new ShellSettings());
         }
 
         /// <summary>
@@ -156,15 +209,16 @@ namespace Orchard.Environment
         /// </summary>
         private ShellContext CreateShellContext(ShellSettings settings)
         {
-            Logger.Debug("Creating shell context");
+            if (settings.State == TenantState.Uninitialized)
+            {
+                Logger.Debug("Creating shell context for tenant {0} setup", settings.Name);
+                return _shellContextFactory.CreateSetupContext(settings);
+            }
+
+            Logger.Debug("Creating shell context for tenant {0}", settings.Name);
             return _shellContextFactory.CreateShellContext(settings);
         }
 
-        private ShellContext CreateSetupContext()
-        {
-            Logger.Debug("Creating shell context for root setup");
-            return _shellContextFactory.CreateSetupContext(new ShellSettings());
-        }
 
         private void SetupExtensions()
         {
@@ -236,27 +290,36 @@ namespace Orchard.Environment
             StartUpdatedShells();
         }
 
-        void StartUpdatedShells()
+        void IShellSettingsManagerEventHandler.Saved(ShellSettings settings)
         {
-            while (_tenantsToRestart.GetState().Any())
+            Logger.Debug("Shell saved: " + settings.Name);
+
+            // if a tenant has been created
+            if (settings.State != TenantState.Invalid)
             {
-                var settings = _tenantsToRestart.GetState().First();
-                _tenantsToRestart.GetState().Remove(settings);
-                Logger.Debug("Updating site");
-                lock (_syncLock)
+                if (!_tenantsToRestart.GetState().Any(t => t.Name.Equals(settings.Name)))
                 {
-                    ActivateShell(settings);
+                    Logger.Debug("Adding tenant to restart: " + settings.Name + " " + settings.State);
+                    _tenantsToRestart.GetState().Add(settings);
                 }
             }
         }
 
+
         public void ActivateShell(ShellSettings settings)
         {
-            Logger.Debug("Activating shell");
-            var shellContext = _shellContexts.FirstOrDefault();
+            Logger.Debug("Activating shell: " + settings.Name);
+
+            // look for the associated shell context
+            var shellContext = _shellContexts.FirstOrDefault(c => c.Settings.Name == settings.Name);
+
+            if (shellContext == null && settings.State == TenantState.Disabled)
+            {
+                return;
+            }
 
             // is this is a new tenant ? or is it a tenant waiting for setup ?
-            if (shellContext == null)
+            if (shellContext == null || settings.State == TenantState.Uninitialized)
             {
                 // create the Shell
                 var context = CreateShellContext(settings);
@@ -264,21 +327,33 @@ namespace Orchard.Environment
                 // activate the Shell
                 ActivateShell(context);
             }
+            // terminate the shell if the tenant was disabled
+            else if (settings.State == TenantState.Disabled)
+            {
+                shellContext.Shell.Terminate();
+                _runningShellTable.Remove(settings);
+
+                // Forcing enumeration with ToArray() so a lazy execution isn't causing issues by accessing the disposed context.
+                _shellContexts = _shellContexts.Where(shell => shell.Settings.Name != settings.Name).ToArray();
+
+                shellContext.Dispose();
+            }
             // reload the shell as its settings have changed
             else
             {
                 // dispose previous context
                 shellContext.Shell.Terminate();
 
-                //原先的LifetimeScope已被Dispose了，但是系统还是在使用原来的LifetimeScope，并没有用新生成的
-
                 var context = _shellContextFactory.CreateShellContext(settings);
-                _shellContexts = new[] { context };
-                //_shellContexts = _shellContexts
-                //    .Union(new[] { context }).ToArray();
+
+                // Activate and register modified context.
+                // Forcing enumeration with ToArray() so a lazy execution isn't causing issues by accessing the disposed shell context.
+                _shellContexts = _shellContexts.Where(shell => shell.Settings.Name != settings.Name).Union(new[] { context }).ToArray();
 
                 shellContext.Dispose();
                 context.Shell.Activate();
+
+                _runningShellTable.Update(settings);
             }
         }
 
@@ -286,30 +361,39 @@ namespace Orchard.Environment
         /// <summary>
         /// A feature is enabled/disabled,site needs to be restarted
         /// </summary>
-        void IShellDescriptorManagerEventHandler.Changed(ShellDescriptor descriptor)
+        void IShellDescriptorManagerEventHandler.Changed(ShellDescriptor descriptor, string tenant)
         {
             if (_shellContexts == null)
+            {
                 return;
+            }
 
-            if (_tenantsToRestart.GetState().Any())
-                return;
+            Logger.Debug("Shell changed: " + tenant);
 
-            var context = _shellContexts.FirstOrDefault(x => x.Settings != null);
+            var context = _shellContexts.FirstOrDefault(x => x.Settings.Name == tenant);
+
             if (context == null)
+            {
                 return;
+            }
 
-            if (string.IsNullOrEmpty(context.Settings.DataConnectionString))
+            // don't restart when tenant is in setup
+            if (context.Settings.State != TenantState.Running)
+            {
                 return;
+            }
 
-            Logger.Debug("Shell changed, ready to restart. ");
+            // don't flag the tenant if already listed
+            if (_tenantsToRestart.GetState().Any(x => x.Name == tenant))
+            {
+                return;
+            }
+
+            Logger.Debug("Adding tenant to restart: " + tenant);
             _tenantsToRestart.GetState().Add(context.Settings);
         }
 
-        void IShellSettingsManagerEventHandler.Saved(ShellSettings settings)
-        {
-            Logger.Debug("Adding to restart");
-            _tenantsToRestart.GetState().Add(settings);
-        }
+
 
         // To be used from CreateStandaloneEnvironment(), also disposes the ShellContext LifetimeScope.
         private class StandaloneEnvironmentWorkContextScopeWrapper : IWorkContextScope

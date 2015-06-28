@@ -53,9 +53,9 @@ namespace Orchard.Environment.ShellBuilders
         public ShellContext CreateShellContext(ShellSettings settings)
         {
 
-            Logger.Debug("Creating shell context");
+            Logger.Debug("Creating shell context for tenant {0}", settings.Name);
 
-            var knownDescriptor = _shellDescriptorCache.Fetch();
+            var knownDescriptor = _shellDescriptorCache.Fetch(settings.Name);
             if (knownDescriptor == null)
             {
                 Logger.Information("No descriptor cached. Starting with minimum components.");
@@ -76,7 +76,7 @@ namespace Orchard.Environment.ShellBuilders
             {
                 Logger.Information("Newer descriptor obtained. Rebuilding shell container.");
 
-                _shellDescriptorCache.Store(currentDescriptor);
+                _shellDescriptorCache.Store(settings.Name, currentDescriptor);
                 blueprint = _compositionStrategy.Compose(settings, currentDescriptor);
                 shellScope.Dispose();
                 shellScope = _shellContainerFactory.CreateContainer(settings, blueprint);
@@ -133,7 +133,7 @@ namespace Orchard.Environment.ShellBuilders
 
         public ShellContext CreateDescribedContext(ShellSettings settings, ShellDescriptor shellDescriptor)
         {
-            Logger.Debug("Creating described context for work");
+            Logger.Debug("Creating described context for tenant {0}", settings.Name);
 
             var blueprint = _compositionStrategy.Compose(settings, shellDescriptor);
             var shellScope = _shellContainerFactory.CreateContainer(settings, blueprint);

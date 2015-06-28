@@ -6,18 +6,26 @@ using log4net.Core;
 using log4net.Util;
 using Logger = Castle.Core.Logging.ILogger;
 using Orchard.Environment;
+using Orchard.Environment.Configuration;
 
 namespace Orchard.Logging
 {
     [Serializable]
-    public class OrchardLog4netLogger : MarshalByRefObject, Logger
+    public class OrchardLog4netLogger : MarshalByRefObject, Logger, IShim
     {
         private static readonly Type declaringType = typeof(OrchardLog4netLogger);
 
+        private readonly Lazy<ShellSettings> _shellSettings;
+
+        public IOrchardHostContainer HostContainer { get; set; }
+
         public OrchardLog4netLogger(log4net.Core.ILogger logger, OrchardLog4netFactory factory)
         {
+            OrchardHostContainerRegistry.RegisterShim(this);
             Logger = logger;
             Factory = factory;
+
+            _shellSettings = new Lazy<ShellSettings>(LoadSettings);
         }
 
         internal OrchardLog4netLogger()
@@ -30,10 +38,43 @@ namespace Orchard.Logging
         {
         }
 
+        private ShellSettings LoadSettings()
+        {
+            var ctx = HttpContext.Current;
+            if (ctx == null)
+                return null;
+
+            var runningShellTable = HostContainer.Resolve<IRunningShellTable>();
+            if (runningShellTable == null)
+                return null;
+
+            var shellSettings = runningShellTable.Match(new HttpContextWrapper(ctx));
+            if (shellSettings == null)
+                return null;
+
+            var orchardHost = HostContainer.Resolve<IOrchardHost>();
+            if (orchardHost == null)
+                return null;
+
+            var shellContext = orchardHost.GetShellContext(shellSettings);
+            if (shellContext == null || shellContext.Settings == null)
+                return null;
+
+
+            return shellContext.Settings;
+        }
+
+
+
 
         // 给log4net的线程添加附加属性
         protected internal void AddExtendedThreadInfo()
         {
+            if (_shellSettings.Value != null)
+            {
+                ThreadContext.Properties["Tenant"] = _shellSettings.Value.Name;
+            }
+
             try
             {
                 var ctx = HttpContext.Current;

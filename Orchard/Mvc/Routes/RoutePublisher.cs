@@ -11,6 +11,8 @@ using Orchard.Environment.Configuration;
 using Orchard.Environment.Extensions;
 using Castle.Core.Internal;
 using Orchard.Environment.Extensions.Models;
+using System.Web.Http;
+using System.Reflection;
 
 namespace Orchard.Mvc.Routes
 {
@@ -19,17 +21,20 @@ namespace Orchard.Mvc.Routes
         private readonly RouteCollection _routeCollection;
         private readonly ShellSettings _shellSettings;
         private readonly IWorkContextAccessor _workContextAccessor;
+        private readonly IRunningShellTable _runningShellTable;
         private readonly IExtensionManager _extensionManager;
 
         public RoutePublisher(
            RouteCollection routeCollection,
            ShellSettings shellSettings,
            IWorkContextAccessor workContextAccessor,
+           IRunningShellTable runningShellTable,
            IExtensionManager extensionManager)
         {
             _routeCollection = routeCollection;
             _shellSettings = shellSettings;
             _workContextAccessor = workContextAccessor;
+            _runningShellTable = runningShellTable;
             _extensionManager = extensionManager;
         }
 
@@ -39,12 +44,31 @@ namespace Orchard.Mvc.Routes
              .OrderByDescending(r => r.Priority)
              .ToArray();
 
+            var preloading = new RouteCollection();
+            foreach (var routeDescriptor in routesArray)
+            {
+                // extract the WebApi route implementation
+                var httpRouteDescriptor = routeDescriptor as HttpRouteDescriptor;
+                if (httpRouteDescriptor != null)
+                {
+                    var httpRouteCollection = new RouteCollection();
+                    httpRouteCollection.MapHttpRoute(httpRouteDescriptor.Name, httpRouteDescriptor.RouteTemplate, httpRouteDescriptor.Defaults, httpRouteDescriptor.Constraints);
+                    routeDescriptor.Route = httpRouteCollection.First();
+                }
+
+                preloading.Add(routeDescriptor.Name, routeDescriptor.Route);
+            }
+
             using (_routeCollection.GetWriteLock())
             {
                 // existing routes are removed while the collection is briefly inaccessable
-                //_routeCollection
-                //    .OfType<HubRoute>()
-                //    .ForEach(x => x.ReleaseShell(_shellSettings));
+                _routeCollection
+                    .OfType<HubRoute>()
+                    .ForEach(x => x.ReleaseShell(_shellSettings));
+
+                // HACK: For inserting names in internal dictionary when inserting route to RouteCollection.
+                var routeCollectionType = typeof(RouteCollection);
+                var namedMap = (Dictionary<string, RouteBase>)routeCollectionType.GetField("_namedMap", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(_routeCollection);
 
                 // new routes are added
                 foreach (var routeDescriptor in routesArray)
@@ -69,20 +93,21 @@ namespace Orchard.Mvc.Routes
                         extensionDescriptor = _extensionManager.GetExtension(route.Area);
                     }
 
-                    //if (extensionDescriptor != null)
-                    //{
-                    //    //if session state is not define explicitly, use the one define for the extension
-                    //    if (routeDescriptor.SessionState == SessionStateBehavior.Default)
-                    //    {
-                    //        Enum.TryParse(extensionDescriptor.SessionState, true /*ignoreCase*/, out defaultSessionState);
-                    //    }
-                    //}
+                    if (extensionDescriptor != null)
+                    {
+                        // if session state is not define explicitly, use the one define for the extension
+                        if (routeDescriptor.SessionState == SessionStateBehavior.Default)
+                        {
+                            Enum.TryParse(extensionDescriptor.SessionState, true /*ignoreCase*/, out defaultSessionState);
+                        }
+                    }
 
                     // Route-level setting overrides module-level setting (from manifest).
                     var sessionStateBehavior = routeDescriptor.SessionState == SessionStateBehavior.Default ? defaultSessionState : routeDescriptor.SessionState;
 
-                    var shellRoute = new ShellRoute(routeDescriptor.Route, _shellSettings, _workContextAccessor)
+                    var shellRoute = new ShellRoute(routeDescriptor.Route, _shellSettings, _workContextAccessor, _runningShellTable)
                     {
+                        IsHttpRoute = routeDescriptor is HttpRouteDescriptor,
                         SessionState = sessionStateBehavior
                     };
 
@@ -101,7 +126,7 @@ namespace Orchard.Mvc.Routes
 
                     if (matchedHubRoute == null)
                     {
-                        matchedHubRoute = new HubRoute(routeDescriptor.Name, area, routeDescriptor.Priority);
+                        matchedHubRoute = new HubRoute(routeDescriptor.Name, area, routeDescriptor.Priority, _runningShellTable);
 
                         int index;
                         for (index = 0; index < _routeCollection.Count; index++)
@@ -118,6 +143,12 @@ namespace Orchard.Mvc.Routes
                         }
 
                         _routeCollection.Insert(index, matchedHubRoute);
+
+                        // HACK: For inserting names in internal dictionary when inserting route to RouteCollection.
+                        if (!string.IsNullOrEmpty(matchedHubRoute.Name) && !namedMap.ContainsKey(matchedHubRoute.Name))
+                        {
+                            namedMap[matchedHubRoute.Name] = matchedHubRoute;
+                        }
                     }
 
                     matchedHubRoute.Add(shellRoute, _shellSettings);

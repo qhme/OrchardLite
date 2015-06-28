@@ -58,12 +58,11 @@ namespace Orchard.Setup.Controllers
             // We use this opportunity to start a background task to "pre-compile" all the known
             // views in the app folder, so that the application is more reponsive when the user
             // hits the homepage and admin screens for the first time.))
-            //if (StringComparer.OrdinalIgnoreCase.Equals(initialSettings.Name, ShellSettings.DefaultName))
-            //{
-            _viewsBackgroundCompilation.Start();
-            //}
+            if (StringComparer.OrdinalIgnoreCase.Equals(initialSettings.Name, ShellSettings.DefaultName))
+            {
+                _viewsBackgroundCompilation.Start();
+            }
 
-            //
 
             return IndexViewResult(new SetupViewModel
             {
@@ -153,6 +152,7 @@ namespace Orchard.Setup.Controllers
                     AdminPassword = model.AdminPassword,
                     DatabaseProvider = providerName,
                     DatabaseConnectionString = model.DatabaseConnectionString,
+                    DatabaseTablePrefix = model.DatabaseTablePrefix,
                     EnabledFeatures = null, // default list
                 };
 

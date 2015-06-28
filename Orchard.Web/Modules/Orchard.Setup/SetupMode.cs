@@ -152,6 +152,7 @@ namespace Orchard.Setup
             public string SuperUser
             {
                 get { return ""; }
+                set { throw new NotImplementedException(); }
             }
 
             public string HomePage
@@ -190,8 +191,6 @@ namespace Orchard.Setup
             {
                 get { return ""; }
             }
-
-
         }
 
     }

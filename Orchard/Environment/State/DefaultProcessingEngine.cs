@@ -38,10 +38,10 @@ namespace Orchard.Environment.State
                TaskId = Guid.NewGuid().ToString("n"),
                ProcessId = Guid.NewGuid().ToString("n"),
            };
-            Logger.Information("Adding event {0} to process {1}",
-                eventName,
-                entry.ProcessId
-                );
+            Logger.Information("Adding event {0} to process {1} for shell {2}",
+                       eventName,
+                       entry.ProcessId,
+                       shellSettings.Name);
             _entries.GetState().Add(entry);
             return entry.ProcessId;
         }

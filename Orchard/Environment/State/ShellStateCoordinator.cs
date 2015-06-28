@@ -39,7 +39,7 @@ namespace Orchard.Environment.State
 
         public ILogger Logger { get; set; }
 
-        public void Changed(ShellDescriptor descriptor)
+        void IShellDescriptorManagerEventHandler.Changed(ShellDescriptor descriptor, string tenant)
         {
             // deduce and apply state changes involved
             var shellState = _stateManager.GetShellState();
@@ -80,6 +80,7 @@ namespace Orchard.Environment.State
             FireApplyChangesIfNeeded();
         }
 
+
         private void FireApplyChangesIfNeeded()
         {
             var shellState = _stateManager.GetShellState();
@@ -96,7 +97,7 @@ namespace Orchard.Environment.State
                         .ToArray()
                 };
 
-                Logger.Information("Adding pending task 'ApplyChanges' for shell");
+                Logger.Information("Adding pending task 'ApplyChanges' for shell '{0}'", _settings.Name);
                 _processingEngine.AddTask(
                     _settings,
                     descriptor,
@@ -233,6 +234,7 @@ namespace Orchard.Environment.State
             return state.InstallState == ShellFeatureState.State.Rising ||
                    state.EnableState == ShellFeatureState.State.Rising;
         }
+
     }
 
 }

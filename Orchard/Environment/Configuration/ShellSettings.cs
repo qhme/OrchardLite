@@ -13,6 +13,8 @@ namespace Orchard.Environment.Configuration
     /// </summary>
     public class ShellSettings
     {
+        public const string DefaultName = "Default";
+        private TenantState _tenantState;
         private string[] _modules;
         private readonly IDictionary<string, string> _values;
 
@@ -26,12 +28,16 @@ namespace Orchard.Environment.Configuration
         {
             _values = new Dictionary<string, string>(settings._values, StringComparer.OrdinalIgnoreCase);
 
+            Name = settings.Name;
             DataProvider = settings.DataProvider;
+            RequestUrlHost = settings.RequestUrlHost;
+            RequestUrlPrefix = settings.RequestUrlPrefix;
             DataConnectionString = settings.DataConnectionString;
             EncryptionAlgorithm = settings.EncryptionAlgorithm;
             EncryptionKey = settings.EncryptionKey;
             HashAlgorithm = settings.HashAlgorithm;
             HashKey = settings.HashKey;
+            State = settings.State;
             Modules = settings.Modules;
         }
 
@@ -52,6 +58,16 @@ namespace Orchard.Environment.Configuration
 
 
         /// <summary>
+        /// The name of the tenant
+        /// </summary>
+        public string Name
+        {
+            get { return this["Name"] ?? ""; }
+            set { this["Name"] = value; }
+        }
+
+
+        /// <summary>
         /// The database provider for the tenant
         /// </summary>
         public string DataProvider
@@ -68,6 +84,34 @@ namespace Orchard.Environment.Configuration
             get { return this["DataConnectionString"]; }
             set { this["DataConnectionString"] = value; }
         }
+
+        /// <summary>
+        /// The data table prefix added to table names for this tenant
+        /// </summary>
+        public string DataTablePrefix
+        {
+            get { return this["DataTablePrefix"]; }
+            set { this["DataTablePrefix"] = value; }
+        }
+
+        /// <summary>
+        /// The host name of the tenant
+        /// </summary>
+        public string RequestUrlHost
+        {
+            get { return this["RequestUrlHost"]; }
+            set { this["RequestUrlHost"] = value; }
+        }
+
+        /// <summary>
+        /// The request url prefix of the tenant
+        /// </summary>
+        public string RequestUrlPrefix
+        {
+            get { return this["RequestUrlPrefix"]; }
+            set { _values["RequestUrlPrefix"] = value; }
+        }
+
 
         /// <summary>
         /// The encryption algorithm used for encryption services
@@ -120,6 +164,19 @@ namespace Orchard.Environment.Configuration
             {
                 _modules = value;
                 this["Modules"] = string.Join(";", value);
+            }
+        }
+
+        /// <summary>
+        /// The state is which the tenant is
+        /// </summary>
+        public TenantState State
+        {
+            get { return _tenantState; }
+            set
+            {
+                _tenantState = value;
+                this["State"] = value.ToString();
             }
         }
     }

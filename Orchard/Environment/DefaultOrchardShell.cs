@@ -9,6 +9,7 @@ using Orchard.Logging;
 using Orchard.Mvc.ModelBinders;
 using Orchard.Mvc.Routes;
 using Orchard.Tasks;
+using Orchard.WebApi.Routes;
 
 namespace Orchard.Environment
 {
@@ -16,21 +17,22 @@ namespace Orchard.Environment
     {
         private readonly Func<Owned<IOrchardShellEvents>> _eventsFactory;
         private readonly IEnumerable<IRouteProvider> _routeProviders;
-        //private readonly IEnumerable<IHttpRouteProvider> _httpRouteProviders;
+        private readonly IEnumerable<IHttpRouteProvider> _httpRouteProviders;
         private readonly IRoutePublisher _routePublisher;
         private readonly IEnumerable<IModelBinderProvider> _modelBinderProviders;
         private readonly IModelBinderPublisher _modelBinderPublisher;
         private readonly ISweepGenerator _sweepGenerator;
-        //private readonly ShellSettings _shellSettings;
-
+        private readonly ShellSettings _shellSettings;
 
         public DefaultOrchardShell(
              Func<Owned<IOrchardShellEvents>> eventsFactory,
              IEnumerable<IRouteProvider> routeProviders,
+             IEnumerable<IHttpRouteProvider> httpRouteProviders,
              IRoutePublisher routePublisher,
              IEnumerable<IModelBinderProvider> modelBinderProviders,
              IModelBinderPublisher modelBinderPublisher,
-             ISweepGenerator sweepGenerator)
+             ISweepGenerator sweepGenerator,
+            ShellSettings shellSettings)
         {
             _eventsFactory = eventsFactory;
             _routeProviders = routeProviders;
@@ -38,6 +40,8 @@ namespace Orchard.Environment
             _modelBinderProviders = modelBinderProviders;
             _modelBinderPublisher = modelBinderPublisher;
             _sweepGenerator = sweepGenerator;
+            _httpRouteProviders = httpRouteProviders;
+            _shellSettings = shellSettings;
 
             Logger = NullLogger.Instance;
         }
@@ -46,11 +50,11 @@ namespace Orchard.Environment
 
         public void Activate()
         {
-            var allRoutes = new List<RouteDescriptor>();
-            //allRoutes.AddRange(_routeProviders.SelectMany(provider => provider.GetRoutes()));
-            //allRoutes.AddRange(_httpRouteProviders.SelectMany(provider => provider.GetRoutes()));
+            //Owin
 
+            var allRoutes = new List<RouteDescriptor>();
             _routeProviders.Invoke(x => x.GetRoutes(allRoutes), Logger);
+            allRoutes.AddRange(_httpRouteProviders.SelectMany(provider => provider.GetRoutes()));
 
             _routePublisher.Publish(allRoutes);
             _modelBinderPublisher.Publish(_modelBinderProviders.SelectMany(provider => provider.GetModelBinders()));

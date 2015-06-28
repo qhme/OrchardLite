@@ -32,11 +32,27 @@ namespace Orchard.Environment.Configuration
                 {
                     switch (key)
                     {
+                        case "Name":
+                            shellSettings.Name = value;
+                            break;
+                        case "State":
+                            TenantState state;
+                            shellSettings.State = Enum.TryParse(value, true, out state) ? state : TenantState.Uninitialized;
+                            break;
                         case "DataProvider":
                             shellSettings.DataProvider = value;
                             break;
                         case "DataConnectionString":
                             shellSettings.DataConnectionString = value;
+                            break;
+                        case "DataPrefix":
+                            shellSettings.DataTablePrefix = value;
+                            break;
+                        case "RequestUrlHost":
+                            shellSettings.RequestUrlHost = value;
+                            break;
+                        case "RequestUrlPrefix":
+                            shellSettings.RequestUrlPrefix = value;
                             break;
                         case "EncryptionAlgorithm":
                             shellSettings.EncryptionAlgorithm = value;

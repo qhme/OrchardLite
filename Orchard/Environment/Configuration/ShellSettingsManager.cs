@@ -22,14 +22,17 @@ namespace Orchard.Environment.Configuration
             _events = events;
         }
 
-        ShellSettings IShellSettingsManager.LoadSettings()
+        IEnumerable<ShellSettings> IShellSettingsManager.LoadSettings()
         {
-            Logger.Debug("Reading ShellSettings...");
-            var settings = LoadSettingsInternal();
+            Logger.Information("Reading ShellSettings...");
+            var settingsList = LoadSettingsInternal().ToArray();
 
-            Logger.Debug("Returning ShellSettings objects.");
+            var tenantNamesQuery =
+                from settings in settingsList
+                select settings.Name;
+            Logger.Information("Returning {0} ShellSettings objects for tenants {1}.", tenantNamesQuery.Count(), String.Join(", ", tenantNamesQuery));
 
-            return settings;
+            return settingsList;
         }
 
         void IShellSettingsManager.SaveSettings(ShellSettings settings)
@@ -47,14 +50,17 @@ namespace Orchard.Environment.Configuration
             _events.Saved(settings);
 
         }
-
-        private ShellSettings LoadSettingsInternal()
+        private IEnumerable<ShellSettings> LoadSettingsInternal()
         {
-            if (!_appDataFolder.FileExists(_settingsFileName))
-                return null;
+            var filePaths = _appDataFolder
+                .ListDirectories("Sites")
+                .SelectMany(path => _appDataFolder.ListFiles(path))
+                .Where(path => String.Equals(Path.GetFileName(path), _settingsFileName, StringComparison.OrdinalIgnoreCase));
 
-
-            return ShellSettingsSerializer.ParseSettings(_appDataFolder.ReadFile(_settingsFileName));
+            foreach (var filePath in filePaths)
+            {
+                yield return ShellSettingsSerializer.ParseSettings(_appDataFolder.ReadFile(filePath));
+            }
         }
     }
 

@@ -7,6 +7,7 @@ using Orchard.Environment;
 using Orchard.Environment.Configuration;
 using Orchard.Environment.ShellBuilders.Models;
 using Orchard.Logging;
+using Orchard.FileSystems.AppData;
 
 namespace Orchard.Data
 {
@@ -31,13 +32,16 @@ namespace Orchard.Data
         private readonly IDatabaseCacheConfiguration _cacheConfiguration;
         private readonly Func<IEnumerable<ISessionConfigurationEvents>> _configurers;
         private readonly ShellSettings _shellSettings;
+        private readonly IAppDataFolder _appDataFolder;
+
 
         public SessionFactoryHolder(IHostEnvironment hostEnvironment, ISessionConfigurationCache sessionConfigurationCache,
             IDatabaseCacheConfiguration cacheConfiguration,
             ShellBlueprint shellBluePrint,
             Func<IEnumerable<ISessionConfigurationEvents>> configurers,
             ShellSettings shellSettings,
-            IDataServicesProviderFactory dataServicesProviderFactory)
+           IAppDataFolder appDataFolder,
+             IDataServicesProviderFactory dataServicesProviderFactory)
         {
             Logger = NullLogger.Instance;
             _hostEnvironment = hostEnvironment;
@@ -47,6 +51,7 @@ namespace Orchard.Data
             _dataServicesProviderFactory = dataServicesProviderFactory;
             _shellSettings = shellSettings;
             _shellBlueprint = shellBluePrint;
+            _appDataFolder = appDataFolder;
         }
 
         public ILogger Logger { get; set; }
@@ -79,15 +84,16 @@ namespace Orchard.Data
 
         public SessionFactoryParameters GetSessionFactoryParameters()
         {
-            //var shellPath = _appDataFolder.Combine("Sites", _shellSettings.Name);
-            //_appDataFolder.CreateDirectory(shellPath);
+            var shellPath = _appDataFolder.Combine("Sites", _shellSettings.Name);
+            _appDataFolder.CreateDirectory(shellPath);
 
-            //var shellFolder = _appDataFolder.MapPath(shellPath);
+            var shellFolder = _appDataFolder.MapPath(shellPath);
 
             return new SessionFactoryParameters
           {
               Configurers = _configurers(),
               Provider = _shellSettings.DataProvider,
+              DataFolder = shellFolder,
               ConnectionString = _shellSettings.DataConnectionString,
               RecordDescriptors = _shellBlueprint.Records,
           };

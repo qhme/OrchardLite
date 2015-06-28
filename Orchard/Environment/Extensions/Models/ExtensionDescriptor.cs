@@ -26,7 +26,7 @@ namespace Orchard.Environment.Extensions.Models
 
         public string Description { get; set; }
 
-        public string Category { get; set; }
+        public string SessionState { get; set; }
 
         public IEnumerable<FeatureDescriptor> Features { get; set; }
     }

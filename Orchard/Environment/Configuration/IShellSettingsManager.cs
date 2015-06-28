@@ -9,10 +9,10 @@ namespace Orchard.Environment.Configuration
     public interface IShellSettingsManager
     {
         /// <summary>
-        /// Retrieves shell settings stored.
+        /// Retrieves all shell settings stored.
         /// </summary>
         /// <returns>All shell settings.</returns>
-        ShellSettings LoadSettings();
+        IEnumerable<ShellSettings> LoadSettings();
 
         /// <summary>
         /// Persists shell settings to the storage.

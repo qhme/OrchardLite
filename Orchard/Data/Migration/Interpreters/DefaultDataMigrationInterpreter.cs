@@ -94,7 +94,9 @@ namespace Orchard.Data.Migration.Interpreters
 
         private string PrefixTableName(string tableName)
         {
-            return tableName;
+            if (string.IsNullOrEmpty(_shellSettings.DataTablePrefix))
+                return tableName;
+            return _shellSettings.DataTablePrefix + "_" + tableName;
         }
 
         public override void Visit(DropTableCommand command)

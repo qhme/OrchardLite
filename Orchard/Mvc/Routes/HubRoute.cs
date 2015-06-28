@@ -8,53 +8,56 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Orchard.Environment.Configuration;
+using Orchard.Environment;
 
 namespace Orchard.Mvc.Routes
 {
     public class HubRoute : RouteBase, IRouteWithArea, IComparable<HubRoute>
     {
-        private readonly IList<RouteBase> _routes;
+        private readonly IRunningShellTable _runningShellTable;
+        private readonly ConcurrentDictionary<string, IList<RouteBase>> _routesByShell = new ConcurrentDictionary<string, IList<RouteBase>>();
 
-        //private readonly ConcurrentDictionary<string, IList<RouteBase>> _routesByShell = new ConcurrentDictionary<string, IList<RouteBase>>();
-
-        public HubRoute(string name, string area, int priority)
+        public HubRoute(string name, string area, int priority, IRunningShellTable runningShellTable)
         {
             Priority = priority;
             Area = area;
             Name = name;
-
-            //Todo:需要测试
-            _routes = new List<RouteBase>();
+            _runningShellTable = runningShellTable;
         }
 
         public string Name { get; private set; }
         public string Area { get; private set; }
         public int Priority { get; private set; }
 
-        ///// <summary>
-        ///// Removes the routes associated with a shell
-        ///// </summary>
-        //public void ReleaseShell(ShellSettings shellSettings)
-        //{
-        //    IList<RouteBase> routes;
-        //    _routesByShell.TryRemove(shellSettings.Name, out routes);
-        //}
+        /// <summary>
+        /// Removes the routes associated with a shell
+        /// </summary>
+        public void ReleaseShell(ShellSettings shellSettings)
+        {
+            IList<RouteBase> routes;
+            _routesByShell.TryRemove(shellSettings.Name, out routes);
+        }
 
         public void Add(RouteBase route, ShellSettings shellSettings)
         {
-            ////var routes = _routesByShell.GetOrAdd(shellSettings.Name, key => new List<RouteBase>());
-            _routes.Add(route);
+            var routes = _routesByShell.GetOrAdd(shellSettings.Name, key => new List<RouteBase>());
+            routes.Add(route);
         }
 
         public override RouteData GetRouteData(HttpContextBase httpContext)
         {
-            //IList<RouteBase> routes;
-            //if (!_routesByShell.TryGetValue(settings.Name, out routes))
-            //{
-            //    return null;
-            //}
+            var settings = _runningShellTable.Match(httpContext);
 
-            foreach (var route in _routes)
+            if (settings == null)
+                return null;
+
+            IList<RouteBase> routes;
+            if (!_routesByShell.TryGetValue(settings.Name, out routes))
+            {
+                return null;
+            }
+
+            foreach (var route in routes)
             {
                 RouteData routeData = route.GetRouteData(httpContext);
                 if (routeData != null)
@@ -68,18 +71,18 @@ namespace Orchard.Mvc.Routes
 
         public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
         {
-            //var settings = _runningShellTable.Match(requestContext.HttpContext);
+            var settings = _runningShellTable.Match(requestContext.HttpContext);
 
-            //if (settings == null)
-            //    return null;
+            if (settings == null)
+                return null;
 
-            //IList<RouteBase> routes;
-            //if (!_routesByShell.TryGetValue(settings.Name, out routes))
-            //{
-            //    return null;
-            //}
+            IList<RouteBase> routes;
+            if (!_routesByShell.TryGetValue(settings.Name, out routes))
+            {
+                return null;
+            }
 
-            foreach (var route in _routes)
+            foreach (var route in routes)
             {
                 VirtualPathData virtualPathData = route.GetVirtualPath(requestContext, values);
                 if (virtualPathData != null)

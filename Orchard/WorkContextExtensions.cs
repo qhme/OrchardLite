@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Orchard.Environment;
+using System.Web.Http.Controllers;
 
 namespace Orchard
 {
@@ -69,6 +70,29 @@ namespace Orchard
 
             return GetWorkContext(controllerContext.RequestContext);
         }
+
+        public static WorkContext GetWorkContext(this HttpControllerContext controllerContext)
+        {
+            if (controllerContext == null)
+                return null;
+
+            var routeData = controllerContext.RouteData;
+            if (routeData == null || routeData.Values == null)
+                return null;
+
+            object workContextValue;
+            if (!routeData.Values.TryGetValue("IWorkContextAccessor", out workContextValue))
+            {
+                return null;
+            }
+
+            if (workContextValue == null || !(workContextValue is IWorkContextAccessor))
+                return null;
+
+            var workContextAccessor = (IWorkContextAccessor)workContextValue;
+            return workContextAccessor.GetContext();
+        }
+
 
         public static IWorkContextScope CreateWorkContextScope(this ILifetimeScope lifetimeScope, HttpContextBase httpContext)
         {

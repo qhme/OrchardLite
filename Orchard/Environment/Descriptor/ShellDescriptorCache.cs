@@ -20,14 +20,14 @@ namespace Orchard.Environment.Descriptor
         /// Recreate the named configuration information. Used at startup. 
         /// Returns null on cache-miss.
         /// </summary>
-        ShellDescriptor Fetch();
+        ShellDescriptor Fetch(string shellName);
 
         /// <summary>
         /// Commit named configuration to reasonable persistent storage.
         /// This storage is scoped to the current-server and current-webapp.
         /// Loss of storage is expected.
         /// </summary>
-        void Store(ShellDescriptor descriptor);
+        void Store(string shellName, ShellDescriptor descriptor);
     }
 
     public class ShellDescriptorCache : IShellDescriptorCache
@@ -44,7 +44,7 @@ namespace Orchard.Environment.Descriptor
         public ILogger Logger { get; set; }
         public bool Disabled { get; set; }
 
-        public ShellDescriptor Fetch()
+        public ShellDescriptor Fetch(string name)
         {
             if (Disabled)
             {
@@ -62,25 +62,28 @@ namespace Orchard.Environment.Descriptor
                 {
                     foreach (XmlNode tenantNode in rootNode.ChildNodes)
                     {
-                        return GetShellDecriptorForCacheText(tenantNode.InnerText);
+                        if (String.Equals(tenantNode.Name, name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return GetShellDecriptorForCacheText(tenantNode.InnerText);
+                        }
                     }
                 }
-
                 return null;
             }
-
         }
 
-        public void Store(ShellDescriptor descriptor)
+        public void Store(string name, ShellDescriptor descriptor)
         {
             if (Disabled)
+            {
                 return;
-
+            }
 
             lock (_synLock)
             {
                 VerifyCacheFile();
                 var text = _appDataFolder.ReadFile(DescriptorCacheFileName);
+                bool tenantCacheUpdated = false;
                 var saveWriter = new StringWriter();
                 var xmlDocument = new XmlDocument();
                 xmlDocument.LoadXml(text);
@@ -89,8 +92,18 @@ namespace Orchard.Environment.Descriptor
                 {
                     foreach (XmlNode tenantNode in rootNode.ChildNodes)
                     {
-                        tenantNode.InnerText = GetCacheTextForShellDescriptor(descriptor);
-                        break;
+                        if (String.Equals(tenantNode.Name, name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            tenantNode.InnerText = GetCacheTextForShellDescriptor(descriptor);
+                            tenantCacheUpdated = true;
+                            break;
+                        }
+                    }
+                    if (!tenantCacheUpdated)
+                    {
+                        XmlElement newTenant = xmlDocument.CreateElement(name);
+                        newTenant.InnerText = GetCacheTextForShellDescriptor(descriptor);
+                        rootNode.AppendChild(newTenant);
                     }
                 }
 

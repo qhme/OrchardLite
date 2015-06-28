@@ -19,12 +19,20 @@ namespace Orchard.Mvc.Routes
         private readonly RouteBase _route;
         private readonly ShellSettings _shellSettings;
         private readonly IWorkContextAccessor _workContextAccessor;
+        private readonly IRunningShellTable _runningShellTable;
+        private readonly UrlPrefix _urlPrefix;
 
-        public ShellRoute(RouteBase route, ShellSettings shellSettings, IWorkContextAccessor workContextAccessor)
+
+
+        public ShellRoute(RouteBase route, ShellSettings shellSettings, IWorkContextAccessor workContextAccessor, IRunningShellTable runningShellTable)
         {
             _route = route;
             _shellSettings = shellSettings;
             _workContextAccessor = workContextAccessor;
+            _runningShellTable = runningShellTable;
+            if (!string.IsNullOrEmpty(_shellSettings.RequestUrlPrefix))
+                _urlPrefix = new UrlPrefix(_shellSettings.RequestUrlPrefix);
+
 
             Area = route.GetAreaName();
         }
@@ -33,17 +41,40 @@ namespace Orchard.Mvc.Routes
 
         public string Area { get; private set; }
 
+        public bool IsHttpRoute { get; set; }
+
+
         public override RouteData GetRouteData(HttpContextBase httpContext)
         {
+            // locate appropriate shell settings for request
+            var settings = _runningShellTable.Match(httpContext);
+
+            // only proceed if there was a match, and it was for this client
+            if (settings == null || settings.Name != _shellSettings.Name)
+                return null;
+
             var effectiveHttpContext = httpContext;
+            if (_urlPrefix != null)
+                effectiveHttpContext = new UrlPrefixAdjustedHttpContext(httpContext, _urlPrefix);
 
             var routeData = _route.GetRouteData(effectiveHttpContext);
             if (routeData == null)
                 return null;
 
+            // if a StopRoutingHandler was registered, no need to do anything further
+            if (routeData.RouteHandler is StopRoutingHandler)
+            {
+                return routeData;
+            }
+
             // otherwise wrap handler and return it
             routeData.RouteHandler = new RouteHandler(_workContextAccessor, routeData.RouteHandler, SessionState);
             routeData.DataTokens["IWorkContextAccessor"] = _workContextAccessor;
+
+            if (IsHttpRoute)
+            {
+                routeData.Values["IWorkContextAccessor"] = _workContextAccessor; // for WebApi
+            }
 
             return routeData;
         }
@@ -51,8 +82,23 @@ namespace Orchard.Mvc.Routes
 
         public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
         {
+            // locate appropriate shell settings for request
+            var settings = _runningShellTable.Match(requestContext.HttpContext);
+
+            // only proceed if there was a match, and it was for this client
+            if (settings == null || settings.Name != _shellSettings.Name)
+                return null;
+
             var effectiveRequestContext = requestContext;
+            if (_urlPrefix != null)
+                effectiveRequestContext = new RequestContext(new UrlPrefixAdjustedHttpContext(requestContext.HttpContext, _urlPrefix), requestContext.RouteData);
+
             var virtualPath = _route.GetVirtualPath(effectiveRequestContext, values);
+            if (virtualPath == null)
+                return null;
+
+            if (_urlPrefix != null)
+                virtualPath.VirtualPath = _urlPrefix.PrependLeadingSegments(virtualPath.VirtualPath);
 
             return virtualPath;
         }

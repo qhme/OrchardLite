@@ -83,10 +83,7 @@ namespace Orchard.Data
 
         private void StoreConfiguration(ConfigurationCache cache)
         {
-            if (!_hostEnvironment.IsFullTrust)
-                return;
-
-            var pathName = GetPathName();
+            var pathName = GetPathName(_shellSettings.Name);
 
             try
             {
@@ -112,7 +109,7 @@ namespace Orchard.Data
             if (!_hostEnvironment.IsFullTrust)
                 return null;
 
-            var pathName = GetPathName();
+            var pathName = GetPathName(_shellSettings.Name);
 
             if (!_appDataFolder.FileExists(pathName))
                 return null;
@@ -162,12 +159,14 @@ namespace Orchard.Data
             //   The nhibernate configuration stores the physical path to the SqlCe database
             //   so we need to include the physical location as part of the hash key, so that
             //   xcopy migrations work as expected.
-            var pathName = GetPathName();
+            var pathName = GetPathName(_shellSettings.Name);
             hash.AddString(_appDataFolder.MapPath(pathName).ToLowerInvariant());
 
             // Shell settings data
             hash.AddString(_shellSettings.DataProvider);
+            hash.AddString(_shellSettings.DataTablePrefix);
             hash.AddString(_shellSettings.DataConnectionString);
+            hash.AddString(_shellSettings.Name);
 
             // Assembly names, record names and property names
             foreach (var tableName in _shellBlueprint.Records.Select(x => x.TableName))
@@ -195,13 +194,12 @@ namespace Orchard.Data
             }
 
             _configurers.Invoke(c => c.ComputingHash(hash), Logger);
-
             return hash;
         }
 
-        private string GetPathName()
+        private string GetPathName(string shellName)
         {
-            return _appDataFolder.Combine("mappings.bin");
+            return _appDataFolder.Combine("Sites", shellName, "mappings.bin");
         }
     }
 

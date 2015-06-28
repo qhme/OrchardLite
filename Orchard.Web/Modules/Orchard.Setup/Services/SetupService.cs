@@ -76,6 +76,7 @@ namespace Orchard.Setup.Services
             {
                 shellSettings.DataProvider = context.DatabaseProvider;
                 shellSettings.DataConnectionString = context.DatabaseConnectionString;
+                shellSettings.DataTablePrefix = context.DatabaseTablePrefix;
             }
 
             #region Encryption Settings

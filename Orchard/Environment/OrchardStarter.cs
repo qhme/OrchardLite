@@ -37,6 +37,10 @@ using Orchard.Mvc.ViewEngines.Razor;
 using Orchard.Mvc.ViewEngines.ThemeAwareness;
 using Orchard.Services;
 using Orchard.Settings;
+using System.Web.Http;
+using System.Web.Http.Dispatcher;
+using Orchard.WebApi.Filters;
+using Orchard.WebApi;
 
 namespace Orchard.Environment
 {
@@ -77,8 +81,6 @@ namespace Orchard.Environment
             builder.RegisterType<DefaultExceptionPolicy>().As<IExceptionPolicy>().SingleInstance();
             builder.RegisterType<DefaultCriticalErrorProvider>().As<ICriticalErrorProvider>().SingleInstance();
 
-            //Test
-            //builder.RegisterType<AutomaticDataMigrations>().As<IOrchardShellEvents>().Named<IEventHandler>("IOrchardShellEvents");
 
             RegisterVolatileProvider<WebSiteFolder, IWebSiteFolder>(builder);
             RegisterVolatileProvider<AppDataFolder, IAppDataFolder>(builder);
@@ -127,6 +129,7 @@ namespace Orchard.Environment
                 builder.RegisterType<DefaultProcessingEngine>().As<IProcessingEngine>().SingleInstance();
             }
 
+            builder.RegisterType<RunningShellTable>().As<IRunningShellTable>().SingleInstance();
             builder.RegisterType<DefaultOrchardShell>().As<IOrchardShell>().InstancePerMatchingLifetimeScope("shell");
             builder.RegisterType<SessionConfigurationCache>().As<ISessionConfigurationCache>().InstancePerMatchingLifetimeScope("shell");
             builder.RegisterSource(new SettingsSource());
@@ -147,9 +150,7 @@ namespace Orchard.Environment
 
             var container = builder.Build();
 
-            //
             // Register Virtual Path Providers
-            //
             if (HostingEnvironment.IsHosted)
             {
                 foreach (var vpp in container.Resolve<IEnumerable<ICustomVirtualPathProvider>>())
@@ -160,6 +161,14 @@ namespace Orchard.Environment
 
             ControllerBuilder.Current.SetControllerFactory(new OrchardControllerFactory());
             FilterProviders.Providers.Add(new OrchardFilterProvider());
+
+            GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerSelector), new DefaultOrchardWebApiHttpControllerSelector(GlobalConfiguration.Configuration));
+            GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerActivator), new DefaultOrchardWebApiHttpHttpControllerActivator(GlobalConfiguration.Configuration));
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+
+            GlobalConfiguration.Configuration.Filters.Add(new OrchardApiActionFilterDispatcher());
+            GlobalConfiguration.Configuration.Filters.Add(new OrchardApiExceptionFilterDispatcher());
+            GlobalConfiguration.Configuration.Filters.Add(new OrchardApiAuthorizationFilterDispatcher());
 
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new ThemeAwareViewEngineShim());

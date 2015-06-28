@@ -27,6 +27,8 @@ namespace Orchard.Setup.ViewModels
         public string ConfirmPassword { get; set; }
 
 
+        public string DatabaseTablePrefix { get; set; }
+
         public SetupDatabaseType DatabaseProvider { get; set; }
 
         public string DatabaseConnectionString { get; set; }

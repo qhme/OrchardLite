@@ -10,7 +10,8 @@ namespace Orchard.Data.Providers
     {
         public string Provider { get; set; }
 
-        //public string DataFolder { get; set; }
+        public string DataFolder { get; set; }
+
         public string ConnectionString { get; set; }
     }
 }

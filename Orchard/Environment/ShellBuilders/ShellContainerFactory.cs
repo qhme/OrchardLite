@@ -16,6 +16,7 @@ using Orchard.Environment.AutofacUtil.DynamicProxy2;
 using Orchard.Environment.Configuration;
 using Orchard.Environment.ShellBuilders.Models;
 using Orchard.Events;
+using System.Web.Http.Controllers;
 
 namespace Orchard.Environment.ShellBuilders
 {
@@ -132,16 +133,34 @@ namespace Orchard.Environment.ShellBuilders
                             .InstancePerDependency();
                     }
 
+
+                    foreach (var item in blueprint.HttpControllers)
+                    {
+                        var serviceKeyName = (item.AreaName + "/" + item.ControllerName).ToLowerInvariant();
+                        var serviceKeyType = item.Type;
+                        RegisterType(builder, item)
+                            .EnableDynamicProxy(dynamicProxyContext)
+                            .Keyed<IHttpController>(serviceKeyName)
+                            .Keyed<IHttpController>(serviceKeyType)
+                            .WithMetadata("ControllerType", item.Type)
+                            .InstancePerDependency();
+                    }
+
                     // Register code-only registrations specific to a shell
                     _shellContainerRegistrations.Registrations(builder);
 
-                    var optionalShellConfig = HostingEnvironment.MapPath("~/Config/Sites.config");
-                    if (File.Exists(optionalShellConfig))
-                        builder.RegisterModule(new ConfigurationSettingsReader(ConfigurationSettingsReaderConstants.DefaultSectionName, optionalShellConfig));
 
-                    //var optionalShellByNameConfig = HostingEnvironment.MapPath("~/Config/Sites2.config");
-                    //if (File.Exists(optionalShellByNameConfig))
-                    //    builder.RegisterModule(new ConfigurationSettingsReader(ConfigurationSettingsReaderConstants.DefaultSectionName, optionalShellByNameConfig));
+                    var optionalShellByNameConfig = HostingEnvironment.MapPath("~/Config/Sites." + settings.Name + ".config");
+                    if (File.Exists(optionalShellByNameConfig))
+                    {
+                        builder.RegisterModule(new ConfigurationSettingsReader(ConfigurationSettingsReaderConstants.DefaultSectionName, optionalShellByNameConfig));
+                    }
+                    else
+                    {
+                        var optionalShellConfig = HostingEnvironment.MapPath("~/Config/Sites.config");
+                        if (File.Exists(optionalShellConfig))
+                            builder.RegisterModule(new ConfigurationSettingsReader(ConfigurationSettingsReaderConstants.DefaultSectionName, optionalShellConfig));
+                    }
                 });
         }
 

@@ -55,12 +55,12 @@ namespace Orchard.Environment
             }
         }
 
-        public void Changed(ShellDescriptor descriptor)
+        void IShellSettingsManagerEventHandler.Saved(ShellSettings settings)
         {
-            //TouchFile();     
+            //TouchFile();
         }
 
-        void IShellSettingsManagerEventHandler.Saved(ShellSettings settings)
+        void IShellDescriptorManagerEventHandler.Changed(ShellDescriptor descriptor, string tenant)
         {
             //TouchFile();
         }

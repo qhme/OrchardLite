@@ -70,7 +70,7 @@ namespace Orchard.Core.Settings.Descriptor
             if (priorSerialNumber != serialNumber)
                 throw new InvalidOperationException("Invalid serial number for shell descriptor");
 
-            Logger.Information("Updating shell descriptor");
+            Logger.Information("Updating shell descriptor for shell '{0}'...", _shellSettings.Name);
 
             if (shellDescriptorRecord == null)
             {
@@ -87,6 +87,7 @@ namespace Orchard.Core.Settings.Descriptor
             {
                 shellDescriptorRecord.Features.Add(new ShellFeatureRecord { Name = feature.Name, ShellDescriptorRecord = shellDescriptorRecord });
             }
+            Logger.Debug("Enabled features for shell '{0}' set: {1}.", _shellSettings.Name, String.Join(", ", enabledFeatures.Select(feature => feature.Name)));
 
 
             shellDescriptorRecord.Parameters.Clear();
@@ -100,11 +101,12 @@ namespace Orchard.Core.Settings.Descriptor
                     ShellDescriptorRecord = shellDescriptorRecord
                 });
             }
-            Logger.Debug("Parameters for shell  set: {1}.", String.Join(", ", parameters.Select(parameter => parameter.Name + "-" + parameter.Value)));
 
-            Logger.Information("Shell descriptor updated for shell.");
+            Logger.Debug("Parameters for shell '{0}' set: {1}.", _shellSettings.Name, String.Join(", ", parameters.Select(parameter => parameter.Name + "-" + parameter.Value)));
 
-            _events.Changed(GetShellDescriptorFromRecord(shellDescriptorRecord));
+            Logger.Information("Shell descriptor updated for shell '{0}'.", _shellSettings.Name);
+
+            _events.Changed(GetShellDescriptorFromRecord(shellDescriptorRecord), _shellSettings.Name);
         }
     }
 }
