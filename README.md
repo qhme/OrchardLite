@@ -2,7 +2,7 @@
 Orchard with no cms, themes and shape,  thanks the great orchard project.
 
 
-## Pending works:
+## Pending works
  OWIN Support,build script, frontend demo page, improve setting menu in dashboard.
 
 ## Include
@@ -22,7 +22,7 @@ Orchard with no cms, themes and shape,  thanks the great orchard project.
 * Orchard's Setting Handler to new ISetting Implement
   
 
-## Exclude:
+## Exclude
 * Orchard's Themes
 * Orchard's CMS(Content Type, Content Part and so on)
 * Orchard's Shape(dynamic)
