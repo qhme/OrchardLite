@@ -17,8 +17,9 @@ Include:
    Orchard's Users,Roles,
    FluentValidation, AutoMapper
 
+
 Changed:
-  Orchard's ViewEngine
+  Orchard's ViewEngine,
   Orchard's Setting Handler to new ISetting Implement
   
 
