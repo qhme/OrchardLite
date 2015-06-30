@@ -18,8 +18,12 @@ namespace Orchard.Settings
 
         public Func<WorkContext, T> Get<T>(string name)
         {
-            var siteSettings = _siteService.GetSiteSettings();
-            return ctx => (T)siteSettings;
+            if (name == "CurrentSite")
+            {
+                var siteSettings = _siteService.GetSiteSettings();
+                return ctx => (T)siteSettings;
+            }
+            return null;
         }
     }
 

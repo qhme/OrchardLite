@@ -8,6 +8,7 @@ namespace Orchard.Settings
         string SiteSalt { get; }
         string SuperUser { get; set; }
         string HomePage { get; set; }
+        string SiteCulture { get; set; }
         ResourceDebugMode ResourceDebugMode { get; set; }
         int PageSize { get; set; }
         int MaxPageSize { get; set; }

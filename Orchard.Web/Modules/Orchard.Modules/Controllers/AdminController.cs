@@ -18,6 +18,7 @@ using Orchard.Mvc.Extensions;
 using Orchard.Security;
 using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
+using Orchard.Settings;
 
 namespace Orchard.Modules.Controllers
 {
@@ -30,11 +31,14 @@ namespace Orchard.Modules.Controllers
         private readonly IFeatureManager _featureManager;
         private readonly ShellDescriptor _shellDescriptor;
         private readonly ShellSettings _shellSettings;
+        private readonly ISiteService _siteService;
+
 
         public AdminController(
             IEnumerable<IExtensionDisplayEventHandler> extensionDisplayEventHandlers,
             IOrchardServices services,
             IModuleService moduleService,
+             ISiteService siteService,
             IDataMigrationManager dataMigrationManager,
             IExtensionManager extensionManager,
             IFeatureManager featureManager,
@@ -50,6 +54,7 @@ namespace Orchard.Modules.Controllers
             _featureManager = featureManager;
             _shellDescriptor = shellDescriptor;
             _shellSettings = shellSettings;
+            _siteService = siteService; ;
 
             Logger = NullLogger.Instance;
         }
@@ -62,7 +67,7 @@ namespace Orchard.Modules.Controllers
             if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, "Not allowed to manage modules"))
                 return new HttpUnauthorizedResult();
 
-            //Pager pager = new Pager(Services.WorkContext.CurrentSite, pagerParameters);
+            var pager = new Pager(_siteService.GetSiteSettings(), pagerParameters);
 
             IEnumerable<ModuleEntry> modules = _extensionManager.AvailableExtensions()
                 .Where(extensionDescriptor => DefaultExtensionTypes.IsModule(extensionDescriptor.ExtensionType) &&
@@ -71,12 +76,8 @@ namespace Orchard.Modules.Controllers
                 .OrderBy(extensionDescriptor => extensionDescriptor.Name)
                 .Select(extensionDescriptor => new ModuleEntry { Descriptor = extensionDescriptor });
 
-            int totalItemCount = modules.Count();
+            pager.Total = modules.Count();
 
-            //if (pager.PageSize != 0)
-            //{
-            //    modules = modules.Skip((pager.Page - 1) * pager.PageSize).Take(pager.PageSize);
-            //}
 
             // This way we can more or less reliably handle this implicit dependency.
             var installModules = _featureManager.GetEnabledFeatures().FirstOrDefault(f => f.Id == "PackagingServices") != null;
@@ -96,13 +97,12 @@ namespace Orchard.Modules.Controllers
                 }
             }
 
-
             return View(new ModulesIndexViewModel
             {
                 Modules = modules,
                 InstallModules = installModules,
                 Options = options,
-                //Pager = Shape.Pager(pager).TotalItemCount(totalItemCount)
+                Pager = pager
             });
         }
 

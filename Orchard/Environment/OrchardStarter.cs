@@ -56,7 +56,7 @@ namespace Orchard.Environment
 
             // a single default host implementation is needed for bootstrapping a web app domain
             //原来的生命周期是SingleInstance,但是在此使用后EventBus一直是刚初始化的实例（里面并没有包含EventHandler）
-            //Orchard能对注册为SingleInstance释放，并且使用新的生命周期。以后再研究
+            //Orchard能对注册为SingleInstance释放，并且使用新的生命周期。
             builder.RegisterType<DefaultEventBus>().As<IEventBus>().InstancePerLifetimeScope();
 
             //.SingleInstance();

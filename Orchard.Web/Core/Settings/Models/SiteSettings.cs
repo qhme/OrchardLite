@@ -61,5 +61,12 @@ namespace Orchard.Core.Settings.Models
             get;
             set;
         }
+
+
+        public string SiteCulture
+        {
+            get;
+            set;
+        }
     }
 }

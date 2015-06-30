@@ -54,6 +54,15 @@ namespace Orchard
             set { SetState("CurrentSite", value); }
         }
 
+        /// <summary>
+        /// Active culture of the work context
+        /// </summary>
+        public string CurrentCulture
+        {
+            get { return GetState<string>("CurrentCulture"); }
+            set { SetState("CurrentCulture", value); }
+        }
+
     }
 
 }

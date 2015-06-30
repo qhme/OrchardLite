@@ -3,18 +3,19 @@
 @using Orchard.Modules.ViewModels;
 @using Orchard.Environment.Extensions.Models;
 @using Orchard.Utility.Extensions;
- 
+
 @{
-    Script.Require("ShapesBase").AtFoot();
-    
+
     Orchard.Modules.Models.ModuleEntry module = Model.Module;
     var moduleClasses = module.IsRecentlyInstalled ? "class=\"recentlyInstalledModule\"" : String.Empty;
 }
 
 <div class="summary">
-    @if (module.Notifications != null && module.Notifications.Count > 0) {
+    @if (module.Notifications != null && module.Notifications.Count > 0)
+    {
         <div class="notifications">
-            @foreach (var notification in module.Notifications) {
+            @foreach (var notification in module.Notifications)
+            {
                 <h5>@Html.Raw(notification)</h5>
             }
         </div>
@@ -31,7 +32,8 @@
             new { ModuleId = module.Descriptor.Id, ReturnUrl = Request.ToUrlString(), Area = "Orchard.Packaging" },
             new { itemprop = "RemoveUrl UnsafeUrl" })
 
-        @if (!String.IsNullOrEmpty(module.Descriptor.Description)) {
+        @if (!String.IsNullOrEmpty(module.Descriptor.Description))
+        {
             <p>@module.Descriptor.Description</p>
         }
 
@@ -41,8 +43,10 @@
             <li>&nbsp;&#124;&nbsp;@T("Author: {0}", !String.IsNullOrEmpty(module.Descriptor.Author) ? module.Descriptor.Author : T("Unknown").ToString())</li>
             <li>
                 &nbsp;&#124;&nbsp;@T("Website: ")
-                @if (!String.IsNullOrEmpty(module.Descriptor.WebSite)) { <a href="@module.Descriptor.WebSite">@module.Descriptor.WebSite</a> }
-                else { @T("Unknown").ToString() }
+                @if (!String.IsNullOrEmpty(module.Descriptor.WebSite))
+                { <a href="@module.Descriptor.WebSite">@module.Descriptor.WebSite</a> }
+                else
+                { @T("Unknown").ToString() }
             </li>
         </ul>
     </div>

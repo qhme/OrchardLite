@@ -12,6 +12,7 @@ using Orchard.Security;
 using Orchard.Security.Permissions;
 using Orchard.UI;
 using Orchard.UI.Resources;
+using Orchard.Localization;
 
 namespace Orchard.Mvc.ViewEngines.Razor
 {
@@ -19,8 +20,24 @@ namespace Orchard.Mvc.ViewEngines.Razor
     {
         private ScriptRegister _scriptRegister;
         private ResourceRegister _stylesheetRegister;
+        private Localizer _localizer = NullLocalizer.Instance;
         private WorkContext _workContext;
         private IDisplayHelper _displayerHelper;
+
+        public Localizer T
+        {
+            get
+            {
+                // first time used, create it
+                if (_localizer == NullLocalizer.Instance)
+                {
+                    _localizer = LocalizationUtilities.Resolve(ViewContext, VirtualPath);
+                }
+
+                return _localizer;
+            }
+        }
+
 
         public WorkContext WorkContext { get { return _workContext; } }
 
