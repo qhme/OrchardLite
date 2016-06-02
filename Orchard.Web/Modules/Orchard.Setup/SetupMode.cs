@@ -191,6 +191,18 @@ namespace Orchard.Setup
             {
                 get { return ""; }
             }
+
+            public string SiteCulture
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+                set
+                {
+                    throw new NotImplementedException();
+                }
+            }
         }
 
     }

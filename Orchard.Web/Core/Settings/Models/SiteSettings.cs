@@ -10,8 +10,7 @@ namespace Orchard.Core.Settings.Models
 {
     public class SiteSettings : ISite
     {
-
-        public string SiteName
+         public string SiteName
         {
             get;
             set;

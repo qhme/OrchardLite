@@ -42,7 +42,6 @@ namespace Orchard.Environment
             _sweepGenerator = sweepGenerator;
             _httpRouteProviders = httpRouteProviders;
             _shellSettings = shellSettings;
-
             Logger = NullLogger.Instance;
         }
 
@@ -50,8 +49,6 @@ namespace Orchard.Environment
 
         public void Activate()
         {
-            //Owin
-
             var allRoutes = new List<RouteDescriptor>();
             _routeProviders.Invoke(x => x.GetRoutes(allRoutes), Logger);
             allRoutes.AddRange(_httpRouteProviders.SelectMany(provider => provider.GetRoutes()));

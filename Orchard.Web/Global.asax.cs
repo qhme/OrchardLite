@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using StackExchange.Profiling;
+//using StackExchange.Profiling;
 using System;
 using System.Globalization;
 using System.Linq;
