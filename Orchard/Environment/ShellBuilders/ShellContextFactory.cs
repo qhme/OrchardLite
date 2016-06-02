@@ -99,7 +99,7 @@ namespace Orchard.Environment.ShellBuilders
                 SerialNumber = -1,
                 Features = new[] {
                     new ShellFeature {Name = "Orchard.Framework"},
-                    new ShellFeature {Name = "Settings"},
+                    new ShellFeature {Name = "Settings"} 
                 },
                 Parameters = Enumerable.Empty<ShellParameter>(),
             };
@@ -108,15 +108,14 @@ namespace Orchard.Environment.ShellBuilders
         public ShellContext CreateSetupContext(ShellSettings settings)
         {
             Logger.Debug("No shell settings available. Creating shell context for setup");
-
             var descriptor = new ShellDescriptor
-            {
-                SerialNumber = -1,
-                Features = new[] {
+           {
+               SerialNumber = -1,
+               Features = new[] {
                     new ShellFeature { Name = "Orchard.Setup" },
                     new ShellFeature { Name = "Orchard.jQuery" }
                 },
-            };
+           };
 
             var blueprint = _compositionStrategy.Compose(settings, descriptor);
             var shellScope = _shellContainerFactory.CreateContainer(settings, blueprint);

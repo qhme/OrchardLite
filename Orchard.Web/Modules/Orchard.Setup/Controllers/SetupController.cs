@@ -63,7 +63,6 @@ namespace Orchard.Setup.Controllers
                 _viewsBackgroundCompilation.Start();
             }
 
-
             return IndexViewResult(new SetupViewModel
             {
                 AdminUsername = "admin",
@@ -119,7 +118,6 @@ namespace Orchard.Setup.Controllers
                 //    model.RecipeDescription = recipe.Description;
                 //}
                 model.DatabaseIsPreconfigured = !string.IsNullOrEmpty(_setupService.Prime().DataProvider);
-
                 return IndexViewResult(model);
             }
 
@@ -178,7 +176,6 @@ namespace Orchard.Setup.Controllers
                 //    model.RecipeDescription = recipe.Description;
                 //}
                 model.DatabaseIsPreconfigured = !string.IsNullOrEmpty(_setupService.Prime().DataProvider);
-
                 return IndexViewResult(model);
             }
         }

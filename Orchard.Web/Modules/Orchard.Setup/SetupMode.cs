@@ -20,6 +20,8 @@ using Orchard.Tasks;
 using Orchard.UI;
 using Orchard.UI.Notify;
 using Orchard.UI.Resources;
+using Orchard.Data;
+using Orchard.Environment.Descriptor;
 
 namespace Orchard.Setup
 {
@@ -37,8 +39,11 @@ namespace Orchard.Setup
             builder.RegisterModule(new CacheModule());
 
             builder.RegisterType<RoutePublisher>().As<IRoutePublisher>().InstancePerLifetimeScope();
+            builder.RegisterType<SessionLocator>().As<ITransactionManager>().InstancePerLifetimeScope();
+
             builder.RegisterType<ModelBinderPublisher>().As<IModelBinderPublisher>().InstancePerLifetimeScope();
             builder.RegisterType<RazorViewEngineProvider>().As<IViewEngineProvider>().SingleInstance();
+            
 
             //As<IShapeTemplateViewEngine>().SingleInstance();
 
@@ -70,6 +75,7 @@ namespace Orchard.Setup
             builder.RegisterType<DefaultCacheHolder>().As<ICacheHolder>().SingleInstance();
 
             builder.RegisterType<DisplayHelper>().As<IDisplayHelper>().InstancePerLifetimeScope();
+            builder.RegisterType<ShellDescriptorCache>().As<IShellDescriptorCache>().SingleInstance();
 
             // in progress - adding services for display/shape support in setup
             //builder.RegisterType<DisplayHelperFactory>().As<IDisplayHelperFactory>().InstancePerLifetimeScope();

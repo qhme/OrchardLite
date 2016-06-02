@@ -62,7 +62,7 @@ namespace Orchard.Environment.Configuration
         /// </summary>
         public string Name
         {
-            get { return this["Name"] ?? ""; }
+            get { return this["Name"] ?? DefaultName; }
             set { this["Name"] = value; }
         }
 

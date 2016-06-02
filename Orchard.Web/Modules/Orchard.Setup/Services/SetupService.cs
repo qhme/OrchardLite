@@ -88,7 +88,6 @@ namespace Orchard.Setup.Services
             shellSettings.HashAlgorithm = "HMACSHA256";
             // randomly generated key
             shellSettings.HashKey = HMAC.Create(shellSettings.HashAlgorithm).Key.ToHexString();
-
             #endregion
 
             var shellDescriptor = new ShellDescriptor
@@ -141,6 +140,9 @@ namespace Orchard.Setup.Services
                         0,
                         shellDescriptor.Features,
                         shellDescriptor.Parameters);
+
+
+                    environment.Resolve<IShellDescriptorCache>().Store(_shellSettings.Name, shellDescriptor);
                 }
             }
 
@@ -154,13 +156,16 @@ namespace Orchard.Setup.Services
             // components will exist entirely in isolation - no crossover between the safemode container currently in effect
 
             // must mark state as Running - otherwise standalone enviro is created "for setup"
+
+
+            shellSettings.State = TenantState.Running;
             using (var environment = _orchardHost.CreateStandaloneEnvironment(shellSettings))
             {
                 try
                 {
                     CreateTenantData(context, environment);
                 }
-                catch
+                catch (Exception e)
                 {
                     environment.Resolve<ITransactionManager>().Cancel();
                     throw;
@@ -170,6 +175,16 @@ namespace Orchard.Setup.Services
             _shellSettingsManager.SaveSettings(shellSettings);
         }
 
+
+        private static ShellDescriptor HardDescriptor(string[] harded)
+        {
+            return new ShellDescriptor
+           {
+               SerialNumber = -1,
+               Features = harded.Select(x => new ShellFeature { Name = x }).ToArray(),
+               Parameters = Enumerable.Empty<ShellParameter>(),
+           };
+        }
 
         private void CreateTenantData(SetupContext context, IWorkContextScope environment)
         {
