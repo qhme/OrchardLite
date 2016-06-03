@@ -44,12 +44,12 @@ namespace Orchard.Environment.Configuration
             }
 
             Logger.Debug("Saving ShellSettings");
-            _appDataFolder.CreateFile(_settingsFileName, ShellSettingsSerializer.ComposeSettings(settings));
-
+            var filePath = Path.Combine(Path.Combine("Sites", settings.Name), _settingsFileName);
+            _appDataFolder.CreateFile(filePath, ShellSettingsSerializer.ComposeSettings(settings));
             Logger.Information("ShellSettings saved successfully; ");
             _events.Saved(settings);
-
         }
+
         private IEnumerable<ShellSettings> LoadSettingsInternal()
         {
             var filePaths = _appDataFolder
@@ -63,6 +63,4 @@ namespace Orchard.Environment.Configuration
             }
         }
     }
-
-
 }

@@ -107,6 +107,15 @@
     <Content Include="Content\Admin\images\offline.gif" />
     <Content Include="Content\Admin\images\online.gif" />
     <Content Include="Module.txt" />
+    <Content Include="packages.config" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Styles\images\menu.users.png" />
     <Content Include="Styles\menu.users-admin.css" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
@@ -119,6 +128,7 @@
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Admin\Create.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Web.config">
@@ -160,6 +170,7 @@
   <ItemGroup>
     <Content Include="Views\Shared\Layout2.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
