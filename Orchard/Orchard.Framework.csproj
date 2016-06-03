@@ -483,6 +483,7 @@
     <Compile Include="Security\Permissions\IPermissionProvider.cs" />
     <Compile Include="Security\Permissions\Permission.cs" />
     <Compile Include="Utility\DependencyOrdering.cs" />
+    <Compile Include="Utility\Extensions\RouteValueDictionaryExtensions.cs" />
     <Compile Include="Utility\Extensions\StringExtensions.cs" />
     <Compile Include="Utility\Extensions\VirtualPathProviderExtensions.cs" />
     <Compile Include="Utility\Hash.cs" />

@@ -61,7 +61,7 @@ namespace Orchard.Setup.Services
                     // Framework
                     "Orchard.Framework",
                     // Core
-                    "Dashboard", "Scheduling", "Settings",
+                    "Dashboard", "Scheduling", "Settings","Orchard.Alias",
                     // Modules
                     //"Orchard.Pages", "Orchard.ContentPicker", "Orchard.Recipes"
                     "Orchard.Users", "Orchard.Roles", "Orchard.Modules", "Orchard.jQuery", 
