@@ -20,8 +20,7 @@ namespace Orchard.Core.Dashboard
         public IEnumerable<RouteDescriptor> GetRoutes()
         {
             return new[] {
-                    new RouteDescriptor { Priority = -5, Route = new Route("Admin",new RouteValueDictionary {
-                                                                    {"area", "Dashboard"},
+                    new RouteDescriptor { Priority = -15, Route = new Route("Admin",new RouteValueDictionary {
                                                                     {"controller", "admin"},
                                                                     {"action", "index"}
                                                                 },
@@ -29,16 +28,15 @@ namespace Orchard.Core.Dashboard
                                         new RouteValueDictionary {  {"area", "Dashboard"}},
                                         new MvcRouteHandler())
                                         },
-
-                    new RouteDescriptor { Priority = -15, Route = new Route("{action}/{id}",new RouteValueDictionary {
-                                                                        {"controller", "home"},
-                                                                        {"action", "index"},
-                                                                        {"id", ""}
-                                                                      },
-                                        new RouteValueDictionary(),
-                                        new RouteValueDictionary {{"area", "Dashboard"} },
-                                        new MvcRouteHandler())
-                                    }
+                       //new RouteDescriptor { Priority = -5, Route = new Route("{action}/{id}",new RouteValueDictionary {
+                       //                                                 {"controller", "home"},
+                       //                                                 {"action", "index"},
+                       //                                                 {"id", ""}
+                       //                                               },
+                       //                 new RouteValueDictionary(),
+                       //                 new RouteValueDictionary {{"area", "Dashboard"} },
+                       //                 new MvcRouteHandler())
+                       //             }
                          };
         }
     }

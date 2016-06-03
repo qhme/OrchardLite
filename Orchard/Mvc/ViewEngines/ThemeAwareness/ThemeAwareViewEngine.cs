@@ -17,7 +17,6 @@ namespace Orchard.Mvc.ViewEngines.ThemeAwareness
         ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache);
     }
 
-
     public class ThemeAwareViewEngine : IThemeAwareViewEngine
     {
         private readonly WorkContext _workContext;
@@ -75,10 +74,15 @@ namespace Orchard.Mvc.ViewEngines.ThemeAwareness
             {
                 engines = DeepEngines();
             }
+        
+            //var accessFrontEnd = filterContext.ActionDescriptor.GetCustomAttributes(typeof(AlwaysAccessibleAttribute), true).Any();
 
             //全部使用Layout作为默认的模板页面
             if (string.IsNullOrEmpty(masterName))
-                masterName = "Layout";
+            {
+                if (controllerContext.RouteData.DataTokens.ContainsKey("isAdmin"))
+                    masterName = "Layout";
+            }
 
             return engines.FindView(controllerContext, viewName, masterName, useCache);
         }

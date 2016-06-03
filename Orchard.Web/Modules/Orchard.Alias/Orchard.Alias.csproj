@@ -6,12 +6,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{79AED36E-ABD0-4747-93D3-8722B042454B}</ProjectGuid>
+    <ProjectGuid>{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Orchard.Users</RootNamespace>
-    <AssemblyName>Orchard.Users</AssemblyName>
+    <RootNamespace>Orchard.Alias</RootNamespace>
+    <AssemblyName>Orchard.Alias</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <FileUpgradeFlags>
@@ -48,114 +48,52 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation">
-      <HintPath>..\..\..\packages\FluentValidation.5.6.2.0\lib\Net45\FluentValidation.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.configuration" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\aspnetmvc\System.Web.Helpers.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoMapShellEvent.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Migrations.cs" />
-    <Compile Include="Events\UserContext.cs" />
-    <Compile Include="Handlers\RegistrationSettingsPartHandler.cs" />
-    <Compile Include="Events\IUserEventHandler.cs" />
-    <Compile Include="Models\MessageTypes.cs" />
-    <Compile Include="Handlers\UserPartHandler.cs" />
-    <Compile Include="Models\UserRecord.cs" />
-    <Compile Include="Models\UserStatus.cs" />
-    <Compile Include="Permissions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AuthenticationRedirectionFilter.cs" />
-    <Compile Include="Services\IUserService.cs" />
-    <Compile Include="Services\MembershipService.cs" />
-    <Compile Include="AdminMenu.cs" />
-    <Compile Include="Services\UserService.cs" />
-    <Compile Include="Validators\LogonValidator.cs" />
-    <Compile Include="Validators\UserCreateValidator.cs" />
-    <Compile Include="Validators\UserEditValidator.cs" />
-    <Compile Include="ViewModels\LogonViewModel.cs" />
-    <Compile Include="ViewModels\UserCreateViewModel.cs" />
-    <Compile Include="ViewModels\UserEditPasswordViewModel.cs" />
-    <Compile Include="ViewModels\UserEditViewModel.cs" />
-    <Compile Include="ViewModels\UsersIndexViewModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\Admin\images\offline.gif" />
-    <Content Include="Content\Admin\images\online.gif" />
     <Content Include="Module.txt" />
-    <Content Include="packages.config" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Styles\images\menu.users.png" />
-    <Content Include="Styles\menu.users-admin.css" />
-    <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
-    <Content Include="Views\Account\AccessDenied.cshtml" />
-    <Content Include="Views\Account\ChallengeEmailSuccess.cshtml" />
-    <Content Include="Views\Account\ChallengeEmailSent.cshtml" />
-    <Content Include="Views\Account\ChallengeEmailFail.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Admin\Edit.cshtml" />
-    <Content Include="Views\Admin\Create.cshtml" />
-    <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Account\RegistrationPending.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Account\RequestLostPassword.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Account\LostPassword.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Account\LogOn.cshtml" />
+    <Compile Include="AdminMenu.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Implementation\AliasRoute.cs" />
+    <Compile Include="Implementation\DefaultAliasService.cs" />
+    <Compile Include="Implementation\Holder\AliasHolder.cs" />
+    <Compile Include="Implementation\Holder\AliasInfo.cs" />
+    <Compile Include="Implementation\Holder\IAliasHolder.cs" />
+    <Compile Include="Implementation\Map\AliasMap.cs" />
+    <Compile Include="Implementation\Storage\AliasStorage.cs" />
+    <Compile Include="Implementation\Updater\AliasHolderUpdater.cs" />
+    <Compile Include="Implementation\Updater\AliasHolderUpdaterTask.cs" />
+    <Compile Include="Implementation\Updater\AliasUpdateCursor.cs" />
+    <Compile Include="Implementation\Updater\AliasUpdaterBackgroundTask.cs" />
+    <Compile Include="Implementation\Updater\IAliasUpdateCursor.cs" />
+    <Compile Include="Implementation\Utils.cs" />
+    <Compile Include="Migrations.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IAliasService.cs" />
+    <Compile Include="Records\ActionRecord.cs" />
+    <Compile Include="Records\AliasRecord.cs" />
+    <Compile Include="Routes.cs" />
+    <Compile Include="ViewModels\AdminIndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Styles\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
@@ -166,13 +104,14 @@
     <ProjectReference Include="..\..\Core\Orchard.Core.csproj">
       <Project>{6879a80c-80a7-496d-af16-eb84bc0e5a76}</Project>
       <Name>Orchard.Core</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Layout2.cshtml" />
+    <Content Include="Views\Admin\Add.cshtml" />
+    <Content Include="Views\Admin\Delete.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -205,13 +144,13 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>53601</DevelopmentServerPort>
+          <DevelopmentServerPort>16146</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>True</UseCustomServer>
-          <CustomServerUrl>http://orchard.codeplex.com</CustomServerUrl>
+          <CustomServerUrl>http://orchard.codeplex.com/</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

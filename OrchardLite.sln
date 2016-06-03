@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0869253D-4349-4ADD-8E70-6AEE16E03BF1}"
 EndProject
@@ -32,6 +32,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Setup", "Orchard.Web\Modules\Orchard.Setup\Orchard.Setup.csproj", "{D777099A-F7B1-48BE-A6D6-C6390488571A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Users", "Orchard.Web\Modules\Orchard.Users\Orchard.Users.csproj", "{79AED36E-ABD0-4747-93D3-8722B042454B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Alias", "Orchard.Web\Modules\Orchard.Alias\Orchard.Alias.csproj", "{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,10 @@ Global
 		{79AED36E-ABD0-4747-93D3-8722B042454B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79AED36E-ABD0-4747-93D3-8722B042454B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79AED36E-ABD0-4747-93D3-8722B042454B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +111,7 @@ Global
 		{D10AD48F-407D-4DB5-A328-173EC7CB010F} = {05D12875-0866-4066-A132-9E704AFE48D6}
 		{D777099A-F7B1-48BE-A6D6-C6390488571A} = {05D12875-0866-4066-A132-9E704AFE48D6}
 		{79AED36E-ABD0-4747-93D3-8722B042454B} = {05D12875-0866-4066-A132-9E704AFE48D6}
+		{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C} = {05D12875-0866-4066-A132-9E704AFE48D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .

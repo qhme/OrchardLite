@@ -29,6 +29,7 @@ namespace Orchard.UI.Admin
                     filterContext.Result = new HttpUnauthorizedResult();
                 }
 
+                filterContext.RouteData.DataTokens.Add("isAdmin", true);
                 Apply(filterContext.RequestContext);
             }
         }

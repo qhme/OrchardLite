@@ -30,7 +30,6 @@ namespace Orchard.Web
         protected void Application_Start()
         {
             RegisterRoutes(RouteTable.Routes);
-
             _starter = new Starter<IOrchardHost>(HostInitialization, HostBeginRequest, HostEndRequest);
             _starter.OnApplicationStart(this);
         }

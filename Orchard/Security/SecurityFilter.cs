@@ -28,6 +28,12 @@ namespace Orchard.Security
         {
             var accessFrontEnd = filterContext.ActionDescriptor.GetCustomAttributes(typeof(AlwaysAccessibleAttribute), true).Any();
 
+            //var allowanonymous= filterContext.ActionDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), true)
+            //if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Any())
+            //    return;
+
+            //if (filterContext.ActionDescriptor.ControllerDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Any())
+            //    return;
             if (!AdminFilter.IsApplied(filterContext.RequestContext) && !accessFrontEnd && !_authorizer.Authorize(StandardPermissions.AccessFrontEnd))
             {
                 filterContext.Result = new HttpUnauthorizedResult();

@@ -2,17 +2,12 @@
 using System.Web.Mvc.Filters;
 using System.Web.Routing;
 using Orchard.Mvc.Filters;
+using System.Linq;
 
 namespace Orchard.Users.Services
 {
-
-    /// <summary>
-    /// This class is responsible for redirecting the user to the authentication page 
-    /// of the current tenant.
-    /// </summary>
     public class AuthenticationRedirectionFilter : FilterProvider, IAuthenticationFilter
     {
-
         public void OnAuthentication(AuthenticationContext filterContext)
         {
         }
