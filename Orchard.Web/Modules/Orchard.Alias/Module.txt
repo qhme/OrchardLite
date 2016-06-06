@@ -1,6 +1,5 @@
 ﻿Name: Alias
 Description: Maps friendly urls to specific module actions.
-FeatureDescription: Indexing infrastructure. Requires an index implementation like the Lucene module.
 Features:
     Orchard.Alias.UI:
 		Name: Alias UI
@@ -12,4 +11,3 @@ Features:
         Description: Synchronizes aliases when created from different servers.
 		Dependencies: Orchard.Alias
 		Category: Content
-

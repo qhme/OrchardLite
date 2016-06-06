@@ -8,8 +8,6 @@ namespace Orchard.Alias
     [OrchardFeature("Orchard.Alias.UI")]
     public class AdminMenu : INavigationProvider
     {
-        public Localizer T { get; set; }
-
         public string MenuName { get { return "admin"; } }
 
         public void GetNavigation(NavigationBuilder builder)
