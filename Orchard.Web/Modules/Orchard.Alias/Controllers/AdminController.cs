@@ -68,7 +68,6 @@ namespace Orchard.Alias.Controllers
             aliases = aliases.ToList();
 
             //var pagerShape = Services.New.Pager(pager).TotalItemCount(aliases.Count());
-
             switch (options.Order)
             {
                 case AliasOrder.Path:
@@ -78,13 +77,14 @@ namespace Orchard.Alias.Controllers
 
             if (pager.PageSize != 0)
             {
+                pager.Total = aliases.Count();
                 aliases = aliases.Skip(pager.GetStartIndex()).Take(pager.PageSize);
             }
 
             var model = new AdminIndexViewModel
             {
                 Options = options,
-                //Pager = pagerShape,
+                Pager = pager,
                 AliasEntries = aliases.Select(x => new AliasEntry() { Alias = x, IsChecked = false }).ToList()
             };
 
@@ -174,7 +174,6 @@ namespace Orchard.Alias.Controllers
             }
 
             Services.Notifier.Information(string.Format("Alias {0} created", aliasPath));
-
             return RedirectToAction("Index");
         }
 

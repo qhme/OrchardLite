@@ -11,6 +11,9 @@ namespace Orchard.ContentManagement.Records
         /// <summary>
         /// The ContentItem's identifier.
         /// </summary>
-        int Id { get; set; }
+        int Id { get; }
+
+        ContentItem ContentItem { get; }
+
     }
 }

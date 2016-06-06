@@ -13,5 +13,20 @@ namespace Orchard.ContentManagement
         {
             return item == null ? false : typeof(T) == item.GetType();
         }
+
+        public static T As<T>(this IContent content) where T : IContent
+        {
+            return content == null ? default(T) : (T)content.ContentItem.Get(typeof(T));
+        }
+
+        public static bool Has<T>(this IContent content)
+        {
+            return content == null ? false : content.ContentItem.Has(typeof(T));
+        }
+        public static T Get<T>(this IContent content) where T : IContent
+        {
+            return content == null ? default(T) : (T)content.ContentItem.Get(typeof(T));
+        }
+
     }
 }

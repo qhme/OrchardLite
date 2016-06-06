@@ -187,12 +187,16 @@
     <Compile Include="Scheduling\Services\ScheduledTaskExecutor.cs" />
     <Compile Include="Scheduling\Services\ScheduledTaskManager.cs" />
     <Compile Include="Settings\AdminMenu.cs" />
+    <Compile Include="Settings\Metadata\ContentDefinitionManager.cs" />
     <Compile Include="Settings\Controllers\AdminController.cs" />
     <Compile Include="Settings\Descriptor\Records\ShellDescriptorRecord.cs" />
     <Compile Include="Settings\Descriptor\Records\ShellFeatureRecord.cs" />
     <Compile Include="Settings\Descriptor\Records\ShellParameterRecord.cs" />
     <Compile Include="Settings\Descriptor\ShellDescriptorManager.cs" />
     <Compile Include="Settings\Handlers\SiteSettingsPartHandler.cs" />
+    <Compile Include="Settings\Metadata\Records\ContentPartDefinitionRecord.cs" />
+    <Compile Include="Settings\Metadata\Records\ContentTypeDefinitionRecord.cs" />
+    <Compile Include="Settings\Metadata\Records\ContentTypePartDefinitionRecord.cs" />
     <Compile Include="Settings\Migrations.cs" />
     <Compile Include="Settings\Models\SettingRecord.cs" />
     <Compile Include="Settings\Models\SiteSettings.cs" />

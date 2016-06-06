@@ -70,6 +70,7 @@
       <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
@@ -136,11 +137,35 @@
     <Compile Include="Caching\Signals.cs" />
     <Compile Include="Caching\Weak.cs" />
     <Compile Include="ContentManagement\ContentExtensions.cs" />
+    <Compile Include="ContentManagement\ContentPart.cs" />
+    <Compile Include="ContentManagement\Drivers\ContentPartDriver.cs" />
+    <Compile Include="ContentManagement\Drivers\ContentShapeResult.cs" />
+    <Compile Include="ContentManagement\Drivers\Coordinators\ContentPartDriverCoordinator.cs" />
+    <Compile Include="ContentManagement\Drivers\DriverResult.cs" />
+    <Compile Include="ContentManagement\Drivers\IContentPartDriver.cs" />
     <Compile Include="ContentManagement\FrameworkDataMigration.cs" />
+    <Compile Include="ContentManagement\Handlers\ActivatedContentContext.cs" />
+    <Compile Include="ContentManagement\Handlers\ActivatingContentContext.cs" />
+    <Compile Include="ContentManagement\Handlers\BuildDisplayContext.cs" />
+    <Compile Include="ContentManagement\Handlers\BuildEditorContext.cs" />
+    <Compile Include="ContentManagement\Handlers\BuildShapeContext.cs" />
     <Compile Include="ContentManagement\Handlers\ContentContextBase.cs" />
+    <Compile Include="ContentManagement\Handlers\ContentHandlerBase.cs" />
+    <Compile Include="ContentManagement\Handlers\ContentItemBuilder.cs" />
     <Compile Include="ContentManagement\Handlers\IContentFilter.cs" />
     <Compile Include="ContentManagement\Handlers\IContentStorageFilter.cs" />
     <Compile Include="ContentManagement\Handlers\StorageFilterBase.cs" />
+    <Compile Include="ContentManagement\Handlers\UpdateEditorContext.cs" />
+    <Compile Include="ContentManagement\IUpdateModel.cs" />
+    <Compile Include="ContentManagement\MetaData\Builders\ContentTypeDefinitionBuilder.cs" />
+    <Compile Include="ContentManagement\MetaData\ContentPartInfo.cs" />
+    <Compile Include="ContentManagement\MetaData\IContentDefinitionManager.cs" />
+    <Compile Include="ContentManagement\MetaData\Models\ContentPartDefinition.cs" />
+    <Compile Include="ContentManagement\MetaData\Models\ContentTypeDefinition.cs" />
+    <Compile Include="ContentManagement\MetaData\Models\ContentTypePartDefinition.cs" />
+    <Compile Include="ContentManagement\MetaData\Models\SettingsDictionary.cs" />
+    <Compile Include="ContentManagement\MetaData\Services\ISettingsFormatter.cs" />
+    <Compile Include="ContentManagement\MetaData\Services\SettingsFormatter.cs" />
     <Compile Include="ContentManagement\Records\ContentItem.cs" />
     <Compile Include="ContentManagement\Handlers\ContentHandler.cs" />
     <Compile Include="ContentManagement\Handlers\CreateContentContext.cs" />
@@ -148,9 +173,12 @@
     <Compile Include="ContentManagement\Handlers\RemoveContentContext.cs" />
     <Compile Include="ContentManagement\Handlers\UpdateContentContext.cs" />
     <Compile Include="ContentManagement\Records\IContent.cs" />
+    <Compile Include="ContentManagement\Utilities\LazyField.cs" />
     <Compile Include="Data\Conventions\CacheConventions.cs" />
     <Compile Include="Data\Conventions\CascadeAllDeleteOrphanAttribute.cs" />
     <Compile Include="Data\Conventions\RecordTableNameConvention.cs" />
+    <Compile Include="Data\Conventions\StringLengthMaxAttribute.cs" />
+    <Compile Include="Data\FetchRequest.cs" />
     <Compile Include="Data\Migration\DataMigrationCoordinator.cs" />
     <Compile Include="Data\Providers\AbstractDataServicesProvider.cs" />
     <Compile Include="Data\Providers\DataServicesProviderFactory.cs" />
@@ -522,9 +550,7 @@
   <ItemGroup>
     <Compile Include="Validation\JetBrains.Annotations.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ContentManagement\Drivers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
