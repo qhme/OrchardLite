@@ -53,8 +53,36 @@ namespace Orchard.Core.Settings
                     .Column<int>("Id", column => column.PrimaryKey().Identity())
                     .Column<string>("Unused")
                 );
-
             return 2;
+        }
+
+        public int UpdateFrom2()
+        {
+            SchemaBuilder.CreateTable("ContentPartDefinitionRecord",
+             table => table
+                 .Column<int>("Id", column => column.PrimaryKey().Identity())
+                 .Column<string>("Name")
+                 .Column<bool>("Hidden")
+                 .Column<string>("Settings", column => column.Unlimited())
+             );
+
+            SchemaBuilder.CreateTable("ContentTypeDefinitionRecord",
+               table => table
+                   .Column<int>("Id", column => column.PrimaryKey().Identity())
+                   .Column<string>("Name")
+                   .Column<string>("DisplayName")
+                   .Column<bool>("Hidden")
+                   .Column<string>("Settings", column => column.Unlimited())
+              );
+
+            SchemaBuilder.CreateTable("ContentTypePartDefinitionRecord",
+              table => table
+                  .Column<int>("Id", column => column.PrimaryKey().Identity())
+                  .Column<string>("Settings", column => column.Unlimited())
+                  .Column<int>("ContentPartDefinitionRecord_id")
+                  .Column<int>("ContentTypeDefinitionRecord_Id")
+              );
+            return 3;
         }
     }
 }

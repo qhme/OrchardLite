@@ -51,5 +51,22 @@ namespace Orchard.ContentManagement.Handlers
         public virtual void UpdateEditor(UpdateEditorContext context)
         {
         }
+
+
+        public virtual void Initializing(InitializingContentContext context)
+        {
+        }
+
+        public virtual void Initialized(InitializingContentContext context)
+        {
+        }
+
+        public virtual void Destroying(DestroyContentContext context)
+        {
+        }
+
+        public virtual void Destroyed(DestroyContentContext context)
+        {
+        }
     }
 }

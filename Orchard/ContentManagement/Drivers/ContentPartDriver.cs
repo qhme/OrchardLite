@@ -20,14 +20,15 @@ namespace Orchard.ContentManagement.Drivers
                 return null;
             }
 
-            DriverResult result = Display(part, context.DisplayType, context);
+            //DriverResult result = Display(part, context.DisplayType, context);
 
-            if (result != null)
-            {
-                result.ContentPart = part;
-            }
+            //if (result != null)
+            //{
+            //    result.ContentPart = part;
+            //}
 
-            return result;
+            //return result;
+            return null;
         }
 
         public DriverResult BuildEditor(Handlers.BuildEditorContext context)
@@ -39,14 +40,16 @@ namespace Orchard.ContentManagement.Drivers
                 return null;
             }
 
-            DriverResult result = Editor(part, context);
+            //DriverResult result = Editor(part, context);
 
-            if (result != null)
-            {
-                result.ContentPart = part;
-            }
+            //if (result != null)
+            //{
+            //    result.ContentPart = part;
+            //}
 
-            return result;
+            //return result;
+           
+            return null;
         }
 
         public DriverResult UpdateEditor(Handlers.UpdateEditorContext context)
@@ -58,48 +61,49 @@ namespace Orchard.ContentManagement.Drivers
                 return null;
             }
 
-            // checking if the editor needs to be updated (e.g. if it was not hidden)
-            var editor = Editor(part, context) as ContentShapeResult;
+            //// checking if the editor needs to be updated (e.g. if it was not hidden)
+            //var editor = Editor(part, context) as ContentShapeResult;
 
-            if (editor != null)
-            {
-                ShapeDescriptor descriptor;
-                if (context.ShapeTable.Descriptors.TryGetValue(editor.GetShapeType(), out descriptor))
-                {
-                    var placementContext = new ShapePlacementContext
-                    {
-                        Content = part.ContentItem,
-                        ContentType = part.ContentItem.ContentType,
-                        Differentiator = editor.GetDifferentiator(),
-                        DisplayType = null,
-                        Path = context.Path
-                    };
+            //if (editor != null)
+            //{
+            //    ShapeDescriptor descriptor;
+            //    if (context.ShapeTable.Descriptors.TryGetValue(editor.GetShapeType(), out descriptor))
+            //    {
+            //        var placementContext = new ShapePlacementContext
+            //        {
+            //            Content = part.ContentItem,
+            //            ContentType = part.ContentItem.ContentType,
+            //            Differentiator = editor.GetDifferentiator(),
+            //            DisplayType = null,
+            //            Path = context.Path
+            //        };
 
-                    var location = descriptor.Placement(placementContext).Location;
+            //        var location = descriptor.Placement(placementContext).Location;
 
-                    if (String.IsNullOrEmpty(location) || location == "-")
-                    {
-                        return editor;
-                    }
+            //        if (String.IsNullOrEmpty(location) || location == "-")
+            //        {
+            //            return editor;
+            //        }
 
-                    var editorGroup = editor.GetGroup() ?? "";
-                    var contextGroup = context.GroupId ?? "";
+            //        var editorGroup = editor.GetGroup() ?? "";
+            //        var contextGroup = context.GroupId ?? "";
 
-                    if (!String.Equals(editorGroup, contextGroup, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return editor;
-                    }
-                }
-            }
+            //        if (!String.Equals(editorGroup, contextGroup, StringComparison.OrdinalIgnoreCase))
+            //        {
+            //            return editor;
+            //        }
+            //    }
+            //}
 
-            DriverResult result = Editor(part, context.Updater, context.New);
+            //DriverResult result = Editor(part, context.Updater, context);
+            //if (result != null)
+            //{
+            //    result.ContentPart = part;
+            //}
 
-            if (result != null)
-            {
-                result.ContentPart = part;
-            }
+            //return result;
 
-            return result;
+            return null;
         }
 
         public IEnumerable<MetaData.ContentPartInfo> GetPartInfo()

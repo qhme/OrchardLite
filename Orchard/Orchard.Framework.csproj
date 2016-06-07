@@ -69,6 +69,9 @@
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="NHibernate.Linq">
+      <HintPath>..\packages\nhibernate.linq\NHibernate.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -137,13 +140,18 @@
     <Compile Include="Caching\Signals.cs" />
     <Compile Include="Caching\Weak.cs" />
     <Compile Include="ContentManagement\ContentExtensions.cs" />
+    <Compile Include="ContentManagement\ContentModule.cs" />
     <Compile Include="ContentManagement\ContentPart.cs" />
+    <Compile Include="ContentManagement\DataMigrations\FrameworkDataMigration.cs" />
+    <Compile Include="ContentManagement\DefaultContentDisplay.cs" />
+    <Compile Include="ContentManagement\DefaultContentManager.cs" />
+    <Compile Include="ContentManagement\DefaultContentManagerSession.cs" />
+    <Compile Include="ContentManagement\DefaultContentQuery.cs" />
     <Compile Include="ContentManagement\Drivers\ContentPartDriver.cs" />
     <Compile Include="ContentManagement\Drivers\ContentShapeResult.cs" />
     <Compile Include="ContentManagement\Drivers\Coordinators\ContentPartDriverCoordinator.cs" />
     <Compile Include="ContentManagement\Drivers\DriverResult.cs" />
     <Compile Include="ContentManagement\Drivers\IContentPartDriver.cs" />
-    <Compile Include="ContentManagement\FrameworkDataMigration.cs" />
     <Compile Include="ContentManagement\Handlers\ActivatedContentContext.cs" />
     <Compile Include="ContentManagement\Handlers\ActivatingContentContext.cs" />
     <Compile Include="ContentManagement\Handlers\BuildDisplayContext.cs" />
@@ -152,10 +160,17 @@
     <Compile Include="ContentManagement\Handlers\ContentContextBase.cs" />
     <Compile Include="ContentManagement\Handlers\ContentHandlerBase.cs" />
     <Compile Include="ContentManagement\Handlers\ContentItemBuilder.cs" />
+    <Compile Include="ContentManagement\Handlers\DestroyContentContext.cs" />
+    <Compile Include="ContentManagement\Handlers\IContentActivatingFilter.cs" />
     <Compile Include="ContentManagement\Handlers\IContentFilter.cs" />
     <Compile Include="ContentManagement\Handlers\IContentStorageFilter.cs" />
+    <Compile Include="ContentManagement\Handlers\IContentTemplateFilter.cs" />
+    <Compile Include="ContentManagement\Handlers\InitializingContentContext.cs" />
     <Compile Include="ContentManagement\Handlers\StorageFilterBase.cs" />
     <Compile Include="ContentManagement\Handlers\UpdateEditorContext.cs" />
+    <Compile Include="ContentManagement\IContentManager.cs" />
+    <Compile Include="ContentManagement\IContentManagerSession.cs" />
+    <Compile Include="ContentManagement\IContentQuery.cs" />
     <Compile Include="ContentManagement\IUpdateModel.cs" />
     <Compile Include="ContentManagement\MetaData\Builders\ContentTypeDefinitionBuilder.cs" />
     <Compile Include="ContentManagement\MetaData\ContentPartInfo.cs" />
@@ -166,13 +181,17 @@
     <Compile Include="ContentManagement\MetaData\Models\SettingsDictionary.cs" />
     <Compile Include="ContentManagement\MetaData\Services\ISettingsFormatter.cs" />
     <Compile Include="ContentManagement\MetaData\Services\SettingsFormatter.cs" />
-    <Compile Include="ContentManagement\Records\ContentItem.cs" />
+    <Compile Include="ContentManagement\QueryHints.cs" />
+    <Compile Include="ContentManagement\ContentItem.cs" />
     <Compile Include="ContentManagement\Handlers\ContentHandler.cs" />
     <Compile Include="ContentManagement\Handlers\CreateContentContext.cs" />
     <Compile Include="ContentManagement\Handlers\IContentHandler.cs" />
     <Compile Include="ContentManagement\Handlers\RemoveContentContext.cs" />
     <Compile Include="ContentManagement\Handlers\UpdateContentContext.cs" />
-    <Compile Include="ContentManagement\Records\IContent.cs" />
+    <Compile Include="ContentManagement\Records\ContentItemRecord.cs" />
+    <Compile Include="ContentManagement\Records\ContentPartRecord.cs" />
+    <Compile Include="ContentManagement\Records\ContentTypeRecord.cs" />
+    <Compile Include="ContentManagement\IContent.cs" />
     <Compile Include="ContentManagement\Utilities\LazyField.cs" />
     <Compile Include="Data\Conventions\CacheConventions.cs" />
     <Compile Include="Data\Conventions\CascadeAllDeleteOrphanAttribute.cs" />

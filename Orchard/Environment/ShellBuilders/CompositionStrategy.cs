@@ -57,6 +57,7 @@ namespace Orchard.Environment.ShellBuilders
             var httpControllers = BuildBlueprint(features, IsHttpController, BuildController, excludedTypes);
             var records = BuildBlueprint(features, IsRecord, (t, f) => BuildRecord(t, f, settings), excludedTypes);
 
+            
             var result = new ShellBlueprint
             {
                 Settings = settings,
@@ -178,7 +179,7 @@ namespace Orchard.Environment.ShellBuilders
             };
         }
 
-        private static bool IsRecord(Type type)
+        public static bool IsRecord(Type type)
         {
             return ((type.Namespace ?? "").EndsWith(".Models") || (type.Namespace ?? "").EndsWith(".Records")) &&
                    type.GetProperty("Id") != null &&

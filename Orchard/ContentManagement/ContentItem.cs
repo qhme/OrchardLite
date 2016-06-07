@@ -1,17 +1,19 @@
 ﻿using Orchard.ContentManagement.MetaData.Models;
+using Orchard.ContentManagement.Records;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Orchard.ContentManagement.Records
+namespace Orchard.ContentManagement
 {
     public class ContentItem : IContent
     {
+        public ContentItem()
+        {
+            _parts = new List<ContentPart>();
+        }
 
-
-        public virtual int Id { get; set; }
+        public int Id { get { return Record == null ? 0 : Record.Id; } }
 
         public override bool Equals(object obj)
         {
@@ -92,6 +94,13 @@ namespace Orchard.ContentManagement.Records
             _parts.Add(part);
         }
 
+        ContentItem IContent.ContentItem
+        {
+            get { return this; }
+        }
 
+        public IContentManager ContentManager { get; set; }
+
+        public ContentItemRecord Record { get; set; }
     }
 }

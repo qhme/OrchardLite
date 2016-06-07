@@ -1,0 +1,8 @@
+﻿Name: Contents
+AntiForgery: enabled
+Description: The contents module enables the creation of custom content types. 
+Features:
+    Contents
+        Name: Contents
+        Description: Default custom content type definition, creation and management.
+        Category: Core

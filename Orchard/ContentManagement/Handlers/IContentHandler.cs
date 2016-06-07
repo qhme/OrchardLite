@@ -10,6 +10,9 @@ namespace Orchard.ContentManagement.Handlers
     {
         void Activating(ActivatingContentContext context);
         void Activated(ActivatedContentContext context);
+
+        void Initializing(InitializingContentContext context);
+        void Initialized(InitializingContentContext context);
  
         void Creating(CreateContentContext context);
         void Created(CreateContentContext context);
@@ -21,5 +24,8 @@ namespace Orchard.ContentManagement.Handlers
         void BuildDisplay(BuildDisplayContext context);
         void BuildEditor(BuildEditorContext context);
         void UpdateEditor(UpdateEditorContext context);
+
+        void Destroying(DestroyContentContext context);
+        void Destroyed(DestroyContentContext context);
     }
 }

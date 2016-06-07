@@ -1,11 +1,14 @@
 using System.Web.Security;
 using Orchard.ContentManagement.Records;
 using Orchard.Security;
+using Orchard.ContentManagement;
 
 namespace Orchard.Users.Models
 {
-    public class UserRecord : ContentItem, IUser
+    public class UserRecord : IUser
     {
+        public virtual int Id { get; set; }
+
         public virtual string UserName { get; set; }
         public virtual string Email { get; set; }
         public virtual string NormalizedUserName { get; set; }

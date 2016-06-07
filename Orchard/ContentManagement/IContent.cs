@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Orchard.ContentManagement.Records
+namespace Orchard.ContentManagement
 {
     public interface IContent
     {

@@ -35,21 +35,7 @@ namespace Orchard.ContentManagement.Drivers
 
         private void ApplyImplementation(BuildShapeContext context, string displayType)
         {
-            var placement = context.FindPlacement(_shapeType, _differentiator, _defaultLocation);
-            if (string.IsNullOrEmpty(placement.Location) || placement.Location == "-")
-                return;
-
-            // parse group placement
-            var group = placement.GetGroup();
-            if (!String.IsNullOrEmpty(group))
-            {
-                _groupId = group;
-            }
-
-            if (!string.Equals(context.GroupId ?? "", _groupId ?? "", StringComparison.OrdinalIgnoreCase))
-                return;
-
-            dynamic parentShape = context.Shape;
+            //dynamic parentShape = context.Shape;
             context.ContentPart = ContentPart;
 
             var newShape = _shapeBuilder(context);
@@ -66,52 +52,21 @@ namespace Orchard.ContentManagement.Drivers
                 newShape.ContentPart = ContentPart;
             }
 
-            // add a ContentField property to the final shape 
-            if (ContentField != null && newShape.ContentField == null)
-            {
-                newShape.ContentField = ContentField;
-            }
 
-            ShapeMetadata newShapeMetadata = newShape.Metadata;
-            newShapeMetadata.Prefix = _prefix;
-            newShapeMetadata.DisplayType = displayType;
-            newShapeMetadata.PlacementSource = placement.Source;
 
-            // if a specific shape is provided, remove all previous alternates and wrappers
-            if (!String.IsNullOrEmpty(placement.ShapeType))
-            {
-                newShapeMetadata.Type = placement.ShapeType;
-                newShapeMetadata.Alternates.Clear();
-                newShapeMetadata.Wrappers.Clear();
-            }
+            //ShapeMetadata newShapeMetadata = newShape.Metadata;
+            //newShapeMetadata.Prefix = _prefix;
+            //newShapeMetadata.DisplayType = displayType;
 
-            foreach (var alternate in placement.Alternates)
-            {
-                newShapeMetadata.Alternates.Add(alternate);
-            }
 
-            foreach (var wrapper in placement.Wrappers)
-            {
-                newShapeMetadata.Wrappers.Add(wrapper);
-            }
-
-            // the zone name is in reference of Layout, e.g. /AsideSecond
-            if (placement.IsLayoutZone())
-            {
-                parentShape = context.Layout;
-            }
-
-            var position = placement.GetPosition();
-            var zone = placement.GetZone();
-
-            if (String.IsNullOrEmpty(position))
-            {
-                parentShape.Zones[zone].Add(newShape);
-            }
-            else
-            {
-                parentShape.Zones[zone].Add(newShape, position);
-            }
+            //if (String.IsNullOrEmpty(position))
+            //{
+            //    parentShape.Zones[zone].Add(newShape);
+            //}
+            //else
+            //{
+            //    parentShape.Zones[zone].Add(newShape, position);
+            //}
         }
 
         public ContentShapeResult Location(string zone)
@@ -153,4 +108,4 @@ namespace Orchard.ContentManagement.Drivers
         }
     }
 
- }
+}

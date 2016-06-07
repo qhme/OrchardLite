@@ -22,6 +22,7 @@ using Orchard.UI.Notify;
 using Orchard.UI.Resources;
 using Orchard.Data;
 using Orchard.Environment.Descriptor;
+using Orchard.ContentManagement;
 
 namespace Orchard.Setup
 {

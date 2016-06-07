@@ -33,26 +33,8 @@ namespace Orchard.ContentManagement
         public ContentTypePartDefinition TypePartDefinition { get; set; }
         public ContentPartDefinition PartDefinition { get { return TypePartDefinition.PartDefinition; } }
         public SettingsDictionary Settings { get { return TypePartDefinition.Settings; } }
- 
 
-        //public T Retrieve<T>(string fieldName)
-        //{
-        //    return InfosetHelper.Retrieve<T>(this, fieldName);
-        //}
-
-
-        //public virtual void Store<T>(string fieldName, T value)
-        //{
-        //    InfosetHelper.Store(this, fieldName, value);
-        //}
-
-
-        //public T RetrieveVersioned<T>(string fieldName)
-        //{
-        //    return this.Retrieve<T>(fieldName, true);
-        //}
-
-        //public virtual void StoreVersioned<T>(string fieldName, T value)
+         //public virtual void StoreVersioned<T>(string fieldName, T value)
         //{
         //    this.Store(fieldName, value, true);
         //}
@@ -60,7 +42,7 @@ namespace Orchard.ContentManagement
 
     public class ContentPart<TRecord> : ContentPart
     {
-        static protected bool IsVersionableRecord { get; private set; }
+        //static protected bool IsVersionableRecord { get; private set; }
 
         //static ContentPart()
         //{
