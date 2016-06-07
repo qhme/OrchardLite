@@ -28,5 +28,12 @@ namespace Orchard.ContentManagement
             return content == null ? default(T) : (T)content.ContentItem.Get(typeof(T));
         }
 
+
+        public static IEnumerable<T> AsPart<T>(this IEnumerable<ContentItem> items) where T : IContent
+        {
+            return items == null ? null : items.Where(item => item.Is<T>()).Select(item => item.As<T>());
+        }
+
+
     }
 }

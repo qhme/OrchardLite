@@ -3,6 +3,7 @@ using NHibernate.Criterion;
 using NHibernate.Impl;
 using NHibernate.Linq;
 using NHibernate.SqlCommand;
+using NHibernate.Transform;
 using Orchard.Caching;
 using Orchard.ContentManagement.Records;
 using Orchard.Data;
@@ -12,6 +13,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Orchard.ContentManagement;
+using Orchard.Utility.Extensions;
 
 namespace Orchard.ContentManagement
 {
@@ -185,9 +188,8 @@ namespace Orchard.ContentManagement
 
         private IEnumerable<ContentItem> Slice(int skip, int count)
         {
-            var criteria = BindItemVersionCriteria();
+            var criteria = BindItemCriteria();
 
-            criteria.ApplyVersionOptionsRestrictions(_versionOptions);
 
             criteria.SetFetchMode("ContentItemRecord", FetchMode.Eager);
             criteria.SetFetchMode("ContentItemRecord.ContentType", FetchMode.Eager);
@@ -203,18 +205,17 @@ namespace Orchard.ContentManagement
             }
 
             return criteria
-                .List<ContentItemVersionRecord>()
-                .Select(x => ContentManager.Get(x.ContentItemRecord.Id, _versionOptions != null && _versionOptions.IsDraftRequired ? _versionOptions : VersionOptions.VersionRecord(x.Id)))
+                .List<ContentItemRecord>()
+                .Select(x => ContentManager.Get(x.Id))
                 .ToReadOnlyCollection();
         }
 
 
         int Count()
         {
-            var criteria = (ICriteria)BindItemVersionCriteria().Clone();
+            var criteria = (ICriteria)BindItemCriteria().Clone();
             criteria.ClearOrders();
 
-            criteria.ApplyVersionOptionsRestrictions(_versionOptions);
 
             return criteria.SetProjection(Projections.RowCount()).UniqueResult<Int32>();
         }
@@ -226,11 +227,10 @@ namespace Orchard.ContentManagement
                 return;
             }
 
-            var contentItemVersionCriteria = BindItemVersionCriteria();
+            //var contentItemVersionCriteria = BindItemVersionCriteria();
             var contentItemCriteria = BindItemCriteria();
 
             var contentItemMetadata = _session.SessionFactory.GetClassMetadata(typeof(ContentItemRecord));
-            var contentItemVersionMetadata = _session.SessionFactory.GetClassMetadata(typeof(ContentItemVersionRecord));
 
             // break apart and group hints by their first segment
             var hintDictionary = hints.Records
@@ -239,21 +239,21 @@ namespace Orchard.ContentManagement
                 .ToDictionary(grouping => grouping.Key, StringComparer.InvariantCultureIgnoreCase);
 
             // locate hints that match properties in the ContentItemVersionRecord
-            foreach (var hit in contentItemVersionMetadata.PropertyNames.Where(hintDictionary.ContainsKey).SelectMany(key => hintDictionary[key]))
-            {
-                contentItemVersionCriteria.SetFetchMode(hit.Hint, FetchMode.Eager);
-                hit.Segments.Take(hit.Segments.Count() - 1).Aggregate(contentItemVersionCriteria, ExtendCriteria);
-            }
+            //foreach (var hit in contentItemVersionMetadata.PropertyNames.Where(hintDictionary.ContainsKey).SelectMany(key => hintDictionary[key]))
+            //{
+            //    contentItemVersionCriteria.SetFetchMode(hit.Hint, FetchMode.Eager);
+            //    hit.Segments.Take(hit.Segments.Count() - 1).Aggregate(contentItemVersionCriteria, ExtendCriteria);
+            //}
 
             // locate hints that match properties in the ContentItemRecord
-            foreach (var hit in contentItemMetadata.PropertyNames.Where(hintDictionary.ContainsKey).SelectMany(key => hintDictionary[key]))
-            {
-                contentItemVersionCriteria.SetFetchMode("ContentItemRecord." + hit.Hint, FetchMode.Eager);
-                hit.Segments.Take(hit.Segments.Count() - 1).Aggregate(contentItemCriteria, ExtendCriteria);
-            }
+            //foreach (var hit in contentItemMetadata.PropertyNames.Where(hintDictionary.ContainsKey).SelectMany(key => hintDictionary[key]))
+            //{
+            //    contentItemVersionCriteria.SetFetchMode("ContentItemRecord." + hit.Hint, FetchMode.Eager);
+            //    hit.Segments.Take(hit.Segments.Count() - 1).Aggregate(contentItemCriteria, ExtendCriteria);
+            //}
 
-            if (hintDictionary.SelectMany(x => x.Value).Any(x => x.Segments.Count() > 1))
-                contentItemVersionCriteria.SetResultTransformer(new DistinctRootEntityResultTransformer());
+            //if (hintDictionary.SelectMany(x => x.Value).Any(x => x.Segments.Count() > 1))
+            //    contentItemVersionCriteria.SetResultTransformer(new DistinctRootEntityResultTransformer());
         }
 
         void WithQueryHintsFor(string contentType)
@@ -313,11 +313,6 @@ namespace Orchard.ContentManagement
                 return this;
             }
 
-            IContentQuery<T> IContentQuery<T>.ForVersion(VersionOptions options)
-            {
-                _query.ForVersion(options);
-                return this;
-            }
 
             IContentQuery<T> IContentQuery<T>.ForContentItems(IEnumerable<int> ids)
             {
@@ -387,12 +382,6 @@ namespace Orchard.ContentManagement
             {
             }
 
-            IContentQuery<T, TR> IContentQuery<T, TR>.ForVersion(VersionOptions options)
-            {
-                _query.ForVersion(options);
-                return this;
-            }
-
             IContentQuery<T, TR> IContentQuery<T, TR>.Where(Expression<Func<TR, bool>> predicate)
             {
                 _query.Where(predicate);
@@ -425,41 +414,5 @@ namespace Orchard.ContentManagement
         }
     }
 
-    internal static class CriteriaExtensions
-    {
-        internal static void ApplyVersionOptionsRestrictions(this ICriteria criteria, VersionOptions versionOptions)
-        {
-            if (versionOptions == null)
-            {
-                criteria.Add(Restrictions.Eq("Published", true));
-            }
-            else if (versionOptions.IsPublished)
-            {
-                criteria.Add(Restrictions.Eq("Published", true));
-            }
-            else if (versionOptions.IsLatest)
-            {
-                criteria.Add(Restrictions.Eq("Latest", true));
-            }
-            else if (versionOptions.IsDraft && !versionOptions.IsDraftRequired)
-            {
-                criteria.Add(Restrictions.And(
-                    Restrictions.Eq("Latest", true),
-                    Restrictions.Eq("Published", false)));
-            }
-            else if (versionOptions.IsDraft || versionOptions.IsDraftRequired)
-            {
-                criteria.Add(Restrictions.Eq("Latest", true));
-            }
-            else if (versionOptions.IsAllVersions)
-            {
-                // no-op... all versions will be returned by default
-            }
-            else
-            {
-                throw new ApplicationException("Invalid VersionOptions for content query");
-            }
-        }
-    }
 
 }

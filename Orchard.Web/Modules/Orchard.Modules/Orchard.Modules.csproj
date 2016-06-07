@@ -115,9 +115,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ModuleEntry.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Admin\Recipes.cshtml" />
   </ItemGroup>
   <ItemGroup>
