@@ -27,7 +27,7 @@ namespace Orchard.ContentManagement
         /// </summary>
         /// <param name="contentItem">The content instance filled with all necessary data</param>
         void Create(ContentItem contentItem);
-  
+
 
         /// <summary>
         /// Gets the content item with the specified id

@@ -186,7 +186,7 @@ namespace Orchard.ContentManagement
         public IContentQuery<ContentItem> Query()
         {
             var query = _context.Resolve<IContentQuery>(TypedParameter.From<IContentManager>(this));
-            return query.ForPart<ContentItem>();
+            return query.ForPart<ContentItem>();    
         }
     }
 }

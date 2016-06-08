@@ -106,7 +106,8 @@
     <Content Include="Dashboard\Views\Shared\Pager.cshtml" />
     <Content Include="Dashboard\Views\Shared\Title.cshtml" />
     <Content Include="Dashboard\Views\Shared\User.cshtml" />
-    <Content Include="packages.config" />
+    <Content Include="Contents\Views\ContentTypes\Index.cshtml" />
+    <Content Include="Contents\Views\ContentTypes\ListParts.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -168,7 +169,18 @@
   <ItemGroup>
     <Compile Include="Contents\AdminMenu.cs" />
     <Compile Include="Contents\Controllers\AdminController.cs" />
+    <Compile Include="Contents\Controllers\ContentTypesController.cs" />
+    <Compile Include="Contents\Extensions\StringExtensions.cs" />
+    <Compile Include="Contents\Permissions.cs" />
+    <Compile Include="Contents\Services\ContentDefinitionService.cs" />
+    <Compile Include="Contents\Services\IContentDefinitionService.cs" />
+    <Compile Include="Contents\ViewModels\CreateTypeViewModel.cs" />
+    <Compile Include="Contents\ViewModels\EditPartViewModel.cs" />
+    <Compile Include="Contents\ViewModels\EditTypePartViewModel.cs" />
+    <Compile Include="Contents\ViewModels\EditTypeViewModel.cs" />
+    <Compile Include="Contents\ViewModels\ListContentPartsViewModel.cs" />
     <Compile Include="Contents\ViewModels\ListContentsViewModel.cs" />
+    <Compile Include="Contents\ViewModels\ListContentTypesViewModel.cs" />
     <Compile Include="Dashboard\AdminMenu.cs" />
     <Compile Include="Dashboard\Controllers\AdminController.cs" />
     <Compile Include="Dashboard\Routes.cs" />

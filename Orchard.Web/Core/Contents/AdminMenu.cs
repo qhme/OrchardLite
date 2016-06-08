@@ -19,7 +19,6 @@ namespace Orchard.Core.Contents
             _contentManager = contentManager;
         }
 
-
         public string MenuName { get { return "admin"; } }
 
         public void GetNavigation(NavigationBuilder builder)
@@ -27,7 +26,15 @@ namespace Orchard.Core.Contents
             var contentTypeDefinitions = _contentDefinitionManager.ListTypeDefinitions().OrderBy(d => d.Name);
             builder.AddImageSet("content")
                 .Add("Content", "1.4", menu => menu
-                    .Add("Content Items", "1", item => item.Action("List", "Admin", new { area = "Contents", id = "" }).LocalNav()));
+                    .Add("Content Items", "1", item => item.Action("List", "Admin", new { area = "Contents", id = "" })));
+
+            builder.AddImageSet("contenttypes");
+            builder.Add("Content Definition", "1.4.1", menu =>
+            {
+                menu.LinkToFirstChild(true);
+                menu.Add("Content Types", "1", item => item.Action("Index", "ContentTypes", new { area = "Contents" }).LocalNav());
+                menu.Add("Content Parts", "2", item => item.Action("ListParts", "ContentTypes", new { area = "Contents" }).LocalNav());
+            });
         }
     }
 }

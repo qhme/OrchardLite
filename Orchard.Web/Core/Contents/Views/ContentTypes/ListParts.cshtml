@@ -1,0 +1,14 @@
+﻿@using Orchard.Core.Contents.ViewModels
+@model ListContentPartsViewModel
+@{
+    ViewBag.Title = "Content Part";
+}
+
+<ul class="contentItems">
+    @foreach (var type in Model.Parts)
+    {
+        <li data-record-text="@type.DisplayName">
+            @Html.DisplayFor(m => type)
+        </li>
+    }
+</ul>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Orchard.Data;
 using Orchard.Security;
 using Orchard.UI.Notify;
+using Orchard.ContentManagement;
 
 namespace Orchard
 {
@@ -14,7 +15,8 @@ namespace Orchard
     /// </summary>
     public interface IOrchardServices : IDependency
     {
-        //IContentManager ContentManager { get; }
+        IContentManager ContentManager { get; }
+
         ITransactionManager TransactionManager { get; }
         IAuthorizer Authorizer { get; }
         INotifier Notifier { get; }
