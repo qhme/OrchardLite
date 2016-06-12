@@ -34,10 +34,9 @@ namespace Orchard.ContentManagement.Drivers.Coordinators
                 return;
 
             var partInfos = _drivers.SelectMany(cpp => cpp.GetPartInfo()).ToList();
-
             foreach (var typePartDefinition in contentTypeDefinition.Parts)
             {
-                var partName = typePartDefinition.PartDefinition.Name;
+                var partName = typePartDefinition.PartName;
                 var partInfo = partInfos.FirstOrDefault(pi => pi.PartName == partName);
                 var part = partInfo != null
                     ? partInfo.Factory(typePartDefinition)

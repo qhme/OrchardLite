@@ -58,13 +58,13 @@ namespace Orchard.Core.Settings
 
         public int UpdateFrom2()
         {
-            SchemaBuilder.CreateTable("ContentPartDefinitionRecord",
-             table => table
-                 .Column<int>("Id", column => column.PrimaryKey().Identity())
-                 .Column<string>("Name")
-                 .Column<bool>("Hidden")
-                 .Column<string>("Settings", column => column.Unlimited())
-             );
+            //SchemaBuilder.CreateTable("ContentPartDefinitionRecord",
+            // table => table
+            //     .Column<int>("Id", column => column.PrimaryKey().Identity())
+            //     .Column<string>("Name")
+            //     .Column<bool>("Hidden")
+            //     .Column<string>("Settings", column => column.Unlimited())
+            // );
 
             SchemaBuilder.CreateTable("ContentTypeDefinitionRecord",
                table => table
@@ -83,6 +83,17 @@ namespace Orchard.Core.Settings
                   .Column<int>("ContentTypeDefinitionRecord_Id")
               );
             return 3;
+        }
+
+        public int UpdateFrom3()
+        {
+            SchemaBuilder.DropTable("ContentPartDefinitionRecord");
+            SchemaBuilder.AlterTable("ContentTypePartDefinitionRecord", table =>
+            {
+                table.DropColumn("ContentPartDefinitionRecord_id");
+                table.AddColumn<string>("PartName");
+            });
+            return 4;
         }
     }
 }

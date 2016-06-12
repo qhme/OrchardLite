@@ -32,7 +32,7 @@ namespace Orchard.Core.Contents.ViewModels
         private IEnumerable<EditTypePartViewModel> GetTypeParts(ContentTypeDefinition contentTypeDefinition)
         {
             return contentTypeDefinition.Parts
-                .Where(p => !string.Equals(p.PartDefinition.Name, Name, StringComparison.OrdinalIgnoreCase))
+                .Where(p => !string.Equals(p.PartName, Name, StringComparison.OrdinalIgnoreCase))
                 .Select((p, i) => new EditTypePartViewModel(i, p) { Type = this });
         }
     }

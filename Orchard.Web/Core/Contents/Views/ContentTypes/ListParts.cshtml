@@ -3,12 +3,15 @@
 @{
     ViewBag.Title = "Content Part";
 }
-
 <ul class="contentItems">
     @foreach (var type in Model.Parts)
     {
         <li data-record-text="@type.DisplayName">
-            @Html.DisplayFor(m => type)
+            <div class="summary">
+                <div class="properties">
+                    <h3>@type.DisplayName</h3>
+                </div>
+            </div>
         </li>
     }
 </ul>

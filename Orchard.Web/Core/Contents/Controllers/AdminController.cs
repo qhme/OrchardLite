@@ -26,10 +26,8 @@ namespace Orchard.Core.Contents.Controllers
         public ILogger Logger { get; set; }
 
         public AdminController(IOrchardServices orchardServices,
-            IContentManager contentManager,
-            IContentDefinitionManager contentDefinitionManager,
-            ITransactionManager transactionManager,
-            ISiteService siteService)
+            IContentManager contentManager, IContentDefinitionManager contentDefinitionManager,
+            ITransactionManager transactionManager, ISiteService siteService)
         {
             Services = orchardServices;
             _contentManager = contentManager;
@@ -73,8 +71,6 @@ namespace Orchard.Core.Contents.Controllers
             //        query = query.OrderByDescending<CommonPartRecord>(cr => cr.CreatedUtc);
             //        break;
             //}
- 
-
 
             var maxPagedCount = _siteService.GetSiteSettings().MaxPagedCount;
             if (maxPagedCount > 0 && pager.PageSize > maxPagedCount)

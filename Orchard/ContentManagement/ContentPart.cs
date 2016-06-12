@@ -13,12 +13,7 @@ namespace Orchard.ContentManagement
 {
     public class ContentPart : IContent
     {
-        public ContentPart()
-        {
-        }
-
         public virtual ContentItem ContentItem { get; set; }
-
 
         /// <summary>
         /// The ContentItem's identifier.
@@ -31,13 +26,10 @@ namespace Orchard.ContentManagement
 
         public ContentTypeDefinition TypeDefinition { get { return ContentItem.TypeDefinition; } }
         public ContentTypePartDefinition TypePartDefinition { get; set; }
-        public ContentPartDefinition PartDefinition { get { return TypePartDefinition.PartDefinition; } }
-        public SettingsDictionary Settings { get { return TypePartDefinition.Settings; } }
 
-         //public virtual void StoreVersioned<T>(string fieldName, T value)
-        //{
-        //    this.Store(fieldName, value, true);
-        //}
+        public string PartName { get { return TypePartDefinition.PartName; } }
+
+        public SettingsDictionary Settings { get { return TypePartDefinition.Settings; } }
     }
 
     public class ContentPart<TRecord> : ContentPart
@@ -69,14 +61,7 @@ namespace Orchard.ContentManagement
         //    return InfosetHelper.Retrieve(this, targetExpression, (Func<TRecord, TProperty>)(x => defaultValue));
         //}
 
-        //protected ContentPart<TRecord> Store<TProperty>(
-        //    Expression<Func<TRecord, TProperty>> targetExpression,
-        //    TProperty value)
-        //{
 
-        //    InfosetHelper.Store(this, targetExpression, value);
-        //    return this;
-        //}
 
         public readonly LazyField<TRecord> _record = new LazyField<TRecord>();
         public TRecord Record { get { return _record.Value; } set { _record.Value = value; } }

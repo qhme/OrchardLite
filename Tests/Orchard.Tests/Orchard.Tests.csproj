@@ -68,6 +68,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Orchard.Web\Modules\Orchard.Content2\Orchard.Content2.csproj">
+      <Project>{4fa0a396-23db-4675-988a-143b7c95b308}</Project>
+      <Name>Orchard.Content2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Orchard\Orchard.Framework.csproj">
       <Project>{3cd19daf-efb6-43bf-8bd1-f637db3a582f}</Project>
       <Name>Orchard.Framework</Name>

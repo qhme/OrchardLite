@@ -129,7 +129,7 @@ namespace Orchard.Core.Contents.Services
             var partDefinitions = typeDefinition.Parts.ToArray();
             foreach (var partDefinition in partDefinitions)
             {
-                RemovePartFromType(partDefinition.PartDefinition.Name, name);
+                RemovePartFromType(partDefinition.PartName, name);
             }
 
             _contentDefinitionManager.DeleteTypeDefinition(name);
@@ -163,8 +163,7 @@ namespace Orchard.Core.Contents.Services
 
         public IEnumerable<EditPartViewModel> GetParts()
         {
-            var typeNames = new HashSet<string>(GetTypes().Select(ctd => ctd.Name));
-
+            //var typeNames = new HashSet<string>(GetTypes().Select(ctd => ctd.Name));
             // user-defined parts
             // except for those parts with the same name as a type (implicit type's part or a mistake)
             //var userContentParts = _contentDefinitionManager.ListPartDefinitions()
@@ -177,30 +176,17 @@ namespace Orchard.Core.Contents.Services
             // code-defined parts
             var codeDefinedParts = _contentPartDrivers
                     .SelectMany(d => d.GetPartInfo()
-                        .Where(cpd => !userContentParts.ContainsKey(cpd.PartName))
-                        .Select(cpi => new EditPartViewModel { Name = cpi.PartName, DisplayName = cpi.PartName }))
+                        //.Where(cpd => !userContentParts.ContainsKey(cpd.PartName))
+                        .Select(cpi => new EditPartViewModel (cpi.PartName)))
                     .ToList();
 
             // Order by display name
-            return codeDefinedParts
-                .Union(userContentParts.Values)
-                .OrderBy(m => m.DisplayName);
+            return codeDefinedParts;
+            //return codeDefinedParts
+            //    .Union(userContentParts.Values)
+            //    .OrderBy(m => m.DisplayName);
         }
 
-        public EditPartViewModel GetPart(string name)
-        {
-            var contentPartDefinition = _contentDefinitionManager.GetPartDefinition(name);
-
-            if (contentPartDefinition == null)
-                return null;
-
-            var viewModel = new EditPartViewModel(contentPartDefinition)
-            {
-                //Templates = _contentDefinitionEditorEvents.PartEditor(contentPartDefinition)
-            };
-
-            return viewModel;
-        }
 
         class Updater : IUpdateModel
         {

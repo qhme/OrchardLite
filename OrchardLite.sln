@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Users", "Orchard.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Alias", "Orchard.Web\Modules\Orchard.Alias\Orchard.Alias.csproj", "{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Content1", "Orchard.Web\Modules\Orchard.Content1\Orchard.Content1.csproj", "{132F25A1-1FAB-49C9-BC93-9BC436D894BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Content2", "Orchard.Web\Modules\Orchard.Content2\Orchard.Content2.csproj", "{4FA0A396-23DB-4675-988A-143B7C95B308}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +101,14 @@ Global
 		{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{132F25A1-1FAB-49C9-BC93-9BC436D894BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{132F25A1-1FAB-49C9-BC93-9BC436D894BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{132F25A1-1FAB-49C9-BC93-9BC436D894BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{132F25A1-1FAB-49C9-BC93-9BC436D894BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FA0A396-23DB-4675-988A-143B7C95B308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FA0A396-23DB-4675-988A-143B7C95B308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FA0A396-23DB-4675-988A-143B7C95B308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FA0A396-23DB-4675-988A-143B7C95B308}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +124,8 @@ Global
 		{D777099A-F7B1-48BE-A6D6-C6390488571A} = {05D12875-0866-4066-A132-9E704AFE48D6}
 		{79AED36E-ABD0-4747-93D3-8722B042454B} = {05D12875-0866-4066-A132-9E704AFE48D6}
 		{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C} = {05D12875-0866-4066-A132-9E704AFE48D6}
+		{132F25A1-1FAB-49C9-BC93-9BC436D894BD} = {05D12875-0866-4066-A132-9E704AFE48D6}
+		{4FA0A396-23DB-4675-988A-143B7C95B308} = {05D12875-0866-4066-A132-9E704AFE48D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .

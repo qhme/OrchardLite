@@ -20,6 +20,5 @@ namespace Orchard.Core.Contents.Services
         void RemovePartFromType(string partName, string typeName);
         string GenerateContentTypeNameFromDisplayName(string displayName);
         IEnumerable<EditPartViewModel> GetParts();
-        EditPartViewModel GetPart(string name);
     }
 }

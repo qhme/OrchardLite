@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Orchard.Content2.Models2;
 using Orchard.ContentManagement;
 using Orchard.Environment.ShellBuilders;
 using System;
@@ -15,7 +16,7 @@ namespace Orchard.Tests
         [Test]
         public void IsRecord()
         {
-            var isRecord = CompositionStrategy.IsRecord(typeof(ContentItem));
+            var isRecord = CompositionStrategy.IsRecord(typeof(C2Part));
 
             Assert.AreEqual(false, isRecord);
         }

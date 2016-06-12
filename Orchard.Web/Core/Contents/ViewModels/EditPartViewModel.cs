@@ -11,16 +11,9 @@ namespace Orchard.Core.Contents.ViewModels
 {
     public class EditPartViewModel
     {
-        public EditPartViewModel()
+        public EditPartViewModel(string partName)
         {
-            Settings = new SettingsDictionary();
-        }
-
-        public EditPartViewModel(ContentPartDefinition contentPartDefinition)
-        {
-            Name = contentPartDefinition.Name;
-            Settings = contentPartDefinition.Settings;
-            _Definition = contentPartDefinition;
+            Name = partName;
         }
 
         public string Prefix { get { return "PartDefinition"; } }
@@ -34,13 +27,6 @@ namespace Orchard.Core.Contents.ViewModels
             set { _displayName = value; }
         }
 
-        public string Description
-        {
-            get { return Settings.ContainsKey("ContentPartSettings.Description") ? Settings["ContentPartSettings.Description"] : null; }
-            set { Settings["ContentPartSettings.Description"] = value; }
-        }
-  
-        public SettingsDictionary Settings { get; set; }
-        public ContentPartDefinition _Definition { get; private set; }
+
     }
 }

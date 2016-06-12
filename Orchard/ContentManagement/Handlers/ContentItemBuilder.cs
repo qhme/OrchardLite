@@ -41,20 +41,17 @@ namespace Orchard.ContentManagement.Handlers
         /// <returns>A new Content Item Builder with the item having the new part welded.</returns>
         public ContentItemBuilder Weld<TPart>() where TPart : ContentPart, new()
         {
-
             // if the part hasn't be weld yet
             if (_item.Parts.FirstOrDefault(part => part.GetType().Equals(typeof(TPart))) == null)
             {
                 var partName = typeof(TPart).Name;
 
                 // obtain the type definition for the part
-                var typePartDefinition = _definition.Parts.FirstOrDefault(p => p.PartDefinition.Name == partName);
+                var typePartDefinition = _definition.Parts.FirstOrDefault(p => p.PartName == partName);
                 if (typePartDefinition == null)
                 {
                     // If the content item's type definition does not define the part; use an empty type definition.
-                    typePartDefinition = new ContentTypePartDefinition(
-                        new ContentPartDefinition(partName),
-                        new SettingsDictionary());
+                    typePartDefinition = new ContentTypePartDefinition(partName, new SettingsDictionary());
                 }
 
                 // build and weld the part

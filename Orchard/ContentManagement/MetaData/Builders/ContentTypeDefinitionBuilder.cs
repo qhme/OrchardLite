@@ -64,7 +64,7 @@ namespace Orchard.ContentManagement.MetaData.Builders
 
         public ContentTypeDefinitionBuilder RemovePart(string partName)
         {
-            var existingPart = _parts.SingleOrDefault(x => x.PartDefinition.Name == partName);
+            var existingPart = _parts.SingleOrDefault(x => x.PartName == partName);
             if (existingPart != null)
             {
                 _parts.Remove(existingPart);
@@ -72,31 +72,22 @@ namespace Orchard.ContentManagement.MetaData.Builders
             return this;
         }
 
-      
-        public ContentTypeDefinitionBuilder WithPart(string partName )
-        {
-            return WithPart(new ContentPartDefinition(partName));
-        }
 
-        public ContentTypeDefinitionBuilder WithPart(ContentPartDefinition partDefinition)
+        public ContentTypeDefinitionBuilder WithPart(string partName)
         {
-            var existingPart = _parts.SingleOrDefault(x => x.PartDefinition.Name == partDefinition.Name);
+            var existingPart = _parts.SingleOrDefault(x => x.PartName == partName);
             if (existingPart != null)
             {
                 _parts.Remove(existingPart);
             }
             else
             {
-                existingPart = new ContentTypePartDefinition(partDefinition, new SettingsDictionary());
+                existingPart = new ContentTypePartDefinition(partName, new SettingsDictionary());
             }
 
             _parts.Add(existingPart);
-            //var configurer = new PartConfigurerImpl(existingPart);
-            //configuration(configurer);
-            //_parts.Add(configurer.Build());
             return this;
         }
-
-     }
+    }
 
 }

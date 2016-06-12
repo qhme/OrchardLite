@@ -13,6 +13,8 @@ using Orchard.Environment.Extensions.Models;
 using Orchard.Environment.ShellBuilders.Models;
 using Orchard.Logging;
 using System.Web.Http.Controllers;
+using Orchard.ContentManagement.Records;
+using Orchard.ContentManagement;
 
 namespace Orchard.Environment.ShellBuilders
 {
@@ -185,7 +187,8 @@ namespace Orchard.Environment.ShellBuilders
                    type.GetProperty("Id") != null &&
                    (type.GetProperty("Id").GetAccessors() ?? Enumerable.Empty<MethodInfo>()).All(x => x.IsVirtual) &&
                    !type.IsSealed &&
-                   !type.IsAbstract;
+                   !type.IsAbstract &&
+                   (!typeof(IContent).IsAssignableFrom(type) || typeof(ContentPartRecord).IsAssignableFrom(type));
         }
 
         private static RecordBlueprint BuildRecord(Type type, Feature feature, ShellSettings settings)

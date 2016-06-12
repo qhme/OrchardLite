@@ -117,5 +117,11 @@ namespace Orchard.ContentManagement.Drivers
 
             return contentPartInfo;
         }
+
+        protected virtual DriverResult Display(TContent part, string displayType) { return null; }
+        protected virtual DriverResult Editor(TContent part) { return null; }
+        protected virtual DriverResult Editor(TContent part, IUpdateModel updater) { return null; }
+
+
     }
 }

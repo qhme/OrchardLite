@@ -43,19 +43,15 @@ namespace Orchard.Core.Contents.Controllers
 
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public ActionResult List()
-        {
             if (!Services.Authorizer.Authorize(Permissions.ViewContentTypes, "Not allowed to view content types."))
                 return new HttpUnauthorizedResult();
 
-            return View("List", new ListContentTypesViewModel
+            return View(new ListContentTypesViewModel
             {
                 Types = _contentDefinitionService.GetTypes()
             });
         }
+
 
         public ActionResult Create(string suggestion)
         {
@@ -122,10 +118,9 @@ namespace Orchard.Core.Contents.Controllers
             return View(new ListContentPartsViewModel
             {
                 // only user-defined parts (not code as they are not configurable)
-                Parts = _contentDefinitionService.GetParts(true/*metadataPartsOnly*/)
-            }); 
+                Parts = _contentDefinitionService.GetParts()
+            });
         }
-
 
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties)
         {

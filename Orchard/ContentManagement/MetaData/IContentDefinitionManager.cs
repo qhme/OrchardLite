@@ -12,13 +12,10 @@ namespace Orchard.ContentManagement.MetaData
     public interface IContentDefinitionManager : IDependency
     {
         IEnumerable<ContentTypeDefinition> ListTypeDefinitions();
-        IEnumerable<ContentPartDefinition> ListPartDefinitions();
 
         ContentTypeDefinition GetTypeDefinition(string name);
-        ContentPartDefinition GetPartDefinition(string name);
 
         void DeleteTypeDefinition(string name);
-        void DeletePartDefinition(string name);
 
         void StoreTypeDefinition(ContentTypeDefinition contentTypeDefinition);
     }
