@@ -108,6 +108,7 @@
     <Content Include="Dashboard\Views\Shared\User.cshtml" />
     <Content Include="Contents\Views\ContentTypes\Index.cshtml" />
     <Content Include="Contents\Views\ContentTypes\ListParts.cshtml" />
+    <Content Include="Contents\Views\ContentTypes\Edit.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -174,7 +175,6 @@
     <Compile Include="Contents\Permissions.cs" />
     <Compile Include="Contents\Services\ContentDefinitionService.cs" />
     <Compile Include="Contents\Services\IContentDefinitionService.cs" />
-    <Compile Include="Contents\ViewModels\CreateTypeViewModel.cs" />
     <Compile Include="Contents\ViewModels\EditPartViewModel.cs" />
     <Compile Include="Contents\ViewModels\EditTypePartViewModel.cs" />
     <Compile Include="Contents\ViewModels\EditTypeViewModel.cs" />
@@ -221,7 +221,6 @@
     <Compile Include="Settings\Descriptor\Records\ShellParameterRecord.cs" />
     <Compile Include="Settings\Descriptor\ShellDescriptorManager.cs" />
     <Compile Include="Settings\Handlers\SiteSettingsPartHandler.cs" />
-    <Compile Include="Settings\Metadata\Records\ContentTypeDefinitionRecord.cs" />
     <Compile Include="Settings\Metadata\Records\ContentTypePartDefinitionRecord.cs" />
     <Compile Include="Settings\Migrations.cs" />
     <Compile Include="Settings\Models\SettingRecord.cs" />

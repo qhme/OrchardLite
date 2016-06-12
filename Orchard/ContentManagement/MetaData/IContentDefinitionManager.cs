@@ -15,8 +15,6 @@ namespace Orchard.ContentManagement.MetaData
 
         ContentTypeDefinition GetTypeDefinition(string name);
 
-        void DeleteTypeDefinition(string name);
-
         void StoreTypeDefinition(ContentTypeDefinition contentTypeDefinition);
     }
 
@@ -24,7 +22,7 @@ namespace Orchard.ContentManagement.MetaData
     {
         public static void AlterTypeDefinition(this IContentDefinitionManager manager, string name, Action<ContentTypeDefinitionBuilder> alteration)
         {
-            var typeDefinition = manager.GetTypeDefinition(name) ?? new ContentTypeDefinition(name, name.CamelFriendly());
+            var typeDefinition = manager.GetTypeDefinition(name) ?? new ContentTypeDefinition(name);
             var builder = new ContentTypeDefinitionBuilder(typeDefinition);
             alteration(builder);
             manager.StoreTypeDefinition(builder.Build());

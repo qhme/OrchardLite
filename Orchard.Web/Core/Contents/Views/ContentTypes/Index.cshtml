@@ -1,3 +1,21 @@
-﻿@{
+﻿@model Orchard.Core.Contents.ViewModels.ListContentTypesViewModel
+@{
     ViewBag.Title = "Content Types";
 }
+
+<ul class="contentItems">
+    @foreach (var type in Model.Types)
+    {
+        <li data-record-text="@type.Name">
+            <div class="summary">
+                <div class="properties">
+                    <h3>@type.Name</h3> @if (!string.IsNullOrWhiteSpace(type.Description))
+                    { <text><span class="stereotype" title="Stereotype">- @type.Description</span></text>}
+                </div>
+                <div class="related">
+                    @Html.ActionLink(T("Edit").ToString(), "Edit", new { id = type.Name })
+                </div>
+            </div>
+        </li>
+    }
+</ul>

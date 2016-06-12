@@ -10,9 +10,7 @@ namespace Orchard.ContentManagement.MetaData.Builders
     public class ContentTypeDefinitionBuilder
     {
         private string _name;
-        private string _displayName;
         private readonly IList<ContentTypePartDefinition> _parts;
-        private readonly SettingsDictionary _settings;
 
         public ContentTypeDefinition Current { get; private set; }
 
@@ -28,20 +26,17 @@ namespace Orchard.ContentManagement.MetaData.Builders
             if (existing == null)
             {
                 _parts = new List<ContentTypePartDefinition>();
-                _settings = new SettingsDictionary();
             }
             else
             {
                 _name = existing.Name;
-                _displayName = existing.DisplayName;
                 _parts = existing.Parts.ToList();
-                _settings = new SettingsDictionary(existing.Settings.ToDictionary(kv => kv.Key, kv => kv.Value));
             }
         }
 
         public ContentTypeDefinition Build()
         {
-            return new ContentTypeDefinition(_name, _displayName, _parts, _settings);
+            return new ContentTypeDefinition(_name, _parts);
         }
 
         public ContentTypeDefinitionBuilder Named(string name)
@@ -52,13 +47,11 @@ namespace Orchard.ContentManagement.MetaData.Builders
 
         public ContentTypeDefinitionBuilder DisplayedAs(string displayName)
         {
-            _displayName = displayName;
             return this;
         }
 
         public ContentTypeDefinitionBuilder WithSetting(string name, string value)
         {
-            _settings[name] = value;
             return this;
         }
 
@@ -72,8 +65,7 @@ namespace Orchard.ContentManagement.MetaData.Builders
             return this;
         }
 
-
-        public ContentTypeDefinitionBuilder WithPart(string partName)
+        public ContentTypeDefinitionBuilder WithPart(string partName, int index)
         {
             var existingPart = _parts.SingleOrDefault(x => x.PartName == partName);
             if (existingPart != null)
@@ -82,9 +74,10 @@ namespace Orchard.ContentManagement.MetaData.Builders
             }
             else
             {
-                existingPart = new ContentTypePartDefinition(partName, new SettingsDictionary());
+                existingPart = new ContentTypePartDefinition(partName);
             }
 
+            existingPart.Index = index;
             _parts.Add(existingPart);
             return this;
         }

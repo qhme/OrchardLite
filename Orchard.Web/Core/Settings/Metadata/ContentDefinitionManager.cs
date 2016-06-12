@@ -10,6 +10,7 @@ using System.Linq;
 using System.Web;
 using System.Xml.Linq;
 using Orchard.Logging;
+using Orchard.ContentManagement.Drivers;
 
 namespace Orchard.Core.Settings.Metadata
 {
@@ -18,17 +19,19 @@ namespace Orchard.Core.Settings.Metadata
         private const string ContentDefinitionSignal = "ContentDefinitionManager";
         private readonly ICacheManager _cacheManager;
         private readonly ISignals _signals;
-        private readonly IRepository<ContentTypeDefinitionRecord> _typeDefinitionRepository;
         private readonly ISettingsFormatter _settingsFormatter;
+        private readonly IRepository<ContentTypePartDefinitionRecord> _typePartDefinitionRecord;
+        private readonly IEnumerable<IContentTypeDefinition> _typeDefinitions;
 
-        public ContentDefinitionManager(ICacheManager cacheManager,
-            ISignals signals,
-            IRepository<ContentTypeDefinitionRecord> typeDefinitionRepository, ISettingsFormatter settingsFormatter)
+        public ContentDefinitionManager(ICacheManager cacheManager, IRepository<ContentTypePartDefinitionRecord> typePartDefinitionRecord,
+            IEnumerable<IContentTypeDefinition> typeDefintions,
+            ISignals signals, ISettingsFormatter settingsFormatter)
         {
             _cacheManager = cacheManager;
             _signals = signals;
-            _typeDefinitionRepository = typeDefinitionRepository;
             _settingsFormatter = settingsFormatter;
+            _typePartDefinitionRecord = typePartDefinitionRecord;
+            _typeDefinitions = typeDefintions;
         }
 
 
@@ -54,23 +57,9 @@ namespace Orchard.Core.Settings.Metadata
         }
 
 
-        public void DeleteTypeDefinition(string name)
-        {
-            var record = _typeDefinitionRepository.Table.SingleOrDefault(x => x.Name == name);
-
-            // deletes the content type record associated
-            if (record != null)
-            {
-                _typeDefinitionRepository.Delete(record);
-            }
-
-            // invalidates the cache
-            TriggerContentDefinitionSignal();
-        }
-
         public void StoreTypeDefinition(ContentTypeDefinition contentTypeDefinition)
         {
-            Apply(contentTypeDefinition, Acquire(contentTypeDefinition));
+            Apply(contentTypeDefinition);
             TriggerContentDefinitionSignal();
         }
 
@@ -90,79 +79,69 @@ namespace Orchard.Core.Settings.Metadata
             {
                 MonitorContentDefinitionSignal(ctx);
 
-                var contentTypeDefinitionRecords = _typeDefinitionRepository.Table
-                   .FetchMany(x => x.ContentTypePartDefinitionRecords)
-                    .Select(Build);
+                var codedTypes = _typeDefinitions.Select(x => new { x.TypeName, x.Description });
 
-                return contentTypeDefinitionRecords.ToDictionary(x => x.Name, y => y, StringComparer.OrdinalIgnoreCase);
+                var contentTypeDefinitions = _typePartDefinitionRecord.Table.ToList().GroupBy(x => x.TypeName).Select(g => Build(g.Key, g)).ToList();
+                foreach (var coded in codedTypes)
+                {
+                    var definitioned = contentTypeDefinitions.FirstOrDefault(x => x.Name == coded.TypeName);
+                    if (definitioned != null)
+                        definitioned.Description = coded.Description;
+                    else
+                    {
+                        var newDTD = Build(coded.TypeName, Enumerable.Empty<ContentTypePartDefinitionRecord>());
+                        newDTD.Description = coded.Description;
+                        contentTypeDefinitions.Add(newDTD);
+                    }
+                }
+
+                return contentTypeDefinitions.ToDictionary(x => x.Name, y => y, StringComparer.OrdinalIgnoreCase);
             });
         }
 
-
-
-        private ContentTypeDefinitionRecord Acquire(ContentTypeDefinition contentTypeDefinition)
+        private void Apply(ContentTypeDefinition model)
         {
-            var result = _typeDefinitionRepository.Table.SingleOrDefault(x => x.Name == contentTypeDefinition.Name);
-            if (result == null)
-            {
-                result = new ContentTypeDefinitionRecord { Name = contentTypeDefinition.Name, DisplayName = contentTypeDefinition.DisplayName };
-                _typeDefinitionRepository.Create(result);
-            }
-            return result;
-        }
-
-
-
-        private void Apply(ContentTypeDefinition model, ContentTypeDefinitionRecord record)
-        {
-            record.DisplayName = model.DisplayName;
-            record.Settings = _settingsFormatter.Map(model.Settings).ToString();
-
-            var toRemove = record.ContentTypePartDefinitionRecords
-                .Where(partDefinitionRecord => model.Parts.All(part => partDefinitionRecord.PartName != part.PartName))
-                .ToList();
+            var toRemove = _typePartDefinitionRecord.Table.Where(p => p.TypeName == model.Name).ToList().Where(p =>
+                model.Parts.All(part => p.PartName != part.PartName))
+               .ToList();
 
             foreach (var remove in toRemove)
             {
-                record.ContentTypePartDefinitionRecords.Remove(remove);
+                _typePartDefinitionRecord.Delete(remove);
             }
 
-            foreach (var part in model.Parts)
+            foreach (var part in model.Parts.Where(x => !string.IsNullOrEmpty(x.PartName)))
             {
                 var partName = part.PartName;
-                var typePartRecord = record.ContentTypePartDefinitionRecords.SingleOrDefault(r => r.PartName == partName);
+                var typePartRecord = _typePartDefinitionRecord.Table.SingleOrDefault(r => r.TypeName == model.Name && r.PartName == partName);
                 if (typePartRecord == null)
                 {
-                    typePartRecord = new ContentTypePartDefinitionRecord { PartName = partName };
-                    record.ContentTypePartDefinitionRecords.Add(typePartRecord);
+                    typePartRecord = new ContentTypePartDefinitionRecord { PartName = partName, TypeName = model.Name, Ord = part.Index };
+                    _typePartDefinitionRecord.Create(typePartRecord);
                 }
-                Apply(part, typePartRecord);
+                else
+                    typePartRecord.Ord = part.Index;
             }
+
         }
 
-        private void Apply(ContentTypePartDefinition model, ContentTypePartDefinitionRecord record)
+        //private void Apply(ContentTypePartDefinition model, ContentTypePartDefinitionRecord record)
+        //{
+        //    record.Settings = Compose(_settingsFormatter.Map(model.Settings));
+        //}
+
+
+        ContentTypeDefinition Build(string typeName, IEnumerable<ContentTypePartDefinitionRecord> typeParts)
         {
-            record.Settings = Compose(_settingsFormatter.Map(model.Settings));
-        }
-
-
-
-        ContentTypeDefinition Build(ContentTypeDefinitionRecord source)
-        {
-            return new ContentTypeDefinition(
-                source.Name,
-                source.DisplayName,
-                source.ContentTypePartDefinitionRecords.Select(Build),
-                _settingsFormatter.Map(Parse(source.Settings)));
+            return new ContentTypeDefinition(typeName, typeParts.Select(Build));
         }
 
         ContentTypePartDefinition Build(ContentTypePartDefinitionRecord source)
         {
-            return new ContentTypePartDefinition(source.PartName,  _settingsFormatter.Map(Parse(source.Settings)));
+            var cpd = new ContentTypePartDefinition(source.PartName);
+            cpd.Index = source.Ord;
+            return cpd;
         }
-
-
-
 
         XElement Parse(string settings)
         {

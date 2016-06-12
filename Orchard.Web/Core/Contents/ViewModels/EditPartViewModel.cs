@@ -19,14 +19,5 @@ namespace Orchard.Core.Contents.ViewModels
         public string Prefix { get { return "PartDefinition"; } }
         public string Name { get; set; }
 
-        private string _displayName;
-        [Required]
-        public string DisplayName
-        {
-            get { return !string.IsNullOrWhiteSpace(_displayName) ? _displayName : Name.TrimEnd("Part").CamelFriendly(); }
-            set { _displayName = value; }
-        }
-
-
     }
 }

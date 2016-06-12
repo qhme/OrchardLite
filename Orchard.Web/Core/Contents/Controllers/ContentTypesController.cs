@@ -52,66 +52,45 @@ namespace Orchard.Core.Contents.Controllers
             });
         }
 
-
-        public ActionResult Create(string suggestion)
+        public ActionResult Edit(string id)
         {
-            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, "Not allowed to create a content type."))
+            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, "Not allowed to edit a content type."))
                 return new HttpUnauthorizedResult();
 
-            return View(new CreateTypeViewModel { DisplayName = suggestion, Name = suggestion.ToSafeName() });
+            var typeViewModel = _contentDefinitionService.GetType(id);
+
+            typeViewModel.AllParts = _contentDefinitionService.GetParts().Select(x => x.Name).ToList();
+            if (typeViewModel == null)
+                return HttpNotFound();
+
+            return View(typeViewModel);
         }
 
-        [HttpPost, ActionName("Create")]
-        public ActionResult CreatePOST(CreateTypeViewModel viewModel)
+        [HttpPost, ActionName("Edit")]
+        public ActionResult EditPOST(string id, EditTypeViewModel model)
         {
-            //if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type.")))
-            //    return new HttpUnauthorizedResult();
+            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, "Not allowed to edit a content type."))
+                return new HttpUnauthorizedResult();
 
-            viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
-            viewModel.Name = viewModel.Name ?? String.Empty;
+            var typeViewModel = _contentDefinitionService.GetType(id);
 
-            if (String.IsNullOrWhiteSpace(viewModel.DisplayName))
-            {
-                ModelState.AddModelError("DisplayName", "The Display Name name can't be empty.");
-            }
+            if (typeViewModel == null)
+                return HttpNotFound();
 
-            if (String.IsNullOrWhiteSpace(viewModel.Name))
-            {
-                ModelState.AddModelError("Name", "The Content Type Id can't be empty.");
-            }
+            if (!ModelState.IsValid)
+                return View(typeViewModel);
 
-            if (_contentDefinitionService.GetTypes().Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase)))
-            {
-                ModelState.AddModelError("Name", "A type with the same Id already exists.");
-            }
-
-            if (!String.IsNullOrWhiteSpace(viewModel.Name) && !viewModel.Name[0].IsLetter())
-            {
-                ModelState.AddModelError("Name", "The technical name must start with a letter.");
-            }
-
-            if (_contentDefinitionService.GetTypes().Any(t => String.Equals(t.DisplayName.Trim(), viewModel.DisplayName.Trim(), StringComparison.OrdinalIgnoreCase)))
-            {
-                ModelState.AddModelError("DisplayName", "A type with the same Display Name already exists.");
-            }
-
+            _contentDefinitionService.AlterType(model, this);
             if (!ModelState.IsValid)
             {
                 Services.TransactionManager.Cancel();
-                return View(viewModel);
+                return View(typeViewModel);
             }
 
-            var contentTypeDefinition = _contentDefinitionService.AddType(viewModel.Name, viewModel.DisplayName);
-
-            // adds CommonPart by default
-            _contentDefinitionService.AddPartToType("CommonPart", viewModel.Name);
-
-            var typeViewModel = new EditTypeViewModel(contentTypeDefinition);
-
-            Services.Notifier.Information(string.Format("The \"{0}\" content type has been created.", typeViewModel.DisplayName));
-
-            return RedirectToAction("AddPartsTo", new { id = typeViewModel.Name });
+            Services.Notifier.Information(string.Format("\"{0}\" settings have been saved.", typeViewModel.Name));
+            return RedirectToAction("Index");
         }
+ 
 
         public ActionResult ListParts()
         {

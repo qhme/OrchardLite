@@ -15,15 +15,15 @@ namespace Orchard.ContentManagement.DataMigrations
                 table => table
                     .Column<int>("Id", column => column.PrimaryKey().Identity())
                     .Column<string>("Data", c => c.Unlimited())
-                    .Column<int>("ContentType_id")
+                    //.Column<int>("ContentType_id")
                 );
 
 
-            SchemaBuilder.CreateTable("ContentTypeRecord",
-                table => table
-                    .Column<int>("Id", column => column.PrimaryKey().Identity())
-                    .Column<string>("Name")
-                );
+            //SchemaBuilder.CreateTable("ContentTypeRecord",
+            //    table => table
+            //        .Column<int>("Id", column => column.PrimaryKey().Identity())
+            //        .Column<string>("Name")
+            //    );
 
             SchemaBuilder.CreateTable("CultureRecord",
                         table => table
@@ -35,15 +35,15 @@ namespace Orchard.ContentManagement.DataMigrations
 
         public int UpdateFrom1()
         {
-            SchemaBuilder.AlterTable("ContentItemRecord",
-               table => table
-                   .CreateIndex("IDX_ContentType_id", "ContentType_id")
-               );
+            //SchemaBuilder.AlterTable("ContentItemRecord",
+            //   table => table
+            //       .CreateIndex("IDX_ContentType_id", "ContentType_id")
+            //   );
 
-            SchemaBuilder.AlterTable("ContentTypeRecord",
-                 table => table
-                .CreateIndex("IDX_ContentType_Name", "Name")
-            );
+            //SchemaBuilder.AlterTable("ContentTypeRecord",
+            //     table => table
+            //    .CreateIndex("IDX_ContentType_Name", "Name")
+            //);
 
             return 2;
         }

@@ -8,20 +8,19 @@ namespace Orchard.ContentManagement.MetaData.Models
 {
     public class ContentTypePartDefinition
     {
-        public ContentTypePartDefinition(String partName, SettingsDictionary settings)
+        public ContentTypePartDefinition(String partName)
         {
             PartName = partName;
-            Settings = settings;
         }
 
         public ContentTypePartDefinition()
         {
-            Settings = new SettingsDictionary();
         }
 
         public String PartName { get; private set; }
-        public SettingsDictionary Settings { get; private set; }
-        public ContentTypeDefinition ContentTypeDefinition { get; set; }
+
+        public int Index { get; set; }
+
     }
 
 }

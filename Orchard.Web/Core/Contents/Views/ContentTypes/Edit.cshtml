@@ -1,0 +1,56 @@
+﻿@model Orchard.Core.Contents.ViewModels.EditTypeViewModel
+@{
+    ViewBag.Title = "Edit Types";
+    //Style.Require("ContentTypesAdmin");
+    int pIndex = 0;
+}
+
+@using (Html.BeginFormAntiForgeryPost())
+{
+    // todo: come up with real itemtype definitions and locations for said definitions
+    <div itemscope="itemscope">
+        @Html.ValidationSummary()
+        <fieldset>
+            <label for="Name">@T("Name")</label>
+            @Html.TextBoxFor(m => m.Name, new { @class = "text medium" })
+            <meta itemprop="DisplayName" content="@Model.Description" />
+            <meta itemprop="Id" content="@Model.Name" />
+            @Html.HiddenFor(m => m.Name)
+        </fieldset>
+        <div class="manage-type">
+            <h2>@T("Parts")</h2>
+            <ul>
+                @foreach (var partName in Model.AllParts)
+                {
+                    int index = 0;
+                    var part = Model.Parts.FirstOrDefault(x => x.PartName == partName);
+                    if (part != null)
+                    {
+                        index = part.Index;
+                    }
+                    <li class="manage-part" itemscope="itemscope">
+                        <div>
+                            <h3 itemprop="Name">@partName</h3>
+                            <input type="text" placeholder="index" value="@index" name="Parts[@pIndex].Index" />
+                            <input type="checkbox" name="Parts[@pIndex].PartName" value="@partName" @(part!=null?"checked":"") />
+                        </div>
+                    </li>
+                    pIndex++;
+                }
+            </ul>
+        </div>
+        <fieldset class="action">
+            <button class="primaryAction" type="submit" name="submit.Save" value="Save">@T("Save")</button>
+        </fieldset>
+    </div>
+}
+
+@using (Script.Foot())
+{
+    <script type="text/javascript">
+        (function ($) {
+            $(".manage-field h3,.manage-part h3").expandoControl(function (controller) { return controller.nextAll(".details"); }, { collapse: true, remember: false });
+            $(".manage-field h4").expandoControl(function (controller) { return controller.nextAll(".settings"); }, { collapse: true, remember: false });
+        })(jQuery);
+    </script>
+}

@@ -152,6 +152,7 @@
     <Compile Include="ContentManagement\Drivers\Coordinators\ContentPartDriverCoordinator.cs" />
     <Compile Include="ContentManagement\Drivers\DriverResult.cs" />
     <Compile Include="ContentManagement\Drivers\IContentPartDriver.cs" />
+    <Compile Include="ContentManagement\MetaData\IContentTypeDefinition.cs" />
     <Compile Include="ContentManagement\Handlers\ActivatedContentContext.cs" />
     <Compile Include="ContentManagement\Handlers\ActivatingContentContext.cs" />
     <Compile Include="ContentManagement\Handlers\BuildDisplayContext.cs" />
@@ -189,7 +190,6 @@
     <Compile Include="ContentManagement\Handlers\UpdateContentContext.cs" />
     <Compile Include="ContentManagement\Records\ContentItemRecord.cs" />
     <Compile Include="ContentManagement\Records\ContentPartRecord.cs" />
-    <Compile Include="ContentManagement\Records\ContentTypeRecord.cs" />
     <Compile Include="ContentManagement\IContent.cs" />
     <Compile Include="ContentManagement\Utilities\LazyField.cs" />
     <Compile Include="Data\Conventions\CacheConventions.cs" />

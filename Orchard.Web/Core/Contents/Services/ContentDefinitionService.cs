@@ -28,7 +28,7 @@ namespace Orchard.Core.Contents.Services
 
         public IEnumerable<EditTypeViewModel> GetTypes()
         {
-            return _contentDefinitionManager.ListTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
+            return _contentDefinitionManager.ListTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.Description);
         }
 
         public EditTypeViewModel GetType(string name)
@@ -43,148 +43,39 @@ namespace Orchard.Core.Contents.Services
                 //Templates = _contentDefinitionEditorEvents.TypeEditor(contentTypeDefinition)
             };
 
-            foreach (var part in viewModel.Parts)
-            {
-                part._Definition.ContentTypeDefinition = contentTypeDefinition;
-                //part.Templates = _contentDefinitionEditorEvents.TypePartEditor(part._Definition);
-            }
 
             return viewModel;
         }
 
-        public ContentTypeDefinition AddType(string name, string displayName)
-        {
-            if (String.IsNullOrWhiteSpace(displayName))
-            {
-                throw new ArgumentException("displayName");
-            }
-
-            if (String.IsNullOrWhiteSpace(name))
-            {
-                name = GenerateContentTypeNameFromDisplayName(displayName);
-            }
-            else
-            {
-                if (!name[0].IsLetter())
-                {
-                    throw new ArgumentException("Content type name must start with a letter", "name");
-                }
-            }
-
-            //while (_contentDefinitionManager.GetTypeDefinition(name) != null)
-            //    name = VersionName(name);
-
-            var contentTypeDefinition = new ContentTypeDefinition(name, displayName);
-            _contentDefinitionManager.StoreTypeDefinition(contentTypeDefinition);
-            //_contentDefinitionManager.AlterTypeDefinition(name, cfg => cfg.Creatable().Draftable().Listable().Securable());
-
-            return contentTypeDefinition;
-        }
 
         public void AlterType(EditTypeViewModel typeViewModel, ContentManagement.IUpdateModel updateModel)
         {
             var updater = new Updater(updateModel);
             _contentDefinitionManager.AlterTypeDefinition(typeViewModel.Name, typeBuilder =>
             {
-                typeBuilder.DisplayedAs(typeViewModel.DisplayName);
+                typeBuilder.DisplayedAs(typeViewModel.Description);
 
                 foreach (var part in typeViewModel.Parts)
                 {
-                    var partViewModel = part;
-
                     // enable updater to be aware of changing part prefix
-                    updater._prefix = secondHalf => String.Format("{0}.{1}", partViewModel.Prefix, secondHalf);
-
-                    //// allow extensions to alter typePart configuration
-                    //typeBuilder.WithPart(partViewModel.PartDefinition.Name, typePartBuilder =>
-                    //{
-                    //    partViewModel.Templates = _contentDefinitionEditorEvents.TypePartEditorUpdate(typePartBuilder, updater);
-                    //});
-
-                    //_contentDefinitionManager.AlterPartDefinition(partViewModel.PartDefinition.Name, partBuilder =>
-                    //{
-                    //    var fieldFirstHalf = String.Format("{0}.{1}", partViewModel.Prefix, partViewModel.PartDefinition.Prefix);
-                    //    foreach (var field in partViewModel.PartDefinition.Fields)
-                    //    {
-                    //        var fieldViewModel = field;
-
-                    //        // enable updater to be aware of changing field prefix
-                    //        updater._prefix = secondHalf =>
-                    //            String.Format("{0}.{1}.{2}", fieldFirstHalf, fieldViewModel.Prefix, secondHalf);
-                    //        // allow extensions to alter partField configuration
-                    //        partBuilder.WithField(fieldViewModel.Name, partFieldBuilder =>
-                    //        {
-                    //            fieldViewModel.Templates = _contentDefinitionEditorEvents.PartFieldEditorUpdate(partFieldBuilder, updater);
-                    //        });
-                    //    }
-                    //});
+                    updater._prefix = secondHalf => String.Format("{0}.{1}", part.Prefix, secondHalf);
+                    typeBuilder.WithPart(part.PartName, part.Index);
                 }
             });
         }
 
-        public void RemoveType(string name, bool deleteContent)
-        {
-            // first remove all attached parts
-            var typeDefinition = _contentDefinitionManager.GetTypeDefinition(name);
-            var partDefinitions = typeDefinition.Parts.ToArray();
-            foreach (var partDefinition in partDefinitions)
-            {
-                RemovePartFromType(partDefinition.PartName, name);
-            }
-
-            _contentDefinitionManager.DeleteTypeDefinition(name);
-
-            // delete all content items (but keep versions)
-            if (deleteContent)
-            {
-                //name
-                var contentItems = Services.ContentManager.Query().List();
-                foreach (var contentItem in contentItems)
-                {
-                    Services.ContentManager.Remove(contentItem);
-                }
-            }
-        }
-
-        public void AddPartToType(string partName, string typeName)
-        {
-            _contentDefinitionManager.AlterTypeDefinition(typeName, typeBuilder => typeBuilder.WithPart(partName));
-        }
-
-        public void RemovePartFromType(string partName, string typeName)
-        {
-            _contentDefinitionManager.AlterTypeDefinition(typeName, typeBuilder => typeBuilder.RemovePart(partName));
-        }
-
-        public string GenerateContentTypeNameFromDisplayName(string displayName)
-        {
-            throw new NotImplementedException();
-        }
 
         public IEnumerable<EditPartViewModel> GetParts()
         {
-            //var typeNames = new HashSet<string>(GetTypes().Select(ctd => ctd.Name));
-            // user-defined parts
-            // except for those parts with the same name as a type (implicit type's part or a mistake)
-            //var userContentParts = _contentDefinitionManager.ListPartDefinitions()
-            //    .Where(cpd => !typeNames.Contains(cpd.Name))
-            //    .Select(cpd => new EditPartViewModel(cpd))
-            //    .ToDictionary(
-            //        k => k.Name,
-            //        v => v);
-
             // code-defined parts
             var codeDefinedParts = _contentPartDrivers
                     .SelectMany(d => d.GetPartInfo()
                         //.Where(cpd => !userContentParts.ContainsKey(cpd.PartName))
-                        .Select(cpi => new EditPartViewModel (cpi.PartName)))
+                        .Select(cpi => new EditPartViewModel(cpi.PartName)))
                     .ToList();
 
             // Order by display name
             return codeDefinedParts;
-            //return codeDefinedParts
-            //    .Union(userContentParts.Values)
-            //    .OrderBy(m => m.DisplayName);
         }
 
 

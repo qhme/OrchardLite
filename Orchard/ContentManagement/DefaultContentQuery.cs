@@ -25,19 +25,15 @@ namespace Orchard.ContentManagement
         private ICriteria _itemCriteria;
         private ICacheManager _cacheManager;
         private ISignals _signals;
-        private IRepository<ContentTypeRecord> _contentTypeRepository;
 
         public DefaultContentQuery(IContentManager contentManager,
             ISessionLocator sessionLocator,
-            ICacheManager cacheManager,
-            ISignals signals,
-            IRepository<ContentTypeRecord> contentTypeRepository)
+            ICacheManager cacheManager, ISignals signals)
         {
             _sessionLocator = sessionLocator;
             ContentManager = contentManager;
             _cacheManager = cacheManager;
             _signals = signals;
-            _contentTypeRepository = contentTypeRepository;
         }
 
         public IContentManager ContentManager { get; private set; }
@@ -75,38 +71,20 @@ namespace Orchard.ContentManagement
             return BindCriteriaByPath(BindItemCriteria(), typeof(TRecord).Name);
         }
 
-        private int GetContentTypeRecordId(string contentType)
-        {
-            return _cacheManager.Get(contentType + "_Record", ctx =>
-            {
-                ctx.Monitor(_signals.When(contentType + "_Record"));
-
-                var contentTypeRecord = _contentTypeRepository.Get(x => x.Name == contentType);
-
-                if (contentTypeRecord == null)
-                {
-                    //TEMP: this is not safe... ContentItem types could be created concurrently?
-                    contentTypeRecord = new ContentTypeRecord { Name = contentType };
-                    _contentTypeRepository.Create(contentTypeRecord);
-                }
-
-                return contentTypeRecord.Id;
-            });
-        }
 
         private void ForType(params string[] contentTypeNames)
         {
             if (contentTypeNames != null && contentTypeNames.Length != 0)
             {
-                var contentTypeIds = contentTypeNames.Select(GetContentTypeRecordId).ToArray();
+              
                 // don't use the IN operator if not needed for performance reasons
                 if (contentTypeNames.Length == 1)
                 {
-                    BindItemCriteria().Add(Restrictions.Eq("ContentType.Id", contentTypeIds[0]));
+                    BindItemCriteria().Add(Restrictions.Eq("ContentType", contentTypeNames[0]));
                 }
                 else
                 {
-                    BindItemCriteria().Add(Restrictions.InG("ContentType.Id", contentTypeIds));
+                    BindItemCriteria().Add(Restrictions.InG("ContentType", contentTypeNames));
                 }
             }
         }

@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Content1", "Orchard
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Content2", "Orchard.Web\Modules\Orchard.Content2\Orchard.Content2.csproj", "{4FA0A396-23DB-4675-988A-143B7C95B308}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.Plane", "Orchard.Web\Modules\Orchard.Plane\Orchard.Plane.csproj", "{25DC0F17-2B2E-4CCD-9B97-EDDFB3164B93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{4FA0A396-23DB-4675-988A-143B7C95B308}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FA0A396-23DB-4675-988A-143B7C95B308}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FA0A396-23DB-4675-988A-143B7C95B308}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25DC0F17-2B2E-4CCD-9B97-EDDFB3164B93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25DC0F17-2B2E-4CCD-9B97-EDDFB3164B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25DC0F17-2B2E-4CCD-9B97-EDDFB3164B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25DC0F17-2B2E-4CCD-9B97-EDDFB3164B93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +132,7 @@ Global
 		{61904E4E-0CF2-4B2E-B5D9-D0A9BA93636C} = {05D12875-0866-4066-A132-9E704AFE48D6}
 		{132F25A1-1FAB-49C9-BC93-9BC436D894BD} = {05D12875-0866-4066-A132-9E704AFE48D6}
 		{4FA0A396-23DB-4675-988A-143B7C95B308} = {05D12875-0866-4066-A132-9E704AFE48D6}
+		{25DC0F17-2B2E-4CCD-9B97-EDDFB3164B93} = {05D12875-0866-4066-A132-9E704AFE48D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .

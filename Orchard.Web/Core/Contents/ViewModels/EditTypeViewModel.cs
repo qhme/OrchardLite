@@ -10,30 +10,28 @@ namespace Orchard.Core.Contents.ViewModels
     {
         public EditTypeViewModel()
         {
-            Settings = new SettingsDictionary();
             Parts = new List<EditTypePartViewModel>();
         }
 
         public EditTypeViewModel(ContentTypeDefinition contentTypeDefinition)
         {
             Name = contentTypeDefinition.Name;
-            DisplayName = contentTypeDefinition.DisplayName;
-            Settings = contentTypeDefinition.Settings;
             Parts = GetTypeParts(contentTypeDefinition).ToList();
-            _Definition = contentTypeDefinition;
+            Description = contentTypeDefinition.Description;
         }
 
         public string Name { get; set; }
-        public string DisplayName { get; set; }
-        public SettingsDictionary Settings { get; set; }
+        public string Description { get; set; }
+
+        public List<string> AllParts { get; set; }
+
         public IEnumerable<EditTypePartViewModel> Parts { get; set; }
-        public ContentTypeDefinition _Definition { get; private set; }
 
         private IEnumerable<EditTypePartViewModel> GetTypeParts(ContentTypeDefinition contentTypeDefinition)
         {
             return contentTypeDefinition.Parts
                 .Where(p => !string.Equals(p.PartName, Name, StringComparison.OrdinalIgnoreCase))
-                .Select((p, i) => new EditTypePartViewModel(i, p) { Type = this });
+                .Select((p, i) => new EditTypePartViewModel(i, p) { Index = p.Index, Type = this });
         }
     }
 }

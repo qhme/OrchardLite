@@ -10,27 +10,22 @@ namespace Orchard.ContentManagement.MetaData.Models
 {
     public class ContentTypeDefinition
     {
-        public ContentTypeDefinition(string name, string displayName, IEnumerable<ContentTypePartDefinition> parts, SettingsDictionary settings)
+        public ContentTypeDefinition(string name, IEnumerable<ContentTypePartDefinition> parts)
         {
             Name = name;
-            DisplayName = displayName;
             Parts = parts.ToReadOnlyCollection();
-            Settings = settings;
         }
 
-        public ContentTypeDefinition(string name, string displayName)
+        public ContentTypeDefinition(string name)
         {
             Name = name;
-            DisplayName = displayName;
             Parts = Enumerable.Empty<ContentTypePartDefinition>();
-            Settings = new SettingsDictionary();
         }
 
         [StringLength(128)]
         public string Name { get; private set; }
-        [Required, StringLength(1024)]
-        public string DisplayName { get; private set; }
+
+        public string Description { get; set; }
         public IEnumerable<ContentTypePartDefinition> Parts { get; private set; }
-        public SettingsDictionary Settings { get; private set; }
     }
 }

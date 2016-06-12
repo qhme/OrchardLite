@@ -19,16 +19,14 @@ namespace Orchard.ContentManagement
         private readonly IComponentContext _context;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IRepository<ContentItemRecord> _contentItemRepository;
-        private readonly IRepository<ContentTypeRecord> _contentTypeRepository;
         private readonly Lazy<IEnumerable<IContentHandler>> _handlers;
         private readonly Func<IContentManagerSession> _contentManagerSession;
         private readonly Lazy<ISessionLocator> _sessionLocator;
         private readonly Lazy<IContentDisplay> _contentDisplay;
 
         public DefaultContentManager(IComponentContext context,
-            IContentDefinitionManager contentDefinitionManager,
+           IContentDefinitionManager contentDefinitionManager,
            IRepository<ContentItemRecord> contentItemRepository,
-           IRepository<ContentTypeRecord> contentTypeRepository,
            Lazy<IEnumerable<IContentHandler>> handlers,
            Lazy<ISessionLocator> sessionLocator,
            Lazy<IContentDisplay> contentDisplay, Func<IContentManagerSession> contentManagerSession)
@@ -40,7 +38,6 @@ namespace Orchard.ContentManagement
             _contentManagerSession = contentManagerSession;
             _sessionLocator = sessionLocator;
             _contentItemRepository = contentItemRepository;
-            _contentTypeRepository = contentTypeRepository;
             _contentDisplay = contentDisplay;
         }
 
@@ -186,7 +183,7 @@ namespace Orchard.ContentManagement
         public IContentQuery<ContentItem> Query()
         {
             var query = _context.Resolve<IContentQuery>(TypedParameter.From<IContentManager>(this));
-            return query.ForPart<ContentItem>();    
+            return query.ForPart<ContentItem>();
         }
     }
 }

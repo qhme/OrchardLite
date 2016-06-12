@@ -51,7 +51,7 @@ namespace Orchard.ContentManagement.Handlers
                 if (typePartDefinition == null)
                 {
                     // If the content item's type definition does not define the part; use an empty type definition.
-                    typePartDefinition = new ContentTypePartDefinition(partName, new SettingsDictionary());
+                    typePartDefinition = new ContentTypePartDefinition(partName);
                 }
 
                 // build and weld the part

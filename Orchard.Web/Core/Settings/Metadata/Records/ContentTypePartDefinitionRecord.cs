@@ -10,9 +10,10 @@ namespace Orchard.Core.Settings.Metadata.Records
     {
         public virtual int Id { get; set; }
 
+        public string TypeName { get; set; }
+
         public string PartName { get; set; }
 
-        [StringLengthMax]
-        public virtual string Settings { get; set; }
+        public int Ord { get; set; }
     }
 }

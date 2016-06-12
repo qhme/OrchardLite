@@ -28,8 +28,6 @@ namespace Orchard.ContentManagement
         public ContentTypePartDefinition TypePartDefinition { get; set; }
 
         public string PartName { get { return TypePartDefinition.PartName; } }
-
-        public SettingsDictionary Settings { get { return TypePartDefinition.Settings; } }
     }
 
     public class ContentPart<TRecord> : ContentPart

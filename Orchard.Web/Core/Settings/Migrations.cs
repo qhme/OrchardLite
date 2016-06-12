@@ -95,5 +95,27 @@ namespace Orchard.Core.Settings
             });
             return 4;
         }
+
+        public int UpdateFrom4()
+        {
+            SchemaBuilder.DropTable("ContentTypeDefinitionRecord");
+            SchemaBuilder.AlterTable("ContentTypePartDefinitionRecord", table =>
+            {
+                table.DropColumn("ContentTypeDefinitionRecord_Id");
+                table.AddColumn<string>("TypeName");
+            });
+
+            return 5;
+        }
+
+        public int UpdateFrom5()
+        {
+            SchemaBuilder.AlterTable("ContentTypePartDefinitionRecord", table =>
+            {
+                table.DropColumn("Settings");
+                table.AddColumn<int>("Ord");
+            });
+            return 6;
+        }
     }
 }
